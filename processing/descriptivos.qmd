@@ -1,0 +1,92 @@
+---
+title: "descriptivos"
+format: html
+editor: source
+---
+
+```{r, data,echo=FALSE, include=FALSE}
+pacman::p_load(dplyr, sjPlot, stargazer, kableExtra, texreg, haven, sjlabelled, ggplot2, summarytools, ggtext, ggpubr, hrbrthemes, tidyr, stringr)
+
+load(here::here("input/data/proc/ola1.RData"))
+```
+
+
+```{r, preparacion, echo=FALSE, eval=TRUE}
+#Base General con el cuestionario para estudiantes
+#Codificamos los valores 99-88 como missing para todas las variables
+proc_datos <- proc_datos %>% set_na(., na = c(99, 88))
+
+for (i in names(dplyr::select(proc_datos, tidyselect::starts_with("p1_"), starts_with("p2_"), starts_with("p8_"), starts_with("p9_"), starts_with("p17_")))) {
+  proc_datos[[i]] <- sjlabelled::set_labels(
+    x = proc_datos[[i]],
+    labels = c("Muy en desacuerdo", "Desacuerdo", "De acuerdo", "Muy de acuerdo")
+  )
+}
+
+
+for (i in names(dplyr::select(proc_datos, tidyselect::starts_with("p10_")))) {
+  proc_datos[[i]] <- sjlabelled::set_labels(
+    x = proc_datos[[i]],
+    labels = c("Nada importante", "Algo importante", "Importante", "Muy importante")
+  )
+}
+
+
+for (i in names(dplyr::select(proc_datos, tidyselect::starts_with("p11_")))) {
+  proc_datos[[i]] <- sjlabelled::set_labels(
+    x = proc_datos[[i]],
+    labels = c("Seguro no haré esto", "Tal vez haré esto", "Probablemente haré esto", "Seguro haré esto")
+  )
+}
+
+for (i in names(dplyr::select(proc_datos, tidyselect::starts_with("p12_")))) {
+  proc_datos[[i]] <- sjlabelled::set_labels(
+    x = proc_datos[[i]],
+    labels = c("Si", "No")
+  )
+}
+
+for (i in names(dplyr::select(proc_datos, tidyselect::starts_with("p13_")))) {
+  proc_datos[[i]] <- sjlabelled::set_labels(
+    x = proc_datos[[i]],
+    labels = c("Nunca", "Una vez al año", "Una vez al mes", "Semanalmente", "Todos los días")
+  )
+}
+
+
+for (i in names(dplyr::select(proc_datos, tidyselect::starts_with("p18_")))) {
+  proc_datos[[i]] <- sjlabelled::set_labels(
+    x = proc_datos[[i]],
+    labels = c("Nunca", "Casi nunca", "Casi siempre", "Siempre")
+  )
+}
+
+```
+
+
+# Seleccion variables
+
+```{r}
+data <- proc_datos %>% select("redistribucion"=p9_2, 
+                              tidyselect::starts_with("merit"), 
+                              tidyselect::starts_with("school"), 
+                              tidyselect::starts_with("social"))
+
+data <- data %>% select(redistribucion, 
+                        merit_esfuerzo_percep_ES, merit_esfuerzo_pref_ES, 
+                        merit_talento_percep_ES, merit_talento_pref_ES,
+                        social_merito_percep_ES, social_merit_pref_ES,
+                        school_esfuerzo_ES, school_talento_ES, school_merito_ES)
+```
+
+```{r}
+print(summarytools::dfSummary(data), method="render")
+```
+
+# Abstract
+
+## Preferencias redistributivas y meritocracia en la escuela
+
+Los crecientes niveles de desigualdad económica y concentración de ingresos han impulsado en los últimos años la investigación sobre las preferencias por la redistribución económica. Sin embargo, hasta ahora la mayor parte de las investigaciones sobre preferencias redistributivas se han efectuado en población adulta, dejando de lado el estudio de los factores asociados a estas preferencias en edades más tempranas. Utilizando datos de 900 estudiantes de educación básica y media en Chile, el presente estudio ahonda en la influencia de las percepciones y preferencias de la meritocracia en la escuela y la sociedad sobre las preferencias por la redistribución. Dado que la meritocracia se concibe como un sistema donde las recompensas se distribuyen según el esfuerzo y el talento individual, la hipótesis central es que quienes perciban que existe más meritocracia en la escuela y en la sociedad, tenderán a mostrar menores preferencias por el rol del gobierno en la redistribución al existir las condiciones sociales que permitirían la consecución de logros individuales. Los resultados muestran que estudiantes con mayor percepción y preferencias por la meritocracia en la sociedad y en la escuela manifiestan menores preferencias por la reducción de brechas económicas entre ricos y pobres. Se discuten las implicancias de estos resultados para la socialización política de estudiantes por parte de la familia de origen y la escuela. 
+
+
