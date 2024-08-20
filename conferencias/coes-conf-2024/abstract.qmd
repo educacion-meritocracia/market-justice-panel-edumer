@@ -55,7 +55,7 @@ lang: es
 citeproc: true
 ---
 
-# Meritocracia y redistribución: Evolución de las percepciones y preferencias en el contexto escolar
+# Cambio en las creencias sobre meritocracia y redistribución en el contexto escolar
 
 ## Abstract
 
