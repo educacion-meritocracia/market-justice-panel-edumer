@@ -1,0 +1,96 @@
+---
+title: "preregistro (spanish version)"
+format: pdf
+editor: source
+bibliography: "../input/bib/merit-redis-school.bib"
+---
+
+# Cambio en las creencias sobre meritocracia y redistribución en el contexto escolar
+
+1. ¿Cuál es la hipótesis que se investigará?
+
+*Proporcione una breve descripción de la teoría relevante y formule la hipótesis con la mayor precisión posible* 
+    
+Los crecientes niveles de desigualdad económica y concentración de ingresos han impulsado en los últimos años la investigación sobre las preferencias por la redistribución económica [@becker_significant_2021; @rueda_who_2019], entendidas como aquellas creencias sobre la necesidad de transferencias económicas hacia quienes poseen menos, por lo general a través del Estado. Sin embargo, hasta ahora la mayor parte de las investigaciones sobre preferencias redistributivas se han efectuado en población adulta, dejando de lado el estudio de los factores asociados a estas preferencias en edades más tempranas, así como también su formación. Utilizando datos de la encuesta panel Educación y Meritocracia (N=900, año 2023-2024) de educación básica y media en Chile, el presente estudio ahonda en el cambio de las percepciones y preferencias de la meritocracia en la escuela y la sociedad sobre las preferencias por la redistribución. Dado que la meritocracia se concibe como un sistema donde las recompensas se distribuyen según el esfuerzo y el talento individual [@young_rise_1958], la hipótesis central es que quienes perciban que existe más meritocracia en la escuela y en la sociedad, tenderán a mostrar menores preferencias por el rol del gobierno en la redistribución al existir las condiciones sociales que permitirían la consecución de logros individuales. 
+
+En lo que respecta a la operacionalización de meritocracia, se considerarán dos aspectos en su conceptualización y medición. En primer lugar, la percepción de meritocracia escolar, asociada a que la inteligencia y el esfuerzo son relevantes para obtener buenas calificaciones en la escuela [@resh_sense_2010]. En segundo lugar, se incluirá una medición de meritocracia en la sociedad, que también se divide en dos aspectos. Por un lado, la percepción de meritocracia, es decir, en qué medida se percibe que los esfuerzos y habilidades son recompensados en el país [@andersen_we_2021; @castillo_meritocracia_2019; @mijs_paradox_2019] y, por otro lado, las preferencias por la meritocracia, es decir, en qué medida la meritocracia es deseada en la sociedad [@castillo_multidimensional_2023]. De esta forma, se plantean las siguientes hipótesis: 
+
+* H1: Estudiantes que presentan mayor percepción de meritocracia en la escuela tendrán menor preferencia por la redistribución. 
+
+* H2: Estudiantes que presentan mayor percepción de meritocracia en la sociedad tendrán menor preferencia por la redistribución. 
+
+* H3: Estudiantes que presentan mayor preferencia por la meritocracia en la sociedad tendrán menor preferencia por la redistribución. 
+
+Finalmente, investigaciones han demostrado que los niños más pequeños muestran una preferencia por la igualdad, mientras que los niños mayores comienzan a aceptar la desigualdad si esta se justifica por el mérito [@almas_fairness_2010; @baumard_preschoolers_2012]. Por lo tanto, es de esperar que existan diferencias en las preferencias por la redistribución tanto por el nivel escolar (básica o media) como también un cambio a través del tiempo (2023-2024). Por lo tanto, se plantean dos hipótesis adicionales: 
+
+* H4: Estudiantes de educación media tendrán menor preferencia por la redistribución que estudiantes de educación básica 
+
+* H5: A medida que los/as estudiantes avanzan en su escolarización, se espera que las preferencias por la redistribución disminuyan.
+
+2.¿Cómo se operacionalizarán las variables cruciales?
+
+*Indique exactamente cómo se medirán las variables especificadas en la hipótesis. *
+
+Nuestra variable dependiente son las preferencias redistributivas, las que se operacionalizan de la siguiente forma: 
+
+* Preferencias o apoyo a políticas públicas que disminuyan las diferencias de ingresos entre ricos y pobres. La pregunta es: “Es responsabilidad del gobierno reducir las diferencias económicas entre las personas con altos ingresos y aquellas con bajos ingresos”. Las categorías de respuesta van de 1 a 4, donde 1 indica muy en desacuerdo y 4 muy de acuerdo.
+
+En relación con meritocracia, existen tres versiones: 
+
+* Percepción de meritocracia social: Se plantea medir la percepción de recompensas según esfuerzo e inteligencia por separado. Las preguntas son: a) En Chile, las personas son recompensadas por su esfuerzo; b) En Chile, las personas son recompensadas por su inteligencia y habilidad; y c) En Chile, todas las personas obtienen lo que merecen. Las categorías de respuesta van de 1 a 4, donde 1 indica muy en desacuerdo y 4 muy de acuerdo. 
+
+* Percepción de meritocracia en la escuela: Se plantea medir la percepción de la importancia del esfuerzo y la inteligencia para obtener buenas notas. Las preguntas son: a) En esta escuela, quienes se esfuerzan obtienen buenas notas; b) En esta escuela, quienes son inteligentes obtienen buenas notas; y c) En esta escuela, los/as estudiantes obtienen las notas que merecen. Las categorías de respuesta van de 1 a 4, donde 1 indica muy en desacuerdo y 4 muy de acuerdo. 
+
+* Preferencias por la meritocracia: Se plantea medir el grado en que los/as estudiantes creen que debería operar la meritocracia según esfuerzo y talento. Las preguntas son a) Quienes más se esfuerzan deberían obtener mayores recompensas que quienes se esfuerzan menos; b) Quienes poseen más talento deberían obtener mayores recompensas que quienes poseen menos talento; y c) Está bien que las personas más inteligentes y/o talentosas ganen más dinero, aun cuando requieran esforzarse menos para ello.
+
+3. ¿Cuál es la fuente de los datos incluidos en los análisis?
+
+*Especifique la fuente de los datos obtenidos. También proporcione información sobre el contexto de la fuente de datos y aclare si los datos se han publicado anteriormente. En el caso de datos simulados, proporcione información sobre cómo se generaron los datos. *
+
+La base de datos a utilizar corresponde a la encuesta panel "Educación y Meritocracia" (EDUMER), realizada en Chile durante el 2023 y 2024. En este estudio se evaluaron estudiantes de sexto básico y primero medio provenientes de 9 escuelas de la región metropolitana. El N total de respuestas completas es de 902 estudiantes.
+
+4. ¿Cómo se obtendrán estos datos?
+
+*Especifique cómo se solicitarán o accederán a los datos. Aclare si los datos ya estaban disponibles y si el conjunto de datos se ha explorado o analizado previamente. *
+  
+Los datos de la primera ola (2023) del estudio panel “Educación y Meritocracia” (EDUMER) se encuentran disponibles. Actualmente, se está levantando la segunda ola (2024). 
+  
+No se han realizado estudios previos con estos datos, salvo análisis descriptivo y pruebas de evaluación del experimento aplicado.
+
+5. ¿Existe algún criterio de exclusión para los datos?
+
+*Especifique si hubo algún criterio para la exclusión de ciertos conjuntos de datos, observaciones o puntos de tiempo.* 
+
+Se excluirán de la muestra utilizada aquellos casos que presenten respuestas incompletas (casos perdidos y/o NA). Además, a partir del paquete estadístico de R responsePatterns es posible detectar patrones de respuesta repetitivos, lo que contribuye a una mayor calidad de los datos de investigación (Gottfried, et al 2022). Por ejemplo, se pueden presentar casos en que solo se responda con la alternativa “1”, o que sigan patrones del tipo “1-2-3-4-1-2-3-4”, los que serán excluidos.
+
+6. ¿Cuáles son los análisis estadísticos previstos?
+
+*Especifique el modelo estadístico que se utilizará para analizar los datos y describa los pasos previos al procesamiento de los datos. Sea lo más específico posible y evite la ambigüedad. *
+
+Antes de analizar los datos se recodificarán las variables de interés y se eliminarán los casos perdidos y patrones de respuesta atípicos o problemáticos. Para el análisis de datos se realizará, en primer lugar, un análisis descriptivo univariado, luego un análisis bivariado (correlacional) y finalmente se utilizarán modelos de regresión lineal múltiple.
+
+7. ¿Cuáles son los criterios para confirmar y refutar las hipótesis?
+
+*Especifique exactamente cómo se evaluará la hipótesis. Proporcione criterios específicos relevantes para el marco y modelo analítico utilizado (por ejemplo, valores alfa, factor de Bayes, RMSEA). *
+
+Efectos estadísticamente significativos a un nivel alfa = 0.05 (p\<0.05)
+
+8. ¿Se han validado los análisis en un subconjunto de los datos?
+
+*En caso afirmativo, especifique y proporcione los archivos pertinentes. Indique si los análisis de datos propuestos se han validado previamente en un subconjunto de los datos o en un conjunto de datos simulado. Si es así, proporcione los archivos de datos y la sintaxis de los datos. *
+
+No se han validado los análisis.
+
+9. ¿Qué se sabe acerca de los datos que podrían ser relevantes para las hipótesis probadas?
+
+*Describa cualquier conocimiento previo que tenga sobre el conjunto de datos (por ejemplo, la media conocida de una variable) que sea relevante para su pregunta de investigación. *
+
+Se conocen los estadísticos descriptivos básicos de las variables a utilizar (media, moda y frecuencias)
+
+10. Proporcione un breve cronograma de los diferentes pasos del registro previo.
+    
+*Proporcione las fechas (previstas) para los diferentes pasos en este formulario de preinscripción.*
+
+-   Agosto-septiembre: Fin de levantamiento ola 2
+-   Septiembre-octubre: Consolidación de base longitudinal
+-   Octubre-noviembre: primer draft

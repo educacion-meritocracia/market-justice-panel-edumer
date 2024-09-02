@@ -57,6 +57,16 @@ citeproc: true
 
 # Cambio en las creencias sobre meritocracia y redistribución en el contexto escolar
 
+Juan Carlos Castillo[^1][^2][^3], Kevin Carrasco[^2], Andreas Laffert[^4], María Fernanda Núñez[^1]
+
+[^1]: Universidad de Chile
+
+[^2]: Centro de estudios del conflicto y cohesión social (COES)
+
+[^3]: Núcleo milenio de desigualdades y oportunidades digitales (NUDOS)
+
+[^4]: Pontificia Universidad Católica de Chile
+
 ## Abstract
 
 Los crecientes niveles de desigualdad económica y concentración de ingresos han impulsado en los últimos años la investigación sobre las preferencias por la redistribución económica [@becker_significant_2021; @rueda_who_2019], entendidas como aquellas creencias sobre la necesidad de transferencias económicas hacia quienes poseen menos, por lo general a través del Estado. Sin embargo, hasta ahora la mayor parte de las investigaciones sobre preferencias redistributivas se han efectuado en población adulta, dejando de lado el estudio de los factores asociados a estas preferencias en edades más tempranas, así como también su formación. Utilizando datos de la encuesta panel Educación y Meritocracia (N=900, año 2023-2024) de educación básica y media en Chile, el presente estudio ahonda en el cambio de las percepciones y preferencias de la meritocracia en la escuela y la sociedad sobre las preferencias por la redistribución. Dado que la meritocracia se concibe como un sistema donde las recompensas se distribuyen según el esfuerzo y el talento individual [@young_rise_1958], la hipótesis central es que quienes perciban que existe más meritocracia en la escuela y en la sociedad, tenderán a mostrar menores preferencias por el rol del gobierno en la redistribución al existir las condiciones sociales que permitirían la consecución de logros individuales. 
