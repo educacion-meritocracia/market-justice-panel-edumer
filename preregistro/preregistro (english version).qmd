@@ -11,7 +11,7 @@ bibliography: "../input/bib/merit-redis-school.bib"
 
 *Provide a brief description of the relevant theory and formulize the hypothesis as precisely as possible.*
 
-The increasing levels of economic inequality and income concentration have driven research in recent years on preferences for economic redistribution [@becker_significant_2021; @rueda_who_2019], understood as beliefs about the need for economic transfers to those with less, usually through the State. However, most research on redistributive preferences has focused on adult populations, leaving aside the study of factors associated with these preferences at younger ages and their formation. Using data from the Education and Meritocracy panel survey (N=900, year 2023-2024) of primary and secondary education in Chile, this study delves into the change in perceptions and preferences regarding meritocracy in schools and society on preferences for redistribution. Given that meritocracy is conceived as a system where rewards are distributed according to individual effort and talent [@young_rise_1958], the central hypothesis is that those who perceive more meritocracy in school and society will tend to show lower preferences for the role of government in redistribution, as social conditions are believed to allow for the achievement of individual success.
+The increasing levels of economic inequality and income concentration have driven research in recent years on preferences for economic redistribution [@becker_significant_2021; @rueda_who_2019], understood as beliefs about the need for financial transfers to those with less, usually through the state. However, most research on redistributive preferences has focused on adult populations, leaving aside the study of factors associated with these preferences at younger ages and their formation. Using data from the Education and Meritocracy panel survey (N=900, year 2023-2024) of primary and secondary education in Chile, this study delves into the change in perceptions and preferences regarding meritocracy in schools and society on preferences for redistribution. Given that meritocracy is conceived as a system where rewards are distributed according to individual effort and talent [@young_rise_1958], the central hypothesis is that those who perceive more meritocracy in school and society will tend to show lower preferences for the role of government in redistribution, as social conditions are believed to allow for the achievement of individual success.
 
 Two aspects of the operationalization of meritocracy will be considered in its conceptualization and measurement. First, the perception of school meritocracy is associated with the idea that intelligence and effort are relevant for obtaining good grades in school [@resh_sense_2010]. Second, a measurement of meritocracy in society will be included and divided into two aspects. On the one hand, the perception of meritocracy, i.e., the extent to which efforts and abilities are perceived to be rewarded in the country [@andersen_we_2021; @castillo_meritocracia_2019; @mijs_paradox_2019] and, on the other hand, preferences for meritocracy, i.e., the extent to which meritocracy is desired in society [@castillo_multidimensional_2023]. Thus, the following hypotheses are proposed:
 
@@ -19,9 +19,10 @@ Two aspects of the operationalization of meritocracy will be considered in its c
 * H2: Students with a higher perception of meritocracy in society will have a lower preference for redistribution.
 * H3: Students with a higher preference for meritocracy in society will have a lower preference for redistribution.
 
-Finally, research has shown that younger children tend to prefer equality, while older children begin to accept inequality if it is justified by merit [@almas_fairness_2010; @baumard_preschoolers_2012]. Therefore, differences in preferences for redistribution are expected depending on the educational level (primary or secondary) as well as a change over time (2023-2024). Thus, two additional hypotheses are proposed:
-H4: Secondary school students will have lower preferences for redistribution than primary school students.
-H5: As students advance in their schooling, preferences for redistribution are expected to decrease.
+Finally, research has shown that younger children prefer equality, while older children accept inequality if it is justified by merit [@almas_fairness_2010; @baumard_preschoolers_2012]. Therefore, differences in preferences for redistribution are expected depending on the educational level (primary or secondary) as well as a change over time (2023-2024). Thus, two additional hypotheses are proposed:
+
+* H4: Secondary school students will have lower preferences for redistribution than primary school students.
+* H5: As students advance in their schooling, preferences for redistribution are expected to decrease.
 
 2- How will the crucial variables be operationalized?
 
@@ -34,7 +35,9 @@ Our dependent variable is redistributive preferences, which are operationalized 
 Regarding meritocracy, there are two versions:
 
 * Perception of social meritocracy: The perception of rewards based on effort and intelligence will be measured separately. The questions are: a) In Chile, people are rewarded for their effort; b) In Chile, people are rewarded for their intelligence and ability; and c) In Chile, everyone gets what they deserve. The response categories range from 1 to 4, where one indicates strongly disagree and four strongly agree.
-* Perception of school meritocracy: The perception of the importance of effort and intelligence for obtaining good grades will be measured. The questions are: a) In this school, those who make an effort get good grades; b) In this school, those who are intelligent get good grades; and c) In this school, students get the grades they deserve. The response categories range from 1 to 4, where one indicates strongly disagree and four strongly agree.
+
+* Perception of school meritocracy: The perception of the importance of effort and intelligence for obtaining good grades will be measured. The questions are: a) In this school, those who make an effort get good grades; b) In this school, the intelligents get good grades; and c) In this school, students get the grades they deserve. The response categories range from 1 to 4, where one indicates strongly disagree and four strongly agree.
+
 * Preferences for meritocracy: The degree to which students believe meritocracy should operate based on effort and talent will be measured. The questions are: a) Those who make more effort should receive greater rewards than those who make less effort; b) Those who have more talent should receive greater rewards than those who have less talent; and c) It is acceptable for more intelligent and/or talented people to earn more money, even if they require less effort to do so.
 
 3- What is the source of the data included in the analyses?
@@ -63,7 +66,7 @@ Cases with incomplete responses (missing data and/or NA) will be excluded from t
 
 Before analyzing the data, the variables of interest will be recoded, and missing cases and atypical or problematic response patterns will be eliminated.
 
-For data analysis, a univariate descriptive analysis will first be performed, followed by a bivariate (correlational) analysis, and finally, multiple linear regression models will be used.
+For data analysis, a univariate descriptive analysis will first be performed, followed by a bivariate (correlational) analysis and multiple linear regression models. For the longitudinal analyses cross-lagged panel models will be estimated.
 
 7- What are the criteria for confirming and disconfirming the hypotheses?
 
