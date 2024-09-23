@@ -1,0 +1,71 @@
+---
+title: "02-analisis"
+format: html
+editor: source
+bibliography: "../input/bib/merit-redis-school.bib"
+---
+
+```{r}
+pacman::p_load(dplyr, car, sjmisc, sjPlot, sjlabelled, stargazer, kableExtra, corrplot, texreg, ggplot2, ggpubr)
+```
+
+```{r}
+load(here::here("input/data/proc/data.RData"))
+```
+
+# Correlaciones
+
+```{r}
+corr <- data %>% select(redistribucion, 
+                        merit_esfuerzo_percep_ES, merit_talento_percep_ES, social_merito_percep_ES,
+                        merit_esfuerzo_pref_ES, merit_talento_pref_ES, social_merit_pref_ES,
+                        school_esfuerzo_ES, school_talento_ES, school_merito_ES)
+```
+
+```{r}
+M <- cor(corr, use = "complete.obs") # Usar solo casos con observaciones completas
+diag(M) = NA # Elimina la diagonal (correlaciones absolutas de cada variable consigmo misma)
+rownames(M) <- c("A. Redistribución",
+                 "B. Percepción: esfuerzo",
+                 "C. Percepción: talento",
+                 "D. Percepción: merecimiento",
+                 "E. Preferencia: esfuerzo",
+                 "F. Preferencia: talento",
+                 "G. Preferencia: merecimiento",
+                 "H. Escuela: esfuerzo",
+                 "I. Escuela: talento",
+                 "J. Escuela: merecimiento")
+colnames(M) <-c("(A)", "(B)","(C)", "(D)", "(E)", "(F)", "(G)", "(H)", "(I)", "(J)")
+```
+
+```{r}
+corrplot::corrplot(M,
+  method = "color", # Cambia los círculos por color completo de cada cuadrante
+  addCoef.col = "#000390", # Color de los coeficientes
+  type = "upper", # Deja solo las correlaciones de arriba
+  tl.col = "black", # COlor letras, rojo por defecto
+  na.label = "-")
+```
+
+# Regresiones
+
+```{r}
+data <- na.omit(data)
+```
+
+```{r results='asis'}
+reg1<- lm(redistribucion~merit_esfuerzo_percep_ES+merit_talento_percep_ES+social_merito_percep_ES,data=data)
+reg2<- lm(redistribucion~merit_esfuerzo_pref_ES+merit_talento_pref_ES+social_merit_pref_ES,data=data)
+reg3<- lm(redistribucion~school_esfuerzo_ES+school_talento_ES+school_merito_ES,data=data)
+reg4<- lm(redistribucion~merit_esfuerzo_percep_ES+merit_talento_percep_ES+social_merito_percep_ES+merit_esfuerzo_pref_ES+merit_talento_pref_ES+social_merit_pref_ES+school_esfuerzo_ES+school_talento_ES+school_merito_ES,data=data)
+
+labs02 <- c("Intercepto",
+            "Percepción: esfuerzo", "Percepción: talento", "Percepción: merecimiento",
+            "Preferencia: esfuerzo", "Preferencia: talento", "Preferencia: merecimiento",
+            "Escuela: esfuerzo", "Escuela: talento", "Escuela: merecimiento")
+
+htmlreg(list(reg1,reg2,reg3, reg4),
+        custom.model.names = c("Modelo 1","Modelo 2","Modelo 3", "Modelo 4"),
+        custom.coef.names = labs02)
+```
+

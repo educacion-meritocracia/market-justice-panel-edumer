@@ -1,5 +1,5 @@
 ---
-title: "descriptivos"
+title: "01-preparacion"
 format: html
 editor: source
 bibliography: "../input/bib/merit-redis-school.bib"
@@ -66,12 +66,18 @@ for (i in names(dplyr::select(proc_datos, tidyselect::starts_with("p18_")))) {
 # Seleccion variables
 
 ```{r}
-data <- proc_datos %>% select("redistribucion"=p9_2, 
+data <- proc_datos %>% select("redistribucion"=p9_2,
+                              aleatorio, check_comprension, 
+                              curso_estudiante, genero_ES,
+                              educ_max, libros_hogar,
                               tidyselect::starts_with("merit"), 
                               tidyselect::starts_with("school"), 
                               tidyselect::starts_with("social"))
 
-data <- data %>% select(redistribucion, 
+data <- data %>% select(redistribucion,
+                              aleatorio, check_comprension, 
+                              curso_estudiante, genero_ES,
+                              educ_max, libros_hogar, 
                         merit_esfuerzo_percep_ES, merit_esfuerzo_pref_ES, 
                         merit_talento_percep_ES, merit_talento_pref_ES,
                         social_merito_percep_ES, social_merit_pref_ES,
@@ -80,5 +86,9 @@ data <- data %>% select(redistribucion,
 
 ```{r}
 print(summarytools::dfSummary(data), method="render")
+```
+
+```{r}
+save(data, file="../input/data/proc/data.RData")
 ```
 
