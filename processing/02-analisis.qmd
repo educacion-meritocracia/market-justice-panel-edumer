@@ -50,12 +50,23 @@ corrplot::corrplot(M,
 # Regresiones
 
 ```{r}
-data <- na.omit(data)
+data <- data %>%
+  na.omit() %>%
+  mutate_all(~as.numeric(as_factor(.)))
 ```
 
 ```{r results='asis'}
+reg1.1<- lm(redistribucion~merit_esfuerzo_percep_ES,data=data)
+reg1.2<- lm(redistribucion~merit_talento_percep_ES,data=data)
+reg1.3<- lm(redistribucion~social_merito_percep_ES,data=data)
 reg1<- lm(redistribucion~merit_esfuerzo_percep_ES+merit_talento_percep_ES+social_merito_percep_ES,data=data)
+reg2.1<- lm(redistribucion~merit_esfuerzo_pref_ES,data=data)
+reg2.2<- lm(redistribucion~merit_talento_pref_ES,data=data)
+reg2.3<- lm(redistribucion~social_merit_pref_ES,data=data)
 reg2<- lm(redistribucion~merit_esfuerzo_pref_ES+merit_talento_pref_ES+social_merit_pref_ES,data=data)
+reg3.1<- lm(redistribucion~school_esfuerzo_ES,data=data)
+reg3.2<- lm(redistribucion~school_talento_ES,data=data)
+reg3.3<- lm(redistribucion~school_merito_ES,data=data)
 reg3<- lm(redistribucion~school_esfuerzo_ES+school_talento_ES+school_merito_ES,data=data)
 reg4<- lm(redistribucion~merit_esfuerzo_percep_ES+merit_talento_percep_ES+social_merito_percep_ES+merit_esfuerzo_pref_ES+merit_talento_pref_ES+social_merit_pref_ES+school_esfuerzo_ES+school_talento_ES+school_merito_ES,data=data)
 
@@ -64,8 +75,8 @@ labs02 <- c("Intercepto",
             "Preferencia: esfuerzo", "Preferencia: talento", "Preferencia: merecimiento",
             "Escuela: esfuerzo", "Escuela: talento", "Escuela: merecimiento")
 
-htmlreg(list(reg1,reg2,reg3, reg4),
-        custom.model.names = c("Modelo 1","Modelo 2","Modelo 3", "Modelo 4"),
+knitreg(list(reg1.1,reg1.2,reg1.3,reg1,reg2.1,reg2.2,reg2.3,reg2,reg3.1,reg3.2,reg3.3,reg3, reg4),
+        #custom.model.names = c("Modelo 1","Modelo 2","Modelo 3", "Modelo 4"),
         custom.coef.names = labs02)
 ```
 
