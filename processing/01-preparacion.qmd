@@ -60,27 +60,31 @@ for (i in names(dplyr::select(proc_datos, tidyselect::starts_with("p18_")))) {
     labels = c("Nunca", "Casi nunca", "Casi siempre", "Siempre")
   )
 }
-
 ```
 
 # Seleccion variables
 
 ```{r}
 data <- proc_datos %>% select("redistribucion"=p9_2,
+                              "perc_des"=p9_1,
                               aleatorio, check_comprension, 
                               curso_estudiante, genero_ES,
                               educ_max, libros_hogar,
                               tidyselect::starts_with("merit"), 
                               tidyselect::starts_with("school"), 
-                              tidyselect::starts_with("social"))
+                              tidyselect::starts_with("social"), 
+                              tidyselect::starts_with("padres"), 
+                              tidyselect::starts_with("buenos"))
 
-data <- data %>% select(redistribucion,
+data <- data %>% select(redistribucion, perc_des,
                               aleatorio, check_comprension, 
                               curso_estudiante, genero_ES,
                               educ_max, libros_hogar, 
                         merit_esfuerzo_percep_ES, merit_esfuerzo_pref_ES, 
                         merit_talento_percep_ES, merit_talento_pref_ES,
                         social_merito_percep_ES, social_merit_pref_ES,
+                        padres_ricos_percep_ES, padres_ricos_pref_ES,
+                        buenos_contactos_percep_ES, buenos_contactos_pref_ES,
                         school_esfuerzo_ES, school_talento_ES, school_merito_ES)
 ```
 

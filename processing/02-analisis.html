@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -97,7 +97,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(dplyr, car, sjmisc, sjPlot, sjlabelled, stargazer, kableExtra, corrplot, texreg, ggplot2, ggpubr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(dplyr, car, sjmisc, sjPlot, sjlabelled, stargazer, kableExtra, corrplot, texreg, ggplot2, ggpubr, lavaan, haven)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"input/data/proc/data.RData"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -106,9 +106,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Correlaciones</h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>corr <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">select</span>(redistribucion, </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                        merit_esfuerzo_percep_ES, merit_talento_percep_ES, social_merito_percep_ES,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                        merit_esfuerzo_pref_ES, merit_talento_pref_ES, social_merit_pref_ES,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                        school_esfuerzo_ES, school_talento_ES, school_merito_ES)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                        merit_esfuerzo_percep_ES, merit_talento_percep_ES, social_merito_percep_ES, </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                        padres_ricos_percep_ES, buenos_contactos_percep_ES,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                        merit_esfuerzo_pref_ES, merit_talento_pref_ES, social_merit_pref_ES, </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                        padres_ricos_pref_ES, buenos_contactos_pref_ES,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                        school_esfuerzo_ES, school_talento_ES, school_merito_ES)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="fu">cor</span>(corr, <span class="at">use =</span> <span class="st">"complete.obs"</span>) <span class="co"># Usar solo casos con observaciones completas</span></span>
@@ -117,13 +119,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"B. Percepción: esfuerzo"</span>,</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"C. Percepción: talento"</span>,</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"D. Percepción: merecimiento"</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"E. Preferencia: esfuerzo"</span>,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"F. Preferencia: talento"</span>,</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"G. Preferencia: merecimiento"</span>,</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"H. Escuela: esfuerzo"</span>,</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"I. Escuela: talento"</span>,</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"J. Escuela: merecimiento"</span>)</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(M) <span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"(A)"</span>, <span class="st">"(B)"</span>,<span class="st">"(C)"</span>, <span class="st">"(D)"</span>, <span class="st">"(E)"</span>, <span class="st">"(F)"</span>, <span class="st">"(G)"</span>, <span class="st">"(H)"</span>, <span class="st">"(I)"</span>, <span class="st">"(J)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"E. Percepción: padres ricos"</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"F. Percepción: buenos contactos"</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"G. Preferencia: esfuerzo"</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"H. Preferencia: talento"</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"I. Preferencia: merecimiento"</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"J. Preferencia: padres ricos"</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"K. Preferencia: buenos contactos"</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"L. Escuela: esfuerzo"</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"M. Escuela: talento"</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"N. Escuela: merecimiento"</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(M) <span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"(A)"</span>, <span class="st">"(B)"</span>,<span class="st">"(C)"</span>, <span class="st">"(D)"</span>, <span class="st">"(E)"</span>, <span class="st">"(F)"</span>, <span class="st">"(G)"</span>, <span class="st">"(H)"</span>, <span class="st">"(I)"</span>, <span class="st">"(J)"</span>, <span class="st">"(K)"</span>, <span class="st">"(L)"</span>, <span class="st">"(M)"</span>, <span class="st">"(N)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>corrplot<span class="sc">::</span><span class="fu">corrplot</span>(M,</span>
@@ -141,35 +147,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="regresiones" class="level1">
-<h1>Regresiones</h1>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_all</span>(<span class="sc">~</span><span class="fu">as.numeric</span>(<span class="fu">as_factor</span>(.)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>merit_esfuerzo_percep_ES,<span class="at">data=</span>data)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>merit_talento_percep_ES,<span class="at">data=</span>data)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>social_merito_percep_ES,<span class="at">data=</span>data)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>reg1<span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>merit_esfuerzo_percep_ES<span class="sc">+</span>merit_talento_percep_ES<span class="sc">+</span>social_merito_percep_ES,<span class="at">data=</span>data)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>merit_esfuerzo_pref_ES,<span class="at">data=</span>data)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>merit_talento_pref_ES,<span class="at">data=</span>data)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>social_merit_pref_ES,<span class="at">data=</span>data)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>reg2<span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>merit_esfuerzo_pref_ES<span class="sc">+</span>merit_talento_pref_ES<span class="sc">+</span>social_merit_pref_ES,<span class="at">data=</span>data)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>school_esfuerzo_ES,<span class="at">data=</span>data)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>school_talento_ES,<span class="at">data=</span>data)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>school_merito_ES,<span class="at">data=</span>data)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>reg3<span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>school_esfuerzo_ES<span class="sc">+</span>school_talento_ES<span class="sc">+</span>school_merito_ES,<span class="at">data=</span>data)</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>reg4<span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>merit_esfuerzo_percep_ES<span class="sc">+</span>merit_talento_percep_ES<span class="sc">+</span>social_merito_percep_ES<span class="sc">+</span>merit_esfuerzo_pref_ES<span class="sc">+</span>merit_talento_pref_ES<span class="sc">+</span>social_merit_pref_ES<span class="sc">+</span>school_esfuerzo_ES<span class="sc">+</span>school_talento_ES<span class="sc">+</span>school_merito_ES,<span class="at">data=</span>data)</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>labs02 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Intercepto"</span>,</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Percepción: esfuerzo"</span>, <span class="st">"Percepción: talento"</span>, <span class="st">"Percepción: merecimiento"</span>,</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Preferencia: esfuerzo"</span>, <span class="st">"Preferencia: talento"</span>, <span class="st">"Preferencia: merecimiento"</span>,</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Escuela: esfuerzo"</span>, <span class="st">"Escuela: talento"</span>, <span class="st">"Escuela: merecimiento"</span>)</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="fu">knitreg</span>(<span class="fu">list</span>(reg1<span class="fl">.1</span>,reg1<span class="fl">.2</span>,reg1<span class="fl">.3</span>,reg1,reg2<span class="fl">.1</span>,reg2<span class="fl">.2</span>,reg2<span class="fl">.3</span>,reg2,reg3<span class="fl">.1</span>,reg3<span class="fl">.2</span>,reg3<span class="fl">.3</span>,reg3, reg4),</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>        <span class="co">#custom.model.names = c("Modelo 1","Modelo 2","Modelo 3", "Modelo 4"),</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">custom.coef.names =</span> labs02)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="redistribución" class="level1">
+<h1>Redistribución</h1>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data<span class="ot">&lt;-</span>data <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.labelled), as.numeric))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>merit_esfuerzo_percep_ES,<span class="at">data=</span>data)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>merit_talento_percep_ES,<span class="at">data=</span>data)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>social_merito_percep_ES,<span class="at">data=</span>data)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>reg1<span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>merit_esfuerzo_percep_ES<span class="sc">+</span>merit_talento_percep_ES<span class="sc">+</span>social_merito_percep_ES,<span class="at">data=</span>data)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>merit_esfuerzo_pref_ES,<span class="at">data=</span>data)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>merit_talento_pref_ES,<span class="at">data=</span>data)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>social_merit_pref_ES,<span class="at">data=</span>data)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>reg2<span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>merit_esfuerzo_pref_ES<span class="sc">+</span>merit_talento_pref_ES<span class="sc">+</span>social_merit_pref_ES,<span class="at">data=</span>data)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>school_esfuerzo_ES,<span class="at">data=</span>data)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>school_talento_ES,<span class="at">data=</span>data)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>school_merito_ES,<span class="at">data=</span>data)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>reg3<span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>school_esfuerzo_ES<span class="sc">+</span>school_talento_ES<span class="sc">+</span>school_merito_ES,<span class="at">data=</span>data)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>reg4<span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>merit_esfuerzo_percep_ES<span class="sc">+</span>merit_talento_percep_ES<span class="sc">+</span>social_merito_percep_ES<span class="sc">+</span>merit_esfuerzo_pref_ES<span class="sc">+</span>merit_talento_pref_ES<span class="sc">+</span>social_merit_pref_ES<span class="sc">+</span>school_esfuerzo_ES<span class="sc">+</span>school_talento_ES<span class="sc">+</span>school_merito_ES,<span class="at">data=</span>data)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>labs02 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Intercepto"</span>,</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Percepción: esfuerzo"</span>, <span class="st">"Percepción: talento"</span>, <span class="st">"Percepción: merecimiento"</span>,</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Preferencia: esfuerzo"</span>, <span class="st">"Preferencia: talento"</span>, <span class="st">"Preferencia: merecimiento"</span>,</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Escuela: esfuerzo"</span>, <span class="st">"Escuela: talento"</span>, <span class="st">"Escuela: merecimiento"</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="fu">knitreg</span>(<span class="fu">list</span>(reg1<span class="fl">.1</span>,reg1<span class="fl">.2</span>,reg1<span class="fl">.3</span>,reg1,reg2<span class="fl">.1</span>,reg2<span class="fl">.2</span>,reg2<span class="fl">.3</span>,reg2,reg3<span class="fl">.1</span>,reg3<span class="fl">.2</span>,reg3<span class="fl">.3</span>,reg3, reg4),</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        <span class="co">#custom.model.names = c("Modelo 1","Modelo 2","Modelo 3", "Modelo 4"),</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">custom.coef.names =</span> labs02)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <table class="texreg" style="margin: 10px auto;border-collapse: collapse;border-spacing: 0px;caption-side: bottom;color: #000000;border-top: 2px solid #000000;">
 <caption>
 Statistical models
@@ -226,43 +230,43 @@ Model 13
 Intercepto
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-3.04<sup>***</sup>
+2.95<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-2.90<sup>***</sup>
+2.88<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-2.87<sup>***</sup>
+2.86<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-2.98<sup>***</sup>
+2.89<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-2.72<sup>***</sup>
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-2.80<sup>***</sup>
+2.63<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 2.72<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-2.57<sup>***</sup>
+2.72<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-2.74<sup>***</sup>
+2.47<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-2.45<sup>***</sup>
+2.71<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-2.55<sup>***</sup>
+2.33<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-2.31<sup>***</sup>
+2.59<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-2.34<sup>***</sup>
+2.26<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+2.20<sup>***</sup>
 </td>
 </tr>
 <tr>
@@ -270,7 +274,16 @@ Intercepto
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.11)
+(0.09)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.10)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.07)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.12)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 (0.11)
@@ -279,34 +292,25 @@ Intercepto
 (0.08)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.14)
+(0.08)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 (0.13)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.11)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.11)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 (0.10)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.10)
+(0.15)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.16)
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-(0.13)
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-(0.13)
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-(0.12)
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-(0.17)
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-(0.23)
+(0.19)
 </td>
 </tr>
 <tr>
@@ -314,7 +318,7 @@ Intercepto
 Percepción: esfuerzo
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
--0.06
+-0.02
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -323,16 +327,7 @@ Percepción: esfuerzo
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
--0.08
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
+-0.04
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -350,7 +345,16 @@ Percepción: esfuerzo
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
--0.09
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.05
 </td>
 </tr>
 <tr>
@@ -358,7 +362,7 @@ Percepción: esfuerzo
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.04)
+(0.03)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -405,13 +409,1682 @@ Percepción: talento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
--0.00
+0.00
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 0.02
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.02
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.04)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.04)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Percepción: merecimiento
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.01
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.02
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.00
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Preferencia: esfuerzo
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.08<sup>*</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.06
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.05
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Preferencia: talento
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.06<sup>*</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.03
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.01
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Preferencia: merecimiento
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.07<sup>*</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.06
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.03
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Escuela: esfuerzo
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.05
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.02
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.01
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.04)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.04)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Escuela: talento
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.18<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.16<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.13<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.04)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.04)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Escuela: merecimiento
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.10<sup>**</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.07
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.07
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.04)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.04)
+</td>
+</tr>
+<tr style="border-top: 1px solid #000000;">
+<td style="padding-left: 5px;padding-right: 5px;">
+R<sup>2</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.01
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.01
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.01
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.03
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.01
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.03
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.04
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Adj. R<sup>2</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.01
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.01
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.03
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.01
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.03
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.03
+</td>
+</tr>
+<tr style="border-bottom: 2px solid #000000;">
+<td style="padding-left: 5px;padding-right: 5px;">
+Num. obs.
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+895
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+888
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+892
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+885
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+888
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+883
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+891
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+872
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+891
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+892
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+890
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+884
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+856
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="font-size: 0.8em;" colspan="14">
+<sup>***</sup>p &lt; 0.001; <sup>**</sup>p &lt; 0.01; <sup>*</sup>p &lt; 0.05
+</td>
+</tr>
+</tfoot>
+</table>
+<section id="puntajes-factoriales" class="level2">
+<h2 class="anchored" data-anchor-id="puntajes-factoriales">Puntajes factoriales</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(redistribucion,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                                   merit_esfuerzo_percep_ES, merit_talento_percep_ES,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                                   padres_ricos_percep_ES, buenos_contactos_percep_ES,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                                   merit_esfuerzo_pref_ES, merit_talento_pref_ES,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                                   padres_ricos_pref_ES, buenos_contactos_pref_ES) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>()</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># model</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>model_cfa <span class="ot">&lt;-</span> <span class="st">'</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="st">  perc_merit = ~ merit_esfuerzo_percep_ES + merit_talento_percep_ES</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="st">  perc_nmerit = ~ padres_ricos_percep_ES + buenos_contactos_percep_ES</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="st">  pref_merit = ~ merit_esfuerzo_pref_ES + merit_talento_pref_ES</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="st">  pref_nmerit = ~ padres_ricos_pref_ES + buenos_contactos_pref_ES</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="st">  '</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co"># estimation for each order set</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>m1_cfa <span class="ot">&lt;-</span> <span class="fu">cfa</span>(<span class="at">model =</span> model_cfa, </span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> data_cfa,</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>              <span class="at">estimator =</span> <span class="st">"MLR"</span>, </span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>              <span class="at">std.lv =</span> F) <span class="co"># Continuous/ estimator ML Robust</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1_cfa, <span class="at">fit.measures =</span> T, <span class="at">standardized =</span> T, <span class="at">rsquare =</span> T, <span class="at">modindices =</span> T) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>lavaan 0.6.16 ended normally after 56 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        22
+
+  Number of observations                           841
+
+Model Test User Model:
+                                              Standard      Scaled
+  Test Statistic                                49.525          NA
+  Degrees of freedom                                14          14
+  P-value (Chi-square)                           0.000          NA
+  Scaling correction factor                                     NA
+    Yuan-Bentler correction (Mplus variant)                       
+
+Model Test Baseline Model:
+
+  Test statistic                               984.875     754.276
+  Degrees of freedom                                28          28
+  P-value                                        0.000       0.000
+  Scaling correction factor                                  1.306
+
+User Model versus Baseline Model:
+
+  Comparative Fit Index (CFI)                    0.963          NA
+  Tucker-Lewis Index (TLI)                       0.926          NA
+                                                                  
+  Robust Comparative Fit Index (CFI)                            NA
+  Robust Tucker-Lewis Index (TLI)                               NA
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)              -7738.195   -7738.195
+  Scaling correction factor                                  2.821
+      for the MLR correction                                      
+  Loglikelihood unrestricted model (H1)      -7713.433   -7713.433
+  Scaling correction factor                                  1.220
+      for the MLR correction                                      
+                                                                  
+  Akaike (AIC)                               15520.390   15520.390
+  Bayesian (BIC)                             15624.551   15624.551
+  Sample-size adjusted Bayesian (SABIC)      15554.686   15554.686
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.055       0.000
+  90 Percent confidence interval - lower         0.039       0.000
+  90 Percent confidence interval - upper         0.072       0.000
+  P-value H_0: RMSEA &lt;= 0.050                    0.287          NA
+  P-value H_0: RMSEA &gt;= 0.080                    0.007          NA
+                                                                  
+  Robust RMSEA                                                  NA
+  90 Percent confidence interval - lower                        NA
+  90 Percent confidence interval - upper                        NA
+  P-value H_0: Robust RMSEA &lt;= 0.050                            NA
+  P-value H_0: Robust RMSEA &gt;= 0.080                            NA
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.033       0.033
+
+Parameter Estimates:
+
+  Standard errors                             Sandwich
+  Information bread                           Observed
+  Observed information based on                Hessian
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  perc_merit =~                                                         
+    mrt_sfrz_pr_ES    1.000                               0.601    0.777
+    mrt_tlnt_pr_ES    0.719    4.997    0.144    0.886    0.432    0.568
+  perc_nmerit =~                                                        
+    pdrs_rcs_pr_ES    1.000                               0.559    0.587
+    bns_cntcts__ES    1.354    0.412    3.288    0.001    0.756    0.890
+  pref_merit =~                                                         
+    mrt_sfrz_pr_ES    1.000                               0.408    0.513
+    mrt_tlnt_pr_ES    1.107    0.774    1.431    0.152    0.451    0.534
+  pref_nmerit =~                                                        
+    pdrs_rcs_pr_ES    1.000                               0.515    0.657
+    bns_cntcts__ES    1.294    0.646    2.004    0.045    0.667    0.822
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  perc_merit ~~                                                         
+    perc_nmerit      -0.030    0.273   -0.111    0.912   -0.090   -0.090
+    pref_merit        0.011    0.304    0.037    0.971    0.045    0.045
+    pref_nmerit       0.047    0.021    2.197    0.028    0.152    0.152
+  perc_nmerit ~~                                                        
+    pref_merit        0.105    0.034    3.071    0.002    0.460    0.460
+    pref_nmerit       0.084    0.029    2.914    0.004    0.292    0.292
+  pref_merit ~~                                                         
+    pref_nmerit       0.038    0.023    1.633    0.103    0.180    0.180
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .mrt_sfrz_pr_ES    0.237    2.514    0.094    0.925    0.237    0.396
+   .mrt_tlnt_pr_ES    0.392    1.296    0.303    0.762    0.392    0.677
+   .pdrs_rcs_pr_ES    0.594    0.102    5.841    0.000    0.594    0.656
+   .bns_cntcts__ES    0.149    0.171    0.874    0.382    0.149    0.207
+   .mrt_sfrz_pr_ES    0.465    0.120    3.887    0.000    0.465    0.737
+   .mrt_tlnt_pr_ES    0.509    0.142    3.582    0.000    0.509    0.714
+   .pdrs_rcs_pr_ES    0.349    0.133    2.625    0.009    0.349    0.568
+   .bns_cntcts__ES    0.214    0.224    0.956    0.339    0.214    0.325
+    perc_merit        0.361    2.511    0.144    0.886    1.000    1.000
+    perc_nmerit       0.312    0.099    3.149    0.002    1.000    1.000
+    pref_merit        0.166    0.123    1.355    0.175    1.000    1.000
+    pref_nmerit       0.266    0.134    1.979    0.048    1.000    1.000
+
+R-Square:
+                   Estimate
+    mrt_sfrz_pr_ES    0.604
+    mrt_tlnt_pr_ES    0.323
+    pdrs_rcs_pr_ES    0.344
+    bns_cntcts__ES    0.793
+    mrt_sfrz_pr_ES    0.263
+    mrt_tlnt_pr_ES    0.286
+    pdrs_rcs_pr_ES    0.432
+    bns_cntcts__ES    0.675
+
+Modification Indices:
+
+                          lhs op                        rhs     mi    epc
+1                  perc_merit =~     padres_ricos_percep_ES  6.941 -0.154
+2                  perc_merit =~ buenos_contactos_percep_ES  6.941  0.208
+3                  perc_merit =~     merit_esfuerzo_pref_ES  1.846  0.089
+4                  perc_merit =~      merit_talento_pref_ES  1.846 -0.099
+5                  perc_merit =~       padres_ricos_pref_ES  0.067 -0.014
+6                  perc_merit =~   buenos_contactos_pref_ES  0.067  0.018
+7                 perc_nmerit =~   merit_esfuerzo_percep_ES  8.647 -0.217
+8                 perc_nmerit =~    merit_talento_percep_ES  8.647  0.156
+9                 perc_nmerit =~     merit_esfuerzo_pref_ES  0.518 -0.252
+10                perc_nmerit =~      merit_talento_pref_ES  0.518  0.279
+11                perc_nmerit =~       padres_ricos_pref_ES  0.074  0.026
+12                perc_nmerit =~   buenos_contactos_pref_ES  0.074 -0.034
+13                 pref_merit =~   merit_esfuerzo_percep_ES 15.816 -0.479
+14                 pref_merit =~    merit_talento_percep_ES 15.816  0.344
+15                 pref_merit =~     padres_ricos_percep_ES  0.637  0.155
+16                 pref_merit =~ buenos_contactos_percep_ES  0.637 -0.209
+17                 pref_merit =~       padres_ricos_pref_ES  0.001 -0.003
+18                 pref_merit =~   buenos_contactos_pref_ES  0.001  0.004
+19                pref_nmerit =~   merit_esfuerzo_percep_ES  2.542 -0.168
+20                pref_nmerit =~    merit_talento_percep_ES  2.542  0.121
+21                pref_nmerit =~     padres_ricos_percep_ES  7.867 -0.238
+22                pref_nmerit =~ buenos_contactos_percep_ES  7.867  0.323
+23                pref_nmerit =~     merit_esfuerzo_pref_ES  1.884 -0.111
+24                pref_nmerit =~      merit_talento_pref_ES  1.884  0.123
+25   merit_esfuerzo_percep_ES ~~     padres_ricos_percep_ES  5.998 -0.049
+26   merit_esfuerzo_percep_ES ~~ buenos_contactos_percep_ES  0.677  0.019
+27   merit_esfuerzo_percep_ES ~~     merit_esfuerzo_pref_ES  0.164 -0.008
+28   merit_esfuerzo_percep_ES ~~      merit_talento_pref_ES  6.433 -0.055
+29   merit_esfuerzo_percep_ES ~~       padres_ricos_pref_ES  1.664 -0.022
+30   merit_esfuerzo_percep_ES ~~   buenos_contactos_pref_ES  1.049  0.022
+31    merit_talento_percep_ES ~~     padres_ricos_percep_ES  0.084  0.006
+32    merit_talento_percep_ES ~~ buenos_contactos_percep_ES  1.662  0.026
+33    merit_talento_percep_ES ~~     merit_esfuerzo_pref_ES  5.224  0.042
+34    merit_talento_percep_ES ~~      merit_talento_pref_ES  2.112  0.028
+35    merit_talento_percep_ES ~~       padres_ricos_pref_ES  1.932  0.023
+36    merit_talento_percep_ES ~~   buenos_contactos_pref_ES  1.054 -0.020
+37     padres_ricos_percep_ES ~~     merit_esfuerzo_pref_ES  2.479  0.037
+38     padres_ricos_percep_ES ~~      merit_talento_pref_ES  0.038 -0.005
+39     padres_ricos_percep_ES ~~       padres_ricos_pref_ES  9.760  0.059
+40     padres_ricos_percep_ES ~~   buenos_contactos_pref_ES 19.976 -0.093
+41 buenos_contactos_percep_ES ~~     merit_esfuerzo_pref_ES  0.931 -0.029
+42 buenos_contactos_percep_ES ~~      merit_talento_pref_ES  0.095 -0.010
+43 buenos_contactos_percep_ES ~~       padres_ricos_pref_ES  6.031 -0.053
+44 buenos_contactos_percep_ES ~~   buenos_contactos_pref_ES 14.173  0.093
+45     merit_esfuerzo_pref_ES ~~       padres_ricos_pref_ES  0.305 -0.010
+46     merit_esfuerzo_pref_ES ~~   buenos_contactos_pref_ES  0.580 -0.015
+47      merit_talento_pref_ES ~~       padres_ricos_pref_ES  0.172  0.008
+48      merit_talento_pref_ES ~~   buenos_contactos_pref_ES  0.704  0.017
+   sepc.lv sepc.all sepc.nox
+1   -0.092   -0.097   -0.097
+2    0.125    0.147    0.147
+3    0.054    0.068    0.068
+4   -0.060   -0.071   -0.071
+5   -0.008   -0.010   -0.010
+6    0.011    0.013    0.013
+7   -0.121   -0.157   -0.157
+8    0.087    0.115    0.115
+9   -0.141   -0.177   -0.177
+10   0.156    0.184    0.184
+11   0.015    0.019    0.019
+12  -0.019   -0.023   -0.023
+13  -0.195   -0.252   -0.252
+14   0.140    0.184    0.184
+15   0.063    0.066    0.066
+16  -0.085   -0.100   -0.100
+17  -0.001   -0.001   -0.001
+18   0.001    0.002    0.002
+19  -0.086   -0.112   -0.112
+20   0.062    0.082    0.082
+21  -0.123   -0.129   -0.129
+22   0.166    0.196    0.196
+23  -0.057   -0.072   -0.072
+24   0.064    0.075    0.075
+25  -0.049   -0.130   -0.130
+26   0.019    0.100    0.100
+27  -0.008   -0.025   -0.025
+28  -0.055   -0.159   -0.159
+29  -0.022   -0.078   -0.078
+30   0.022    0.097    0.097
+31   0.006    0.012    0.012
+32   0.026    0.106    0.106
+33   0.042    0.098    0.098
+34   0.028    0.063    0.063
+35   0.023    0.061    0.061
+36  -0.020   -0.069   -0.069
+37   0.037    0.071    0.071
+38  -0.005   -0.009   -0.009
+39   0.059    0.130    0.130
+40  -0.093   -0.261   -0.261
+41  -0.029   -0.110   -0.110
+42  -0.010   -0.036   -0.036
+43  -0.053   -0.231   -0.231
+44   0.093    0.519    0.519
+45  -0.010   -0.024   -0.024
+46  -0.015   -0.046   -0.046
+47   0.008    0.018    0.018
+48   0.017    0.052    0.052</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los puntajes factoriales</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>puntajes_factoriales <span class="ot">&lt;-</span> <span class="fu">lavPredict</span>(m1_cfa)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(puntajes_factoriales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     perc_merit perc_nmerit pref_merit  pref_nmerit
+[1,]  0.1759148  -0.1031197  0.1584776  0.039012363
+[2,]  0.1961038   0.6492575  0.3314051  0.886857723
+[3,]  0.8511189  -0.1991286 -0.1969386 -0.348467068
+[4,]  0.3482259   0.5667569  0.1291050  0.097340101
+[5,]  0.8881007  -0.6029684 -0.2777612 -0.187616708
+[6,]  0.1884004  -0.6654276 -0.3122049 -0.009970416</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> <span class="fu">cbind</span>(data_cfa, puntajes_factoriales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> data_cfa <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_all</span>(<span class="sc">~</span><span class="fu">as.numeric</span>(<span class="fu">as_factor</span>(.)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_merit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_nmerit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>pref_merit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.4</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>pref_nmerit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.5</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_merit<span class="sc">+</span>perc_nmerit<span class="sc">+</span>pref_merit<span class="sc">+</span>pref_nmerit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">knitreg</span>(<span class="fu">list</span>(reg1<span class="fl">.1</span>, reg1<span class="fl">.2</span>, reg1<span class="fl">.3</span>, reg1<span class="fl">.4</span>, reg1<span class="fl">.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<table class="texreg" style="margin: 10px auto;border-collapse: collapse;border-spacing: 0px;caption-side: bottom;color: #000000;border-top: 2px solid #000000;">
+<caption>
+Statistical models
+</caption>
+<thead>
+<tr>
+<th style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 1
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 2
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 3
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 4
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 5
+</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-top: 1px solid #000000;">
+<td style="padding-left: 5px;padding-right: 5px;">
+(Intercept)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+2.91<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+2.80<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+2.76<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+2.90<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+2.78<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.05)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.05)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.05)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.05)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.08)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+perc_merit
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.00)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.00)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+perc_nmerit
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00<sup>*</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.00)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.00)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+pref_merit
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00<sup>**</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.00)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.00)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+pref_nmerit
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.00
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.00)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.00)
+</td>
+</tr>
+<tr style="border-top: 1px solid #000000;">
+<td style="padding-left: 5px;padding-right: 5px;">
+R<sup>2</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.01
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.01
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.01
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Adj. R<sup>2</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.01
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.01
+</td>
+</tr>
+<tr style="border-bottom: 2px solid #000000;">
+<td style="padding-left: 5px;padding-right: 5px;">
+Num. obs.
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+841
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+841
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+841
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+841
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+841
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="font-size: 0.8em;" colspan="6">
+<sup>***</sup>p &lt; 0.001; <sup>**</sup>p &lt; 0.01; <sup>*</sup>p &lt; 0.05
+</td>
+</tr>
+</tfoot>
+</table>
+</section>
+</section>
+<section id="percepción-desigualdad" class="level1">
+<h1>Percepción desigualdad</h1>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>merit_esfuerzo_percep_ES,<span class="at">data=</span>data)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>merit_talento_percep_ES,<span class="at">data=</span>data)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>social_merito_percep_ES,<span class="at">data=</span>data)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>reg1<span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>merit_esfuerzo_percep_ES<span class="sc">+</span>merit_talento_percep_ES<span class="sc">+</span>social_merito_percep_ES,<span class="at">data=</span>data)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>merit_esfuerzo_pref_ES,<span class="at">data=</span>data)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>merit_talento_pref_ES,<span class="at">data=</span>data)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>social_merit_pref_ES,<span class="at">data=</span>data)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>reg2<span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>merit_esfuerzo_pref_ES<span class="sc">+</span>merit_talento_pref_ES<span class="sc">+</span>social_merit_pref_ES,<span class="at">data=</span>data)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>school_esfuerzo_ES,<span class="at">data=</span>data)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>school_talento_ES,<span class="at">data=</span>data)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>school_merito_ES,<span class="at">data=</span>data)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>reg3<span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>school_esfuerzo_ES<span class="sc">+</span>school_talento_ES<span class="sc">+</span>school_merito_ES,<span class="at">data=</span>data)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>reg4<span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>merit_esfuerzo_percep_ES<span class="sc">+</span>merit_talento_percep_ES<span class="sc">+</span>social_merito_percep_ES<span class="sc">+</span>merit_esfuerzo_pref_ES<span class="sc">+</span>merit_talento_pref_ES<span class="sc">+</span>social_merit_pref_ES<span class="sc">+</span>school_esfuerzo_ES<span class="sc">+</span>school_talento_ES<span class="sc">+</span>school_merito_ES,<span class="at">data=</span>data)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>labs02 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Intercepto"</span>,</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Percepción: esfuerzo"</span>, <span class="st">"Percepción: talento"</span>, <span class="st">"Percepción: merecimiento"</span>,</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Preferencia: esfuerzo"</span>, <span class="st">"Preferencia: talento"</span>, <span class="st">"Preferencia: merecimiento"</span>,</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Escuela: esfuerzo"</span>, <span class="st">"Escuela: talento"</span>, <span class="st">"Escuela: merecimiento"</span>)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="fu">knitreg</span>(<span class="fu">list</span>(reg1<span class="fl">.1</span>,reg1<span class="fl">.2</span>,reg1<span class="fl">.3</span>,reg1,reg2<span class="fl">.1</span>,reg2<span class="fl">.2</span>,reg2<span class="fl">.3</span>,reg2,reg3<span class="fl">.1</span>,reg3<span class="fl">.2</span>,reg3<span class="fl">.3</span>,reg3, reg4),</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>        <span class="co">#custom.model.names = c("Modelo 1","Modelo 2","Modelo 3", "Modelo 4"),</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">custom.coef.names =</span> labs02)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<table class="texreg" style="margin: 10px auto;border-collapse: collapse;border-spacing: 0px;caption-side: bottom;color: #000000;border-top: 2px solid #000000;">
+<caption>
+Statistical models
+</caption>
+<thead>
+<tr>
+<th style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 1
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 2
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 3
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 4
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 5
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 6
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 7
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 8
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 9
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 10
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 11
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 12
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 13
+</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-top: 1px solid #000000;">
+<td style="padding-left: 5px;padding-right: 5px;">
+Intercepto
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+3.33<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+3.20<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+3.48<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+3.38<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+2.75<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+3.06<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+3.09<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+2.61<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+2.73<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+2.65<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+3.08<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+2.48<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+2.35<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.10)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.10)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.07)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.12)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.11)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.09)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.08)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.14)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.11)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.12)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.10)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.15)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.20)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Percepción: esfuerzo
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.02
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.01
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.02
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.04)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.04)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Percepción: talento
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.02
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.04
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -496,13 +2169,10 @@ Percepción: merecimiento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.01
+-0.10<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.03
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
+-0.10<sup>**</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -526,7 +2196,10 @@ Percepción: merecimiento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.01
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.12<sup>***</sup>
 </td>
 </tr>
 <tr>
@@ -540,13 +2213,10 @@ Percepción: merecimiento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.04)
+(0.03)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.04)
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
+(0.03)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -570,7 +2240,10 @@ Percepción: merecimiento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.04)
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
 </td>
 </tr>
 <tr>
@@ -590,7 +2263,7 @@ Preferencia: esfuerzo
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.05
+0.15<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -599,7 +2272,7 @@ Preferencia: esfuerzo
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.04
+0.14<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -614,7 +2287,7 @@ Preferencia: esfuerzo
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.03
+0.09<sup>*</sup>
 </td>
 </tr>
 <tr>
@@ -634,7 +2307,7 @@ Preferencia: esfuerzo
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.04)
+(0.03)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -643,7 +2316,7 @@ Preferencia: esfuerzo
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.04)
+(0.03)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -658,7 +2331,7 @@ Preferencia: esfuerzo
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.04)
+(0.03)
 </td>
 </tr>
 <tr>
@@ -681,19 +2354,13 @@ Preferencia: talento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.03
+0.08<sup>*</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.01
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
+0.02
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -702,7 +2369,13 @@ Preferencia: talento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
--0.01
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.02
 </td>
 </tr>
 <tr>
@@ -725,19 +2398,13 @@ Preferencia: talento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.04)
+(0.03)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.04)
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
+(0.03)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -746,7 +2413,13 @@ Preferencia: talento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.04)
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
 </td>
 </tr>
 <tr>
@@ -772,13 +2445,10 @@ Preferencia: merecimiento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.07
+0.07<sup>*</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.06
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
+0.05
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -790,7 +2460,10 @@ Preferencia: merecimiento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.04
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.03
 </td>
 </tr>
 <tr>
@@ -816,13 +2489,10 @@ Preferencia: merecimiento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.04)
+(0.03)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.04)
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
+(0.03)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -834,7 +2504,10 @@ Preferencia: merecimiento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.04)
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
 </td>
 </tr>
 <tr>
@@ -866,7 +2539,7 @@ Escuela: esfuerzo
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.05
+0.17<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -875,10 +2548,10 @@ Escuela: esfuerzo
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
--0.01
+0.10<sup>**</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
--0.00
+0.11<sup>**</sup>
 </td>
 </tr>
 <tr>
@@ -910,7 +2583,7 @@ Escuela: esfuerzo
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.04)
+(0.03)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -957,16 +2630,16 @@ Escuela: talento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.14<sup>***</sup>
+0.19<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.11<sup>*</sup>
+0.14<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.11<sup>*</sup>
+0.13<sup>**</sup>
 </td>
 </tr>
 <tr>
@@ -1048,13 +2721,13 @@ Escuela: merecimiento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.12<sup>**</sup>
+0.07
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.08<sup>*</sup>
+0.00
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.09<sup>*</sup>
+0.02
 </td>
 </tr>
 <tr>
@@ -1092,7 +2765,7 @@ Escuela: merecimiento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.04)
+(0.03)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 (0.04)
@@ -1112,25 +2785,10 @@ R<sup>2</sup>
 0.00
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.00
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-0.00
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-0.00
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-0.00
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-0.00
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
 0.01
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.00
+0.01
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 0.02
@@ -1139,10 +2797,25 @@ R<sup>2</sup>
 0.01
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.02
+0.01
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 0.03
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.03
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.03
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.04
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.07
 </td>
 </tr>
 <tr>
@@ -1150,34 +2823,13 @@ R<sup>2</sup>
 Adj. R<sup>2</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.00
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
 -0.00
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 -0.00
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.00
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-0.00
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
--0.00
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-0.00
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-0.00
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-0.00
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-0.02
+0.01
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 0.01
@@ -1186,7 +2838,28 @@ Adj. R<sup>2</sup>
 0.02
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
+0.01
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
 0.02
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.02
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.03
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.03
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.06
 </td>
 </tr>
 <tr style="border-bottom: 2px solid #000000;">
@@ -1194,43 +2867,43 @@ Adj. R<sup>2</sup>
 Num. obs.
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-669
+901
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-669
+894
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-669
+898
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-669
+891
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-669
+893
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-669
+889
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-669
+896
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-669
+877
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-669
+897
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-669
+898
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-669
+895
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-669
+889
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-669
+860
 </td>
 </tr>
 </tbody>
@@ -1242,6 +2915,783 @@ Num. obs.
 </tr>
 </tfoot>
 </table>
+<section id="puntajes-factoriales-1" class="level2">
+<h2 class="anchored" data-anchor-id="puntajes-factoriales-1">Puntajes factoriales</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(perc_des,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                                   merit_esfuerzo_percep_ES, merit_talento_percep_ES,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                                   padres_ricos_percep_ES, buenos_contactos_percep_ES,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                                   merit_esfuerzo_pref_ES, merit_talento_pref_ES,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                                   padres_ricos_pref_ES, buenos_contactos_pref_ES,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>                                   school_esfuerzo_ES, school_talento_ES, school_merito_ES) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>()</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># model</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>model_cfa <span class="ot">&lt;-</span> <span class="st">'</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="st">  perc_merit = ~ merit_esfuerzo_percep_ES + merit_talento_percep_ES</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="st">  perc_nmerit = ~ padres_ricos_percep_ES + buenos_contactos_percep_ES</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="st">  pref_merit = ~ merit_esfuerzo_pref_ES + merit_talento_pref_ES</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="st">  pref_nmerit = ~ padres_ricos_pref_ES + buenos_contactos_pref_ES</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="st">  school_merit = ~ school_esfuerzo_ES + school_talento_ES + school_merito_ES</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="st">  '</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co"># estimation for each order set</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>m1_cfa <span class="ot">&lt;-</span> <span class="fu">cfa</span>(<span class="at">model =</span> model_cfa, </span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> data_cfa,</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>              <span class="at">estimator =</span> <span class="st">"MLR"</span>, </span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">std.lv =</span> F) <span class="co"># Continuous/ estimator ML Robust</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1_cfa, <span class="at">fit.measures =</span> T, <span class="at">standardized =</span> T, <span class="at">rsquare =</span> T, <span class="at">modindices =</span> T) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>lavaan 0.6.16 ended normally after 60 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        32
+
+  Number of observations                           838
+
+Model Test User Model:
+                                              Standard      Scaled
+  Test Statistic                               100.649      86.474
+  Degrees of freedom                                34          34
+  P-value (Chi-square)                           0.000       0.000
+  Scaling correction factor                                  1.164
+    Yuan-Bentler correction (Mplus variant)                       
+
+Model Test Baseline Model:
+
+  Test statistic                              1338.527    1038.915
+  Degrees of freedom                                55          55
+  P-value                                        0.000       0.000
+  Scaling correction factor                                  1.288
+
+User Model versus Baseline Model:
+
+  Comparative Fit Index (CFI)                    0.948       0.947
+  Tucker-Lewis Index (TLI)                       0.916       0.914
+                                                                  
+  Robust Comparative Fit Index (CFI)                         0.952
+  Robust Tucker-Lewis Index (TLI)                            0.922
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)             -10386.111  -10386.111
+  Scaling correction factor                                  1.319
+      for the MLR correction                                      
+  Loglikelihood unrestricted model (H1)     -10335.786  -10335.786
+  Scaling correction factor                                  1.239
+      for the MLR correction                                      
+                                                                  
+  Akaike (AIC)                               20836.221   20836.221
+  Bayesian (BIC)                             20987.614   20987.614
+  Sample-size adjusted Bayesian (SABIC)      20885.992   20885.992
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.048       0.043
+  90 Percent confidence interval - lower         0.038       0.033
+  90 Percent confidence interval - upper         0.059       0.053
+  P-value H_0: RMSEA &lt;= 0.050                    0.578       0.862
+  P-value H_0: RMSEA &gt;= 0.080                    0.000       0.000
+                                                                  
+  Robust RMSEA                                               0.046
+  90 Percent confidence interval - lower                     0.034
+  90 Percent confidence interval - upper                     0.059
+  P-value H_0: Robust RMSEA &lt;= 0.050                         0.675
+  P-value H_0: Robust RMSEA &gt;= 0.080                         0.000
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.037       0.037
+
+Parameter Estimates:
+
+  Standard errors                             Sandwich
+  Information bread                           Observed
+  Observed information based on                Hessian
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  perc_merit =~                                                         
+    mrt_sfrz_pr_ES    1.000                               0.500    0.647
+    mrt_tlnt_pr_ES    1.035    0.259    3.992    0.000    0.518    0.680
+  perc_nmerit =~                                                        
+    pdrs_rcs_pr_ES    1.000                               0.556    0.583
+    bns_cntcts__ES    1.351    0.274    4.926    0.000    0.751    0.891
+  pref_merit =~                                                         
+    mrt_sfrz_pr_ES    1.000                               0.432    0.544
+    mrt_tlnt_pr_ES    0.997    0.197    5.069    0.000    0.430    0.508
+  pref_nmerit =~                                                        
+    pdrs_rcs_pr_ES    1.000                               0.531    0.676
+    bns_cntcts__ES    1.224    0.224    5.473    0.000    0.649    0.800
+  school_merit =~                                                       
+    school_sfrz_ES    1.000                               0.388    0.512
+    school_tlnt_ES    1.118    0.149    7.519    0.000    0.434    0.598
+    school_mert_ES    1.026    0.129    7.965    0.000    0.398    0.529
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+  perc_merit ~~                                                         
+    perc_nmerit      -0.018    0.024   -0.733    0.464   -0.064   -0.064
+    pref_merit        0.025    0.021    1.158    0.247    0.115    0.115
+    pref_nmerit       0.043    0.017    2.499    0.012    0.161    0.161
+    school_merit      0.086    0.019    4.639    0.000    0.445    0.445
+  perc_nmerit ~~                                                        
+    pref_merit        0.106    0.028    3.781    0.000    0.442    0.442
+    pref_nmerit       0.085    0.022    3.808    0.000    0.289    0.289
+    school_merit      0.035    0.013    2.773    0.006    0.162    0.162
+  pref_merit ~~                                                         
+    pref_nmerit       0.039    0.015    2.524    0.012    0.170    0.170
+    school_merit      0.075    0.019    3.894    0.000    0.446    0.446
+  pref_nmerit ~~                                                        
+    school_merit      0.054    0.016    3.400    0.001    0.263    0.263
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+   .mrt_sfrz_pr_ES    0.348    0.068    5.096    0.000    0.348    0.582
+   .mrt_tlnt_pr_ES    0.312    0.068    4.594    0.000    0.312    0.538
+   .pdrs_rcs_pr_ES    0.600    0.071    8.465    0.000    0.600    0.660
+   .bns_cntcts__ES    0.147    0.109    1.343    0.179    0.147    0.206
+   .mrt_sfrz_pr_ES    0.444    0.049    9.097    0.000    0.444    0.704
+   .mrt_tlnt_pr_ES    0.532    0.046   11.628    0.000    0.532    0.742
+   .pdrs_rcs_pr_ES    0.335    0.054    6.153    0.000    0.335    0.543
+   .bns_cntcts__ES    0.238    0.078    3.029    0.002    0.238    0.360
+   .school_sfrz_ES    0.424    0.036   11.697    0.000    0.424    0.738
+   .school_tlnt_ES    0.338    0.034   10.029    0.000    0.338    0.643
+   .school_mert_ES    0.409    0.033   12.562    0.000    0.409    0.721
+    perc_merit        0.250    0.067    3.747    0.000    1.000    1.000
+    perc_nmerit       0.309    0.070    4.425    0.000    1.000    1.000
+    pref_merit        0.186    0.046    4.021    0.000    1.000    1.000
+    pref_nmerit       0.281    0.057    4.898    0.000    1.000    1.000
+    school_merit      0.150    0.031    4.811    0.000    1.000    1.000
+
+R-Square:
+                   Estimate
+    mrt_sfrz_pr_ES    0.418
+    mrt_tlnt_pr_ES    0.462
+    pdrs_rcs_pr_ES    0.340
+    bns_cntcts__ES    0.794
+    mrt_sfrz_pr_ES    0.296
+    mrt_tlnt_pr_ES    0.258
+    pdrs_rcs_pr_ES    0.457
+    bns_cntcts__ES    0.640
+    school_sfrz_ES    0.262
+    school_tlnt_ES    0.357
+    school_mert_ES    0.279
+
+Modification Indices:
+
+                          lhs op                        rhs     mi    epc
+1                  perc_merit =~     padres_ricos_percep_ES  5.734 -0.172
+2                  perc_merit =~ buenos_contactos_percep_ES  5.734  0.232
+3                  perc_merit =~     merit_esfuerzo_pref_ES  1.715  0.116
+4                  perc_merit =~      merit_talento_pref_ES  1.715 -0.116
+5                  perc_merit =~       padres_ricos_pref_ES  0.004  0.004
+6                  perc_merit =~   buenos_contactos_pref_ES  0.004 -0.006
+7                  perc_merit =~         school_esfuerzo_ES  0.004 -0.006
+8                  perc_merit =~          school_talento_ES  5.697 -0.212
+9                  perc_merit =~           school_merito_ES  6.711  0.223
+10                perc_nmerit =~   merit_esfuerzo_percep_ES  9.841 -0.173
+11                perc_nmerit =~    merit_talento_percep_ES  9.841  0.180
+12                perc_nmerit =~     merit_esfuerzo_pref_ES  2.571 -0.189
+13                perc_nmerit =~      merit_talento_pref_ES  2.571  0.189
+14                perc_nmerit =~       padres_ricos_pref_ES  0.017 -0.011
+15                perc_nmerit =~   buenos_contactos_pref_ES  0.017  0.013
+16                perc_nmerit =~         school_esfuerzo_ES  6.988 -0.143
+17                perc_nmerit =~          school_talento_ES  9.856  0.172
+18                perc_nmerit =~           school_merito_ES  0.648 -0.044
+19                 pref_merit =~   merit_esfuerzo_percep_ES 15.114 -0.367
+20                 pref_merit =~    merit_talento_percep_ES 15.114  0.380
+21                 pref_merit =~     padres_ricos_percep_ES  0.405  0.107
+22                 pref_merit =~ buenos_contactos_percep_ES  0.405 -0.145
+23                 pref_merit =~       padres_ricos_pref_ES  0.021 -0.015
+24                 pref_merit =~   buenos_contactos_pref_ES  0.021  0.019
+25                 pref_merit =~         school_esfuerzo_ES  1.565 -0.137
+26                 pref_merit =~          school_talento_ES  9.614  0.347
+27                 pref_merit =~           school_merito_ES  4.344 -0.229
+28                pref_nmerit =~   merit_esfuerzo_percep_ES  0.197 -0.030
+29                pref_nmerit =~    merit_talento_percep_ES  0.197  0.031
+30                pref_nmerit =~     padres_ricos_percep_ES  6.573 -0.218
+31                pref_nmerit =~ buenos_contactos_percep_ES  6.573  0.294
+32                pref_nmerit =~     merit_esfuerzo_pref_ES  2.805 -0.137
+33                pref_nmerit =~      merit_talento_pref_ES  2.805  0.137
+34                pref_nmerit =~         school_esfuerzo_ES  2.205 -0.094
+35                pref_nmerit =~          school_talento_ES  0.001  0.002
+36                pref_nmerit =~           school_merito_ES  2.029  0.091
+37               school_merit =~   merit_esfuerzo_percep_ES 12.505 -0.837
+38               school_merit =~    merit_talento_percep_ES 12.504  0.867
+39               school_merit =~     padres_ricos_percep_ES  1.605 -0.133
+40               school_merit =~ buenos_contactos_percep_ES  1.605  0.179
+41               school_merit =~     merit_esfuerzo_pref_ES  1.901  0.230
+42               school_merit =~      merit_talento_pref_ES  1.901 -0.229
+43               school_merit =~       padres_ricos_pref_ES  0.010  0.011
+44               school_merit =~   buenos_contactos_pref_ES  0.010 -0.014
+45   merit_esfuerzo_percep_ES ~~     padres_ricos_percep_ES  7.085 -0.052
+46   merit_esfuerzo_percep_ES ~~ buenos_contactos_percep_ES  0.016 -0.002
+47   merit_esfuerzo_percep_ES ~~     merit_esfuerzo_pref_ES  0.434 -0.012
+48   merit_esfuerzo_percep_ES ~~      merit_talento_pref_ES  4.649 -0.043
+49   merit_esfuerzo_percep_ES ~~       padres_ricos_pref_ES  1.011 -0.016
+50   merit_esfuerzo_percep_ES ~~   buenos_contactos_pref_ES  2.158  0.025
+51   merit_esfuerzo_percep_ES ~~         school_esfuerzo_ES  0.001  0.000
+52   merit_esfuerzo_percep_ES ~~          school_talento_ES  3.839 -0.035
+53   merit_esfuerzo_percep_ES ~~           school_merito_ES  3.764  0.035
+54    merit_talento_percep_ES ~~     padres_ricos_percep_ES  0.078  0.005
+55    merit_talento_percep_ES ~~ buenos_contactos_percep_ES  3.059  0.033
+56    merit_talento_percep_ES ~~     merit_esfuerzo_pref_ES  2.397  0.029
+57    merit_talento_percep_ES ~~      merit_talento_pref_ES  1.232  0.022
+58    merit_talento_percep_ES ~~       padres_ricos_pref_ES  0.952  0.016
+59    merit_talento_percep_ES ~~   buenos_contactos_pref_ES  2.048 -0.025
+60    merit_talento_percep_ES ~~         school_esfuerzo_ES  0.296 -0.010
+61    merit_talento_percep_ES ~~          school_talento_ES  0.068  0.005
+62    merit_talento_percep_ES ~~           school_merito_ES  0.167  0.007
+63     padres_ricos_percep_ES ~~     merit_esfuerzo_pref_ES  2.226  0.036
+64     padres_ricos_percep_ES ~~      merit_talento_pref_ES  0.009 -0.002
+65     padres_ricos_percep_ES ~~       padres_ricos_pref_ES 10.761  0.063
+66     padres_ricos_percep_ES ~~   buenos_contactos_pref_ES 20.333 -0.093
+67     padres_ricos_percep_ES ~~         school_esfuerzo_ES  1.857 -0.027
+68     padres_ricos_percep_ES ~~          school_talento_ES  4.123  0.038
+69     padres_ricos_percep_ES ~~           school_merito_ES  1.278 -0.022
+70 buenos_contactos_percep_ES ~~     merit_esfuerzo_pref_ES  2.863 -0.044
+71 buenos_contactos_percep_ES ~~      merit_talento_pref_ES  0.325  0.015
+72 buenos_contactos_percep_ES ~~       padres_ricos_pref_ES  6.817 -0.053
+73 buenos_contactos_percep_ES ~~   buenos_contactos_pref_ES 13.924  0.085
+74 buenos_contactos_percep_ES ~~         school_esfuerzo_ES  1.445 -0.021
+75 buenos_contactos_percep_ES ~~          school_talento_ES  0.519  0.012
+76 buenos_contactos_percep_ES ~~           school_merito_ES  0.194  0.008
+77     merit_esfuerzo_pref_ES ~~       padres_ricos_pref_ES  0.268 -0.009
+78     merit_esfuerzo_pref_ES ~~   buenos_contactos_pref_ES  0.732 -0.016
+79     merit_esfuerzo_pref_ES ~~         school_esfuerzo_ES  7.787  0.054
+80     merit_esfuerzo_pref_ES ~~          school_talento_ES  1.054 -0.019
+81     merit_esfuerzo_pref_ES ~~           school_merito_ES  0.161 -0.008
+82      merit_talento_pref_ES ~~       padres_ricos_pref_ES  0.133  0.007
+83      merit_talento_pref_ES ~~   buenos_contactos_pref_ES  1.141  0.021
+84      merit_talento_pref_ES ~~         school_esfuerzo_ES  6.705 -0.053
+85      merit_talento_pref_ES ~~          school_talento_ES  7.161  0.053
+86      merit_talento_pref_ES ~~           school_merito_ES  2.936 -0.035
+87       padres_ricos_pref_ES ~~         school_esfuerzo_ES  2.299 -0.025
+88       padres_ricos_pref_ES ~~          school_talento_ES  1.526 -0.019
+89       padres_ricos_pref_ES ~~           school_merito_ES  9.228  0.049
+90   buenos_contactos_pref_ES ~~         school_esfuerzo_ES  0.462  0.012
+91   buenos_contactos_pref_ES ~~          school_talento_ES  0.227  0.008
+92   buenos_contactos_pref_ES ~~           school_merito_ES  1.793 -0.023
+93         school_esfuerzo_ES ~~          school_talento_ES  1.490  0.032
+94         school_esfuerzo_ES ~~           school_merito_ES  0.050  0.005
+95          school_talento_ES ~~           school_merito_ES  2.117 -0.040
+   sepc.lv sepc.all sepc.nox
+1   -0.086   -0.090   -0.090
+2    0.116    0.138    0.138
+3    0.058    0.073    0.073
+4   -0.058   -0.068   -0.068
+5    0.002    0.003    0.003
+6   -0.003   -0.003   -0.003
+7   -0.003   -0.004   -0.004
+8   -0.106   -0.146   -0.146
+9    0.112    0.148    0.148
+10  -0.096   -0.125   -0.125
+11   0.100    0.131    0.131
+12  -0.105   -0.133   -0.133
+13   0.105    0.124    0.124
+14  -0.006   -0.008   -0.008
+15   0.007    0.009    0.009
+16  -0.080   -0.105   -0.105
+17   0.096    0.132    0.132
+18  -0.024   -0.032   -0.032
+19  -0.159   -0.205   -0.205
+20   0.164    0.216    0.216
+21   0.046    0.049    0.049
+22  -0.063   -0.074   -0.074
+23  -0.007   -0.008   -0.008
+24   0.008    0.010    0.010
+25  -0.059   -0.078   -0.078
+26   0.150    0.207    0.207
+27  -0.099   -0.131   -0.131
+28  -0.016   -0.020   -0.020
+29   0.016    0.021    0.021
+30  -0.115   -0.121   -0.121
+31   0.156    0.185    0.185
+32  -0.073   -0.092   -0.092
+33   0.072    0.086    0.086
+34  -0.050   -0.066   -0.066
+35   0.001    0.001    0.001
+36   0.048    0.064    0.064
+37  -0.325   -0.420   -0.420
+38   0.336    0.441    0.441
+39  -0.051   -0.054   -0.054
+40   0.069    0.082    0.082
+41   0.089    0.112    0.112
+42  -0.089   -0.105   -0.105
+43   0.004    0.006    0.006
+44  -0.005   -0.007   -0.007
+45  -0.052   -0.114   -0.114
+46  -0.002   -0.010   -0.010
+47  -0.012   -0.032   -0.032
+48  -0.043   -0.100   -0.100
+49  -0.016   -0.047   -0.047
+50   0.025    0.088    0.088
+51   0.000    0.001    0.001
+52  -0.035   -0.103   -0.103
+53   0.035    0.093    0.093
+54   0.005    0.012    0.012
+55   0.033    0.154    0.154
+56   0.029    0.078    0.078
+57   0.022    0.054    0.054
+58   0.016    0.048    0.048
+59  -0.025   -0.091   -0.091
+60  -0.010   -0.027   -0.027
+61   0.005    0.014    0.014
+62   0.007    0.021    0.021
+63   0.036    0.069    0.069
+64  -0.002   -0.004   -0.004
+65   0.063    0.139    0.139
+66  -0.093   -0.246   -0.246
+67  -0.027   -0.053   -0.053
+68   0.038    0.084    0.084
+69  -0.022   -0.045   -0.045
+70  -0.044   -0.174   -0.174
+71   0.015    0.055    0.055
+72  -0.053   -0.237   -0.237
+73   0.085    0.455    0.455
+74  -0.021   -0.085   -0.085
+75   0.012    0.056    0.056
+76   0.008    0.032    0.032
+77  -0.009   -0.023   -0.023
+78  -0.016   -0.050   -0.050
+79   0.054    0.124    0.124
+80  -0.019   -0.050   -0.050
+81  -0.008   -0.018   -0.018
+82   0.007    0.016    0.016
+83   0.021    0.060    0.060
+84  -0.053   -0.112   -0.112
+85   0.053    0.126    0.126
+86  -0.035   -0.075   -0.075
+87  -0.025   -0.066   -0.066
+88  -0.019   -0.057   -0.057
+89   0.049    0.133    0.133
+90   0.012    0.037    0.037
+91   0.008    0.028    0.028
+92  -0.023   -0.073   -0.073
+93   0.032    0.085    0.085
+94   0.005    0.013    0.013
+95  -0.040   -0.107   -0.107</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los puntajes factoriales</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>puntajes_factoriales <span class="ot">&lt;-</span> <span class="fu">lavPredict</span>(m1_cfa)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(puntajes_factoriales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     perc_merit perc_nmerit pref_merit pref_nmerit school_merit
+[1,] 0.15865492  -0.1021310  0.2016469  0.02054065   0.18569083
+[2,] 0.11592144   0.6450630  0.2970803  0.89952970   0.07674926
+[3,] 0.73563862  -0.1881679 -0.1116000 -0.33293999   0.32810831
+[4,] 0.37254699   0.5631505  0.1310408  0.07320442   0.03833211
+[5,] 0.69536935  -0.6030007 -0.2820271 -0.16678675   0.05012809
+[6,] 0.04258011  -0.6766939 -0.4259963 -0.06825766  -0.41105794</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> <span class="fu">cbind</span>(data_cfa, puntajes_factoriales)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data_cfa<span class="sc">$</span>perc_merit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+-1.3611 -0.2346  0.0762  0.0000  0.1986  0.8464 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> data_cfa <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_all</span>(<span class="sc">~</span><span class="fu">as.numeric</span>(<span class="fu">as_factor</span>(.)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>perc_merit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>perc_nmerit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>pref_merit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.4</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>pref_nmerit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.5</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>school_merit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.6</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>perc_merit<span class="sc">+</span>perc_nmerit<span class="sc">+</span>pref_merit<span class="sc">+</span>pref_nmerit<span class="sc">+</span>school_merit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">knitreg</span>(<span class="fu">list</span>(reg1<span class="fl">.1</span>, reg1<span class="fl">.2</span>, reg1<span class="fl">.3</span>, reg1<span class="fl">.4</span>, reg1<span class="fl">.5</span>,reg1<span class="fl">.6</span>), <span class="at">digits=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<table class="texreg" style="margin: 10px auto;border-collapse: collapse;border-spacing: 0px;caption-side: bottom;color: #000000;border-top: 2px solid #000000;">
+<caption>
+Statistical models
+</caption>
+<thead>
+<tr>
+<th style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 1
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 2
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 3
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 4
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 5
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Model 6
+</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-top: 1px solid #000000;">
+<td style="padding-left: 5px;padding-right: 5px;">
+(Intercept)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+3.259<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+2.875<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+2.939<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+3.248<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+3.056<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+2.850<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.056)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.053)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.054)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.055)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.055)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.075)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+perc_merit
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.000
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.000
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.000)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.000)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+perc_nmerit
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.001<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.001<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.000)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.000)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+pref_merit
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.001<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.000
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.000)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.000)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+pref_nmerit
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.000
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.001<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.000)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.000)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+school_merit
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.001<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.000<sup>*</sup>
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.000)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.000)
+</td>
+</tr>
+<tr style="border-top: 1px solid #000000;">
+<td style="padding-left: 5px;padding-right: 5px;">
+R<sup>2</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.000
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.085
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.060
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.000
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.025
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.111
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Adj. R<sup>2</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.001
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.084
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.059
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.001
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.024
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.106
+</td>
+</tr>
+<tr style="border-bottom: 2px solid #000000;">
+<td style="padding-left: 5px;padding-right: 5px;">
+Num. obs.
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+838
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+838
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+838
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+838
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+838
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+838
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="font-size: 0.8em;" colspan="7">
+<sup>***</sup>p &lt; 0.001; <sup>**</sup>p &lt; 0.01; <sup>*</sup>p &lt; 0.05
+</td>
+</tr>
+</tfoot>
+</table>
+</section>
 </section>
 
 </main>
@@ -1281,18 +3731,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1324,7 +3763,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -1332,7 +3793,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
