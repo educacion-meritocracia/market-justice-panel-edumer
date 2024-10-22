@@ -67,6 +67,7 @@ for (i in names(dplyr::select(proc_datos, tidyselect::starts_with("p18_")))) {
 ```{r}
 data <- proc_datos %>% select("redistribucion"=p9_2,
                               "perc_des"=p9_1,
+                              just_educ, just_salud, just_pensiones,
                               aleatorio, check_comprension, 
                               curso_estudiante, genero_ES,
                               educ_max, libros_hogar,
@@ -77,6 +78,7 @@ data <- proc_datos %>% select("redistribucion"=p9_2,
                               tidyselect::starts_with("buenos"))
 
 data <- data %>% select(redistribucion, perc_des,
+                              just_educ, just_salud, just_pensiones,
                               aleatorio, check_comprension, 
                               curso_estudiante, genero_ES,
                               educ_max, libros_hogar, 

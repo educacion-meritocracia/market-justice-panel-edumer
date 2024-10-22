@@ -212,3 +212,85 @@ reg1.6<- lm(perc_des~perc_merit+perc_nmerit+pref_merit+pref_nmerit+school_merit,
 knitreg(list(reg1.1, reg1.2, reg1.3, reg1.4, reg1.5,reg1.6), digits=3)
 ```
 
+# Market justice preferences
+
+```{r results='asis'}
+data <- data %>% rowwise() %>% 
+  mutate(market_justice=mean(c(just_salud, just_educ, just_pensiones), na.rm = TRUE))
+summary(data$market_justice)
+
+reg1.1<- lm(market_justice~merit_esfuerzo_percep_ES,data=data)
+reg1.2<- lm(market_justice~merit_talento_percep_ES,data=data)
+reg1.3<- lm(market_justice~social_merito_percep_ES,data=data)
+reg1<- lm(market_justice~merit_esfuerzo_percep_ES+merit_talento_percep_ES+social_merito_percep_ES,data=data)
+reg2.1<- lm(market_justice~merit_esfuerzo_pref_ES,data=data)
+reg2.2<- lm(market_justice~merit_talento_pref_ES,data=data)
+reg2.3<- lm(market_justice~social_merit_pref_ES,data=data)
+reg2<- lm(market_justice~merit_esfuerzo_pref_ES+merit_talento_pref_ES+social_merit_pref_ES,data=data)
+reg3.1<- lm(market_justice~school_esfuerzo_ES,data=data)
+reg3.2<- lm(market_justice~school_talento_ES,data=data)
+reg3.3<- lm(market_justice~school_merito_ES,data=data)
+reg3<- lm(market_justice~school_esfuerzo_ES+school_talento_ES+school_merito_ES,data=data)
+reg4<- lm(market_justice~merit_esfuerzo_percep_ES+merit_talento_percep_ES+social_merito_percep_ES+merit_esfuerzo_pref_ES+merit_talento_pref_ES+social_merit_pref_ES+school_esfuerzo_ES+school_talento_ES+school_merito_ES,data=data)
+
+labs02 <- c("Intercepto",
+            "Percepción: esfuerzo", "Percepción: talento", "Percepción: merecimiento",
+            "Preferencia: esfuerzo", "Preferencia: talento", "Preferencia: merecimiento",
+            "Escuela: esfuerzo", "Escuela: talento", "Escuela: merecimiento")
+
+knitreg(list(reg1.1,reg1.2,reg1.3,reg1,reg2.1,reg2.2,reg2.3,reg2,reg3.1,reg3.2,reg3.3,reg3, reg4),
+        #custom.model.names = c("Modelo 1","Modelo 2","Modelo 3", "Modelo 4"),
+        custom.coef.names = labs02)
+```
+
+## Puntajes factoriales
+
+```{r}
+data_cfa <- data %>% dplyr::select(market_justice,
+                                   merit_esfuerzo_percep_ES, merit_talento_percep_ES,
+                                   padres_ricos_percep_ES, buenos_contactos_percep_ES,
+                                   merit_esfuerzo_pref_ES, merit_talento_pref_ES,
+                                   padres_ricos_pref_ES, buenos_contactos_pref_ES,
+                                   school_esfuerzo_ES, school_talento_ES, school_merito_ES) %>% 
+  na.omit()
+# model
+model_cfa <- '
+  perc_merit = ~ merit_esfuerzo_percep_ES + merit_talento_percep_ES
+  perc_nmerit = ~ padres_ricos_percep_ES + buenos_contactos_percep_ES
+  pref_merit = ~ merit_esfuerzo_pref_ES + merit_talento_pref_ES
+  pref_nmerit = ~ padres_ricos_pref_ES + buenos_contactos_pref_ES
+  school_merit = ~ school_esfuerzo_ES + school_talento_ES + school_merito_ES
+  '
+
+# estimation for each order set
+m1_cfa <- cfa(model = model_cfa, 
+              data = data_cfa,
+              estimator = "MLR", 
+              std.lv = F) # Continuous/ estimator ML Robust
+
+
+summary(m1_cfa, fit.measures = T, standardized = T, rsquare = T, modindices = T) 
+
+# Obtener los puntajes factoriales
+puntajes_factoriales <- lavPredict(m1_cfa)
+head(puntajes_factoriales)
+data_cfa <- cbind(data_cfa, puntajes_factoriales)
+summary(data_cfa$perc_merit)
+```
+
+```{r}
+data_cfa <- data_cfa %>%
+  na.omit() %>%
+  mutate_all(~as.numeric(as_factor(.)))
+```
+
+```{r results='asis'}
+reg1.1<- lm(market_justice~perc_merit,data=data_cfa)
+reg1.2<- lm(market_justice~perc_nmerit,data=data_cfa)
+reg1.3<- lm(market_justice~pref_merit,data=data_cfa)
+reg1.4<- lm(market_justice~pref_nmerit,data=data_cfa)
+reg1.5<- lm(market_justice~school_merit,data=data_cfa)
+reg1.6<- lm(market_justice~perc_merit+perc_nmerit+pref_merit+pref_nmerit+school_merit,data=data_cfa)
+
+knitreg(list(reg1.1, reg1.2, reg1.3, reg1.4, reg1.5,reg1.6), digits=3)
+```
