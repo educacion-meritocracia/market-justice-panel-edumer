@@ -96,40 +96,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">url</span>(<span class="st">"https://github.com/educacion-meritocracia/edumer-data/raw/main/output/data/edumer_students_long.RData"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>More labels than values of "x". Using first 3 labels.
+More labels than values of "x". Using first 3 labels.
+More labels than values of "x". Using first 3 labels.
+More labels than values of "x". Using first 3 labels.
+More labels than values of "x". Using first 3 labels.
+More labels than values of "x". Using first 3 labels.</code></pre>
+</div>
+</div>
 <section id="seleccion-variables" class="level1">
 <h1>Seleccion variables</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> proc_datos <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="st">"redistribucion"</span><span class="ot">=</span>p9_2,</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"perc_des"</span><span class="ot">=</span>p9_1,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                              just_educ, just_salud, just_pensiones,</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                              aleatorio, check_comprension, </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                              curso_estudiante, genero_ES,</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                              educ_max, libros_hogar,</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                              tidyselect<span class="sc">::</span><span class="fu">starts_with</span>(<span class="st">"merit"</span>), </span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>                              tidyselect<span class="sc">::</span><span class="fu">starts_with</span>(<span class="st">"school"</span>), </span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                              tidyselect<span class="sc">::</span><span class="fu">starts_with</span>(<span class="st">"social"</span>), </span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                              tidyselect<span class="sc">::</span><span class="fu">starts_with</span>(<span class="st">"padres"</span>), </span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                              tidyselect<span class="sc">::</span><span class="fu">starts_with</span>(<span class="st">"buenos"</span>))</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">select</span>(redistribucion, perc_des,</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>                              just_educ, just_salud, just_pensiones,</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>                              aleatorio, check_comprension, </span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>                              curso_estudiante, genero_ES,</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>                              educ_max, libros_hogar, </span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>                        merit_esfuerzo_percep_ES, merit_esfuerzo_pref_ES, </span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                        merit_talento_percep_ES, merit_talento_pref_ES,</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>                        social_merito_percep_ES, social_merit_pref_ES,</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>                        padres_ricos_percep_ES, padres_ricos_pref_ES,</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>                        buenos_contactos_percep_ES, buenos_contactos_pref_ES,</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>                        school_esfuerzo_ES, school_talento_ES, school_merito_ES)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> edumer_students_long <span class="sc">%&gt;%</span> <span class="fu">select</span>(id_estudiante,</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                                        ola,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                                        <span class="st">"curso_estudiante"</span><span class="ot">=</span>d3_def,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                                        <span class="st">"experimento"</span><span class="ot">=</span>asignacion,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                                        <span class="st">"redistribucion"</span><span class="ot">=</span>p9_2,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"perc_des"</span><span class="ot">=</span>p9_1,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                              <span class="at">just_educ=</span>p9_3,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                              <span class="at">just_salud=</span>p9_4,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                              <span class="at">just_pensiones=</span>p9_5,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"perc_esfuerzo_soc"</span><span class="ot">=</span>p1_1,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                              <span class="at">perc_talento_soc=</span>p1_2,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                              <span class="at">perc_merit_soc=</span>p1_10,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>                              <span class="at">perc_oportunidades_soc=</span>p1_9,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>                              <span class="at">perc_padres_ricos=</span>p1_3,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>                              <span class="at">perc_contactos=</span>p1_4,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>                              <span class="at">pref_esfuerzo_soc=</span>p1_5,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>                              <span class="at">pref_talento_soc=</span>p1_6,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>                              <span class="at">pref_padres_ricos=</span>p1_7,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>                              <span class="at">pref_contactos=</span>p1_8,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>                              <span class="at">perc_esfuerzo_esc=</span>p2_1,</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>                              <span class="at">perc_talento_esc=</span>p2_2,</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>                              <span class="at">perc_merit_esc=</span>p2_3,</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>                              <span class="at">genero_ES=</span>p20,</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>                              <span class="co">#educ_max, </span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>                              <span class="at">libros_hogar=</span>p30)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(summarytools<span class="sc">::</span><span class="fu">dfSummary</span>(data), <span class="at">method=</span><span class="st">"render"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(summarytools<span class="sc">::</span><span class="fu">dfSummary</span>(data), <span class="at">method=</span><span class="st">"render"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="container st-container">
 <h3 class="anchored" data-anchor-id="seleccion-variables">Data Frame Summary</h3>
 <h4 class="anchored">data</h4>
-<strong>Dimensions</strong>: 902 x 24
+<strong>Dimensions</strong>: 1538 x 24
   <br><strong>Duplicates</strong>: 0
 <br>
 
@@ -159,8 +174,223 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td style="text-align: center;">1</td>
-<td style="text-align: left;">redistribucion [haven_labelled, vctrs_vctr, double]</td>
-<td style="text-align: left;">9.2 Es responsabilidad del gobierno reducir las diferencias económicas entre las personas con altos ingresos y aquellas con bajos ingresos</td>
+<td style="text-align: left;">id_estudiante [numeric]</td>
+<td style="text-align: left;">Identificador único estudiante</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 199153989 (39324552)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">191617388 ≤ 194639253 ≤ 986258602</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 7617698 (0.2)</td>
+</tr>
+</tbody>
+</table></td>
+<td style="text-align: left; vertical-align: middle;">907 distinct values</td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJierIXcoAAAAVUlEQVRo3u3UsQ3AIBAEwW+BEvx04O+/NxuJCoDE8qx06YQXoZXy7Wq7TaxXFQwG+wE2niNPYWM3DAaDwWAwGAwGg8FgMBgMBoPBYDAY7ANYHim00gNGQ0Kobq96BQAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1538 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">ola [factor]</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. 1</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. 2</td>
+</tr>
+</tbody>
+</table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">904</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">58.8%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">634</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">41.2%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+</tbody>
+</table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAGUAAAA3BAMAAADnFJkAAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJig7nmq5AAAAP0lEQVRIx2NgGH5AiQSgANWjbEw8GNUzqmdUz/DWQ04ZIkgCEKCzHgJewKoHf7gZjeoZ1TOqZwTpIacMGU4AAM9RXE6bK1iVAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1538 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td style="text-align: left;">curso_estudiante [factor]</td>
+<td style="text-align: left;">Curso al que pertenece</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. 6a</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. 6b</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">3. 6c</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">4. 7a</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">5. 7b</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">6. 1a</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">7. 1b</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">8. 1c</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">9. 2a</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">10. 2b</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">11. 2c</td>
+</tr>
+</tbody>
+</table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">96</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">10.6%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">167</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">18.5%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">31</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">3.4%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">57</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">6.3%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">100</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">11.1%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">58</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">6.4%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">107</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">11.9%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">28</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">3.1%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">84</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">9.3%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">140</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">15.5%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">34</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">3.8%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+</tbody>
+</table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAACgAAAEKBAMAAACSwwrXAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJig7nmq5AAAApUlEQVRYw+2Xyw2AIBBEaYESkA7Y/nszKjF8xtPiZhNmju8gJm90Qgj/5KhJ8UqFWZ4QWkOoI3ZZA48uwyvdKYR2EOrQK55hlkLoB0JHeu/NU5vWFUIvEDpa4Z1T7gXaTrmveu8M//i0v72/DRuqKITGEOpQK04zzELoCEJHau/NdAytI/QBoaM13uuE9KfLMzaEdhDqUCr+8o7+Nu6uq5tAqGN1Tngcq0ifLwU+AAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">902 (58.6%)</td>
+<td style="text-align: center;">636 (41.4%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: left;">experimento [numeric]</td>
+<td style="text-align: left;">Identificador asignación aleatoria al tratamiento</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Min : 1</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean : 1.5</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Max : 2</td>
+</tr>
+</tbody>
+</table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">444</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">49.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">458</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">50.8%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody>
+</table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFkAAAA3BAMAAACV2/u2AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJilMmVovAAAAQElEQVRIx2NgGLpAiRggKABVrWxMGBiNqh5VPaqarqpJy8WCRAF6qCbK3UoKJISJsfGo6lHVo6rpqZq0XDwUAQB+IkmUVjQtDwAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">902 (58.6%)</td>
+<td style="text-align: center;">636 (41.4%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: left;">redistribucion [numeric]</td>
+<td style="text-align: left;">Es responsabilidad del gobierno reducir las diferencias económicas entre las personas con altos ingresos y aquellas con bajos ingresos</td>
 <td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
 <tr class="odd" style="background-color:transparent">
@@ -182,45 +412,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">38</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">55</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">4.2%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">3.6%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">202</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">339</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">22.6%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">22.2%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">476</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">817</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">53.2%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">53.6%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">179</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">314</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">20.0%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">20.6%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 </tbody>
 </table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFwAAABmBAMAAAC0IOugAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwNXKQk1AAAAZ0lEQVRYw+3Uyw2AMAwE0bSQErx0QPrvDQ5ciPjYEjKJNHN+J0vrUuZOklVHB19ag8Phf/DgVj00javPHvl+mXNwODyHB7danY3I5ezukNetcDj8Yx7c6sh/xl54dxk4HJ7Fg1udtQ2UD8AV1k0QOwAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">895 (99.2%)</td>
-<td style="text-align: center;">7 (0.8%)</td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAF0AAABmBAMAAABb4oCeAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJilMmVovAAAAZklEQVRYw+3UsQ2AMAxE0YxANkDHBmb/3WhoiBTFLkIc6f/6VZbOpeyfpOrpeP11Gx6PT+Kj+3XhH73ahvf5Zng8fpmP7rc6y+rl7Ozcsxcej5/vo/vN/n9GvrmP4fH4dT663517AADtxdeymRQFAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1525 (99.2%)</td>
+<td style="text-align: center;">13 (0.8%)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">2</td>
-<td style="text-align: left;">perc_des [haven_labelled, vctrs_vctr, double]</td>
-<td style="text-align: left;">9.1 Las diferencias económicas entre ricos y pobres en Chile son demasiado grandes</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: left;">perc_des [numeric]</td>
+<td style="text-align: left;">Las diferencias económicas entre ricos y pobres en Chile son demasiado grandes</td>
 <td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
 <tr class="odd" style="background-color:transparent">
@@ -242,23 +472,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">40</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">59</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">4.4%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">3.8%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">81</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">140</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">9.0%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">9.1%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">384</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">653</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
 <td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">42.6%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
@@ -266,21 +496,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">396</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">681</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">44.0%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">44.4%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 </tbody>
 </table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAE4AAABmBAMAAACXe7p1AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwTJTZyWAAAAYElEQVRIx+3TsQ0AIQxDUVbICPg2SPbfDaS75grADVIE/vVrEsml5A9AtVmfeyLk5K5z7D5s1SaHN+bensvJXeXYfdiqHDsf9v/LMJeTO9Gx+8i6X3D3hsvJHejYfWSuAZ1ykZ3q58i/AAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">901 (99.9%)</td>
-<td style="text-align: center;">1 (0.1%)</td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAE8AAABmBAMAAAB4udFLAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJilMmVovAAAAYUlEQVRYw+3TwQmAQAxE0S3BdLCOHWz6701BT4JmPCxEMv/8LglMa/8IwGpvLRfc3AUFBT9sxqLmQZxRVx8NQcHqkN6MRSWACLq957EhKFgE0ptJvGt07mp3QcEakN5M9nbBy5jgljWTqwAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1533 (99.7%)</td>
+<td style="text-align: center;">5 (0.3%)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">3</td>
-<td style="text-align: left;">just_educ [haven_labelled, vctrs_vctr, double]</td>
-<td style="text-align: left;">9.3 Está bien que aquellos que puedan pagar más tengan mejor educación</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: left;">just_educ [numeric]</td>
+<td style="text-align: left;">Está bien que aquellos que puedan pagar más tengan mejor educación</td>
 <td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
 <tr class="odd" style="background-color:transparent">
@@ -302,49 +532,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">184</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">317</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">20.5%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">20.7%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">358</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">612</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">39.9%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">40.0%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">271</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">444</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">30.2%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">29.0%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">84</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">157</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">9.4%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">10.3%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 </tbody>
 </table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEgAAABmBAMAAACaZcoyAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwW+SqwAAAAAYElEQVRIx+3UwQkAIAiFYVdoBGuD2n+3LnYQQoSiFN5//i6CShSzquOiEtSGCggoE3LteDG7jqrZfjpdBwIKjVw7/vjuTo7TfD1rdiCgDMi143/ujk0k0wEBZUSuHY/WBBmdgEbfyvqQAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">897 (99.4%)</td>
-<td style="text-align: center;">5 (0.6%)</td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEkAAABmBAMAAAB1p6EMAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJilMmVovAAAAYUlEQVRIx+3UwQ0AEAyFYSOwgbAB++/mwEUj1UTQJu8/fxfJK+f0lkhhyg+V61SBgrKtZLsPbDdUYovrN5KgoKwp2e7f3+PJ1W5+pl6BgrKqZLv/d4+8yuRVUFC2lWz3GmujlIdr60stugAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1530 (99.5%)</td>
+<td style="text-align: center;">8 (0.5%)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">4</td>
-<td style="text-align: left;">just_salud [haven_labelled, vctrs_vctr, double]</td>
-<td style="text-align: left;">9.4 Está bien que aquellos que puedan pagar más tengan mejor acceso a salud</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: left;">just_salud [numeric]</td>
+<td style="text-align: left;">Está bien que aquellos que puedan pagar más tengan mejor acceso a salud</td>
 <td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
 <tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2 (0.9)</td>
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2 (1)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
@@ -362,45 +592,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">321</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">538</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">35.9%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">35.2%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">312</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">548</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">34.9%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">35.8%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">192</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">306</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">21.5%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">20.0%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">70</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">137</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">7.8%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">9.0%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 </tbody>
 </table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEIAAABmBAMAAACNR1r7AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwW+SqwAAAAAX0lEQVRIx+3TwQkAIAwDwK7gCNUNdP/dBPWl1CBI9ZG8DzSQivyTaGeIVKxkCgongXca7FwU9jcUdqGg8BJ4pz73cn5Ruoi5LQWFv8A7vXENWPTXd6J1yRQULwXe6Q+pKeNtjDB00mIAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">895 (99.2%)</td>
-<td style="text-align: center;">7 (0.8%)</td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEIAAABmBAMAAACNR1r7AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJirVkAuVAAAAYElEQVRIx+3TwQkAIAwDQFdwBHWDuv9uPvSl1CCU2kfyPtBAmlKcVDVlida1UFB4CbzTrMdQ6P+osItQUDgJvFOfe3m+qHKKrS0FxQeBd4q3biHW+xcxuwgFxUeBdxohA777bYyT0xvpAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1529 (99.4%)</td>
+<td style="text-align: center;">9 (0.6%)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">5</td>
-<td style="text-align: left;">just_pensiones [haven_labelled, vctrs_vctr, double]</td>
-<td style="text-align: left;">9.5 Está bien que en Chile las personas con mayores ingresos puedan tener mejores pensiones que las personas de ingresos más bajos.</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: left;">just_pensiones [numeric]</td>
+<td style="text-align: left;">Está bien que en Chile las personas con mayores ingresos puedan tener mejores pensiones que las personas de ingresos más bajos.</td>
 <td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
 <tr class="odd" style="background-color:transparent">
@@ -422,260 +652,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">261</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">430</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">29.1%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">28.1%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">362</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">641</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">40.3%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">41.9%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">225</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">366</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">25.1%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">23.9%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">50</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">94</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">5.6%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">6.1%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 </tbody>
 </table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEkAAABmBAMAAAB1p6EMAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwW+SqwAAAAAaElEQVRIx2NgGLxACSsQhAIBqCplYyzAaFTVqKqhqoq4dC+IF9BClRJeoIDPj3AwqmpU1VBTRVy6p39+JDvXYlGFGRJGo6pGVQ1hVcSle2rmNOJUgRyiSFAVyI+jqkZVDR9VxKX7wQgA2dWGJuTp3kEAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">898 (99.6%)</td>
-<td style="text-align: center;">4 (0.4%)</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">6</td>
-<td style="text-align: left;">aleatorio [factor]</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. Tratamiento</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. Control</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">444</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">49.2%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">458</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">50.8%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFkAAAA3BAMAAACV2/u2AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwW+SqwAAAAAQElEQVRIx2NgGLpAiRggKABVrWxMGBiNqh5VPaqarqpJy8WCRAF6qCbK3UoKJISJsfGo6lHVo6rpqZq0XDwUAQB+IkmUVjQtDwAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">902 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">7</td>
-<td style="text-align: left;">check_comprension [numeric]</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Min : 0</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean : 0.7</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Max : 1</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">0</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">253</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">28.0%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">649</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">72.0%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAHgAAAA3BAMAAAA1RJNYAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwYnQ/26AAAARElEQVRIx2NgGJlACRtQFCQAoJqVjbGAUc2jmkc1j2oeIpopKgAJKRukmpXIAvhCmxAwGtU8qnlU86jmwaGZogJwpAEAgQx4lCEqrSIAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">902 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">8</td>
-<td style="text-align: left;">curso_estudiante [character]</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. Básica</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. Media</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">451</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">50.0%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">451</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">50.0%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFcAAAA3BAMAAACLEssFAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwYnQ/26AAAAN0lEQVRIx2NgGJpAiRigAFWsbEwEGFU8qnhUMc0Uk5RhBYkBAjRXPFrIjCoeVTyEFJOUYYcaAADDMkUfIsUAkAAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">902 (100.0%)</td>
-<td style="text-align: center;">0 (0.0%)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">9</td>
-<td style="text-align: left;">genero_ES [factor]</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. Hombre</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. Mujer</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">442</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">51.6%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">415</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">48.4%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFoAAAA3BAMAAAB+7EC1AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwdQRM0sAAAAPUlEQVRIx2NgGLpAiTgAVa1sTAwwGlU9qnpUNR1Vk5aLBYkDdFBNjKMV4aqJCZNR1aOqR1XTVzVpuXgoAgBwlknDyn5G/wAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">857 (95.0%)</td>
-<td style="text-align: center;">45 (5.0%)</td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEsAAABmBAMAAABxUnExAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJirVkAuVAAAAZUlEQVRIx+3TwQnAIAyFYUdoNjBxA7v/bqVQ8WBIgyC14f3n75LAS2nvRIupdTysnEpgYJGYcwtkt4aJXbYu7YGB/Z85t/DJTqfnzBobHwIGFow5t0B2C3f6zu5LKxhYZObcwq5dqs+Nx4ljeqkAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1531 (99.5%)</td>
+<td style="text-align: center;">7 (0.5%)</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">10</td>
-<td style="text-align: left;">educ_max [factor]</td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;">perc_esfuerzo_soc [numeric]</td>
+<td style="text-align: left;">En Chile, las personas son recompensadas por sus esfuerzos</td>
 <td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
 <tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. Enseñanza media o menos</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. Estudios superiores</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">275</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">37.7%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">455</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">62.3%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAGoAAAA3BAMAAAAWH8KNAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwdQRM0sAAAAQUlEQVRIx2NgGL5ACQ9QFMQAUF3KxrjBqK5RXaO6RnVh00VeaSNIGhgAXUqkASLCEBMYjeoa1TWqa1QXmaXNcAQAmLdiu0paK9sAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">730 (80.9%)</td>
-<td style="text-align: center;">172 (19.1%)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">11</td>
-<td style="text-align: left;">libros_hogar [factor]</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. Menos de 25 libros</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. Más de 25 libros</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">586</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">65.3%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">312</td>
-<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0; border: 0;">34.7%</td>
-<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAG4AAAA3BAMAAAAf9GL3AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwdQRM0sAAAAQklEQVRIx2NgGP5AiVQA1adsTBowGtU3qm9U36g+IvWRWy4JkgoGSB9ujyji1Yc7PEf1jeob1TeqjzJ95JZLwxkAACLoaPnq8OE/AAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">898 (99.6%)</td>
-<td style="text-align: center;">4 (0.4%)</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">12</td>
-<td style="text-align: left;">merit_esfuerzo_percep_ES [haven_labelled, vctrs_vctr, double]</td>
-<td style="text-align: left;">En Chile, las personas son recompensadas por su esfuerzo</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.8 (0.8)</td>
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.7 (0.8)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
@@ -693,104 +712,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">55</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">112</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">6.1%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">7.3%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">422</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">27.5%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">763</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">49.7%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
 <td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">238</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">26.4%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">472</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">52.4%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">136</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">15.1%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">15.5%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 </tbody>
 </table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFsAAABmBAMAAABW/PDZAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwdQRM0sAAAAZ0lEQVRYw+3UwQmAMAxG4Y5gN9C4QbP/biJ4EGlJAhJaeO/8nQJ/Slk7uatm28NPVW1wODyfB7dqy0QunYzLfGpwODyBB7dafU3Jxdc+PmQvOBz+Nw9uddY/czj46zJwODyTB7e6ahfWBr5UJZcvsQAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">901 (99.9%)</td>
-<td style="text-align: center;">1 (0.1%)</td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFcAAABmBAMAAABMwBBXAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJirVkAuVAAAAZ0lEQVRYw+3UwQmAMAxG4Y5gNpC4Qdx/N0U8iJaYYIUW3jt/p8CfUsZMj8RvOvGy7hkYDG6IUxuUSP9jreVe45aBweAvOLVBidQZ1kizc7pHYDA4g1Mb7PBvvOLLNQwMBjfBqQ2O1gai2LMdnLqQOgAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1535 (99.8%)</td>
+<td style="text-align: center;">3 (0.2%)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">13</td>
-<td style="text-align: left;">merit_esfuerzo_pref_ES [haven_labelled, vctrs_vctr, double]</td>
-<td style="text-align: left;">Quienes más se esfuerzan deberían obtener mayores recompensas que quienes se esfuerzan menos</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 3.4 (0.8)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 4 ≤ 4</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.2)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">40</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">4.5%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">75</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">8.4%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">299</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">33.4%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">480</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">53.7%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAF0AAABmBAMAAABb4oCeAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwjA+9C9AAAAbklEQVRYw+3UwQ2AIAxGYUaQDaSO0P13M1EPhmDaHkBI3jt/F/6kpLR+IlKyo+3xhyoej5/ER+/XY0d6ubKf8NpHPRPh8fj+Pnq/Jpzcy1el7e89G+Hx+OE+er/Z2e//T9Vu7VOFx+P7++j9rtwJ3YPEsGLKDtIAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">894 (99.1%)</td>
-<td style="text-align: center;">8 (0.9%)</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">14</td>
-<td style="text-align: left;">merit_talento_percep_ES [haven_labelled, vctrs_vctr, double]</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: left;">perc_talento_soc [numeric]</td>
 <td style="text-align: left;">En Chile, las personas son recompensadas por su inteligencia y habilidad</td>
 <td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
@@ -813,104 +772,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">51</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">84</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">5.7%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">5.5%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">188</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">348</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">21.0%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">22.8%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">509</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">835</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">56.9%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">54.7%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">146</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">260</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">16.3%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">17.0%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 </tbody>
 </table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAGIAAABmBAMAAADCGlkrAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwjA+9C9AAAAZklEQVRYw+3UsQ3AIAxEUVZgBMwGeP/dkiIFQlF0biKD/q95jaWjlHOyu1alHtHdHYFA7CTiO9ce/y1sSbvV1EAgENlFfOdVL7UwvffrfjQQCEQKEd95/v+qSWK+FQKB2EHEd35CF6Af0WxgSyn3AAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">894 (99.1%)</td>
-<td style="text-align: center;">8 (0.9%)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">15</td>
-<td style="text-align: left;">merit_talento_pref_ES [haven_labelled, vctrs_vctr, double]</td>
-<td style="text-align: left;">Quienes poseen más talento deberían obtener mayores recompensas que quienes poseen menos talento</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.6 (0.8)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.3)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">69</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">7.8%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">330</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">37.1%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">342</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">38.5%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">148</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">16.6%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEYAAABmBAMAAACErPqBAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwjA+9C9AAAAX0lEQVRIx+3TvQkAIAyEUVdwhbhB3H83RSwU/AkoesV99WsCF+fwkpIfV02IOaWhwTeWPftVl40s6u4apzQ0SMay55f/dfqDsr89Kg0NkLHs+dt/TUx7l9LQABvLnpFKIsR56uDd7gQAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">889 (98.6%)</td>
-<td style="text-align: center;">13 (1.4%)</td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAF4AAABmBAMAAACw1TudAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJirVkAuVAAAAaElEQVRYw+3UwQnAIAxGYVdwBNMNzP671UIPbUFJDtUI752/U+BPSvsnrZIN3f5QVTweH8N792uhM718K2N/3ecVHo9f5r37zdaCerHWu2enisfjf/fe/Yb+Pwb/vE/F4/FLvXe/O3cC1hHE8E4ZHvIAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1527 (99.3%)</td>
+<td style="text-align: center;">11 (0.7%)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">16</td>
-<td style="text-align: left;">social_merito_percep_ES [haven_labelled, vctrs_vctr, double]</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: left;">perc_merit_soc [numeric]</td>
 <td style="text-align: left;">En Chile, todas las personas obtienen lo que merecen</td>
 <td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
@@ -933,58 +832,58 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">206</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">354</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">22.9%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">23.1%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">439</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">740</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">48.9%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">48.4%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">181</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">308</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">20.2%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">20.1%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">72</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">128</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">8.0%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">8.4%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 </tbody>
 </table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFYAAABmBAMAAACjAntpAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwjA+9C9AAAAaElEQVRYw+3UsQ2AMAxE0azgEZxsAPvvlobKkOATAhHp//o1iXQuZb1qzO3cYdsewmKxklX2ZpletjXT6B8u2rBY7NAqe/vDfXhwS3xmw59hsVjRKnuzTJ/cB0/ZNnk+Fou9t8reVqoDFp6tW2zL3XEAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">898 (99.6%)</td>
-<td style="text-align: center;">4 (0.4%)</td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFUAAABmBAMAAABINcBqAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJiuilzsDAAAAaElEQVRYw+3UsQ2AMAxE0YyAN8DJCOy/Gw2VwcgnBCLS//VrEunc2nz1mNup5bBjC2GxWMkqe7NCb9teaM3+4SIsFptbZW9/uA8Pbonf2fBnWCxWtMrerNA398FLduTPx2KxBavsbaZ2IAuruBv71SMAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1530 (99.5%)</td>
+<td style="text-align: center;">8 (0.5%)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">17</td>
-<td style="text-align: left;">social_merit_pref_ES [haven_labelled, vctrs_vctr, double]</td>
-<td style="text-align: left;">Está bien que las personas más inteligentes y/o talentosas ganen más dinero, aun cuando requieran esforzarse menos para ello</td>
+<td style="text-align: center;">13</td>
+<td style="text-align: left;">perc_oportunidades_soc [numeric]</td>
+<td style="text-align: left;">En Chile, todas las personas tienen las mismas oportunidades para salir adelante</td>
 <td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
 <tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.5 (0.8)</td>
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.3 (1.1)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
 </tr>
 <tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 2 ≤ 4</td>
 </tr>
 <tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.3)</td>
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 2 (0.5)</td>
 </tr>
 </tbody>
 </table></td>
@@ -993,49 +892,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">107</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">408</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">11.9%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">26.6%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">305</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">541</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">34.0%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">35.3%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">392</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">287</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">43.8%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">18.7%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">92</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">296</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">10.3%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">19.3%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 </tbody>
 </table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAE4AAABmBAMAAACXe7p1AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwm3/OArAAAAYElEQVRIx+3TwQkAIAiFYVdohGwD23+3LnaJRCGiqPefv4vCI7o/7uU0T12pGhzcRy66j+S1ybGZce+YwMG966L7OLXf9Z1r3l/6e+DgHnTRfZzer+f0XoGD+8lF93FzDWjhlEVkgQUWAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">896 (99.3%)</td>
-<td style="text-align: center;">6 (0.7%)</td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEIAAABmBAMAAACNR1r7AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJiuilzsDAAAAYUlEQVRIx+3TzQ0AEBCEUS0oAR3Qf28SXPysiUSWw3znd9lk1ph/8oucLTUR0hwFha7AO7VyF4WX29xSixQUSgLvVOdfTj/KLUR/LQXFC4F3ird+QwzfDG+JFBQPBN7pD2Wv6HA0LjDujQAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1532 (99.6%)</td>
+<td style="text-align: center;">6 (0.4%)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">18</td>
-<td style="text-align: left;">padres_ricos_percep_ES [haven_labelled, vctrs_vctr, double]</td>
-<td style="text-align: left;">En Chile, quienes tienen padres ricos les va mejor en la vida</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: left;">perc_padres_ricos [numeric]</td>
+<td style="text-align: left;">En Chile, a quienes tienen padres ricos les va mucho mejor en la vida</td>
 <td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
 <tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 3 (0.9)</td>
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 3 (1)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
@@ -1053,7 +952,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">71</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">121</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
 <td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">8.0%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
@@ -1061,36 +960,216 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">187</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">325</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">21.0%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">21.4%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">303</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">491</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">34.0%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">32.3%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">329</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">584</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">37.0%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">38.4%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 </tbody>
 </table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEQAAABmBAMAAACAWSq8AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwm3/OArAAAAY0lEQVRIx+3TsQ2AMBBD0ayQEXA2gP13A6IICZQDFyhx4V+/xtJdSlqhtuRejZTtzMREjBC3m1/6leBRuOhqNTGRIMTtEh8wjCAsGn2bb2IyjRC3K/BHwNeiY5OJyTRC3K5KOwDAdQ/ttM/OAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">890 (98.7%)</td>
-<td style="text-align: center;">12 (1.3%)</td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEYAAABmBAMAAACErPqBAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJiuilzsDAAAAY0lEQVRIx+3TSw4AEAxFUVvoErAD9r838UmEFB0YvMG74zNQaZ3DK7S8qA0Tc42GBt9Y9llufTZhyyumzzWjoUE1ln2WWwA3uLz9MPvyBzQ0QMayzwj31XrMVUs0NEDGss9IFZ0Je2vAV+RnAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1521 (98.9%)</td>
+<td style="text-align: center;">17 (1.1%)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">19</td>
-<td style="text-align: left;">padres_ricos_pref_ES [haven_labelled, vctrs_vctr, double]</td>
+<td style="text-align: center;">15</td>
+<td style="text-align: left;">perc_contactos [numeric]</td>
+<td style="text-align: left;">En Chile, quienes tienen buenos contactos les va mejor en la vida</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 3.1 (0.9)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.3)</td>
+</tr>
+</tbody>
+</table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">73</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">4.8%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">279</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">18.3%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">617</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">40.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">552</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">36.3%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody>
+</table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEkAAABmBAMAAAB1p6EMAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJiuilzsDAAAAY0lEQVRIx+3UQQ4AEQyFYUeY3mBwg7r/3VhIBKPpRtJO3r/+NuQRgt1Si449XeVSGArqP0q3exK7odKUcMYRQ0F5V7rdk5iVV7v2ft3EFhSUN6Xbvan3GA8/0xwUlEOl273FKuA3hiYrQJBmAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1521 (98.9%)</td>
+<td style="text-align: center;">17 (1.1%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">16</td>
+<td style="text-align: left;">pref_esfuerzo_soc [numeric]</td>
+<td style="text-align: left;">Quienes más se esfuerzan deberían obtener mayores recompensas que quienes se esfuerzan menos</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 3.4 (0.8)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 4 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.2)</td>
+</tr>
+</tbody>
+</table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">66</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">4.3%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">122</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">8.0%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">514</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">33.7%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">824</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">54.0%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody>
+</table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAF0AAABmBAMAAABb4oCeAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJiw8866gAAAAbklEQVRYw+3UwQ2AIAxGYUaQDaSO0P13M1EPhmDaHkBI3jt/F/6kpLR+IlKyo+3xhyoej5/ER+/XY0d6ubKf8NpHPRPh8fj+Pnq/Jpzcy1el7e89G+Hx+OE+er/Z2e//T9Vu7VOFx+P7++j9rtwJ3YPEsGLKDtIAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1526 (99.2%)</td>
+<td style="text-align: center;">12 (0.8%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">17</td>
+<td style="text-align: left;">pref_talento_soc [numeric]</td>
+<td style="text-align: left;">Quienes poseen más talento deberían obtener mayores recompensas que quienes poseen menos talento</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.6 (0.8)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.3)</td>
+</tr>
+</tbody>
+</table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">101</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">6.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">607</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">39.9%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">581</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">38.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">231</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">15.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody>
+</table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEgAAABmBAMAAACaZcoyAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJiw8866gAAAAX0lEQVRIx+3TsQkAIAxEUVfICMYNdP/dVLCwiRwoGuF+/RrlEoLPtBfFaKBUWkREfyJo47LsONJl8+usMhGRawRt/PLd7R+nAF+QiYh8I2jj7+4ummh6HRHRbwjauLcqJ4GARsbaNlAAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1520 (98.8%)</td>
+<td style="text-align: center;">18 (1.2%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">18</td>
+<td style="text-align: left;">pref_padres_ricos [numeric]</td>
 <td style="text-align: left;">Está bien que quienes tienen padres ricos les vaya bien en la vida</td>
 <td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
@@ -1113,104 +1192,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">83</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">152</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">9.3%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">10.0%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">325</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">558</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">36.4%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">36.6%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">405</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">667</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">45.3%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">43.7%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">81</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">148</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">9.1%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">9.7%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 </tbody>
 </table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFAAAABmBAMAAACuHAsuAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwm3/OArAAAAYElEQVRYw+3UsQ0AIAhEUVdwBHUD3H83E7GUQKFBw/36NZicKf1R5UoWW7D1GSBgdGjeTFa7Bqtc2V29CxAwEjRvxnHXJz6Alf48HAEChoDmzfjvWod8NQECRofmzbzeAEf2mT46Si3LAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">894 (99.1%)</td>
-<td style="text-align: center;">8 (0.9%)</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">20</td>
-<td style="text-align: left;">buenos_contactos_percep_ES [haven_labelled, vctrs_vctr, double]</td>
-<td style="text-align: left;">En Chile, quienes tienen buenos contactos les va mejor en la vida</td>
-<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 3 (0.9)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.3)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
-<tbody>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">48</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">5.4%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">157</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">17.7%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-<tr class="odd" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">388</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">43.6%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-<tr class="even" style="background-color:transparent">
-<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
-<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">296</td>
-<td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">33.3%</td>
-<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
-</tr>
-</tbody>
-</table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAE4AAABmBAMAAACXe7p1AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwm3/OArAAAAYklEQVRIx+3TwQkAIQxEUVtICdEONv33poKIC1FzEYLOP79LAhOC/2KJaVFzSUTg4F5z1n3QrkMujvHc1Xt7cHCPOOs+aJennWtpf1H64OAudNZ9uNsv/930Xji4i511H57LNg6UY0AkZKYAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">889 (98.6%)</td>
-<td style="text-align: center;">13 (1.4%)</td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAE4AAABmBAMAAACXe7p1AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJiw8866gAAAAX0lEQVRIx+3TsQ0AIAhEUVdgBHUD3X83E6TUQKHRwP36NZBcSv9XJNolrnauwcFFctZ9kNYlV/blxb2r4ODcOus+Xu33wM5n+l+4Bgfn0Fn38Xi/WXNyLxxcKGfdx88NCgyTADQybwgAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1525 (99.2%)</td>
+<td style="text-align: center;">13 (0.8%)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">21</td>
-<td style="text-align: left;">buenos_contactos_pref_ES [haven_labelled, vctrs_vctr, double]</td>
+<td style="text-align: center;">19</td>
+<td style="text-align: left;">pref_contactos [numeric]</td>
 <td style="text-align: left;">Está bien que quienes tienen buenos contactos les vaya bien en la vida</td>
 <td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
@@ -1233,44 +1252,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">72</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">125</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">8.0%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">8.2%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">280</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">485</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">31.3%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">31.8%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">423</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">709</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">47.3%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">46.5%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">120</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">207</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">13.4%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">13.6%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 </tbody>
 </table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFMAAABmBAMAAABFK7AtAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwou9bGRAAAAZklEQVRYw+3U0QmAMAxF0Y7QbmDjBrr/btKiKEgbgwRauPf7fAVeQpgrqeXUKZ503UtQKPQTNWwr6flSadS8wKsNCoX+25bPuH2o6C39Yz2DQqEXNWxroD+QNXpfAAqFqtSwrVk6AAPCpr83FZYZAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">895 (99.2%)</td>
-<td style="text-align: center;">7 (0.8%)</td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFIAAABmBAMAAACq6dsTAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJi1L9J42AAAAYklEQVRYw+3TwQnAIAxGYVdwBOMG7f67lYpgi2hyCSi+d/4uCfwh7JOUUpxUZb7fkEhkL+07inqOUgaNbu+6kEikfUceK/aQojf/0vdhSOSh0r6jVfaeFNluRyKRf2nf0Q49jWWffAlISgIAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1526 (99.2%)</td>
+<td style="text-align: center;">12 (0.8%)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">22</td>
-<td style="text-align: left;">school_esfuerzo_ES [haven_labelled, vctrs_vctr, double]</td>
+<td style="text-align: center;">20</td>
+<td style="text-align: left;">perc_esfuerzo_esc [numeric]</td>
 <td style="text-align: left;">En esta escuela, quienes se esfuerzan obtienen buenas notas</td>
 <td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
@@ -1293,44 +1312,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">39</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">65</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">4.3%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">4.2%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">81</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">155</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">9.0%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">10.1%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">439</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">751</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">48.9%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">49.1%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">338</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">559</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">37.7%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">36.5%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 </tbody>
 </table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFYAAABmBAMAAACjAntpAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwou9bGRAAAAZUlEQVRYw+3UQQqAMAxE0V6hR+h4g/b+d6ugGwWbREFa+H/9VoFJSuslqWSr026tYbHYDzayN9P9YHXkvcNexWKxL21kb9nTRFaeLjcbV7FY7KON7G32/1BudnQHLBZr28jeVqoDeqyr+BphcnsAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">897 (99.4%)</td>
-<td style="text-align: center;">5 (0.6%)</td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFYAAABmBAMAAACjAntpAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJi1L9J42AAAAZElEQVRYw+3UwQnAIBBEUVuwBCcdaP+9ieAlgehuAqLw//mdFmZDOC9JKc7q9ioFi8X+sJ69Td0Cq57xDq2MxWK/Wc/eoqWNrCzdbzYsY7HYV+vZ2+b/IT3t4A5YLNZgPXs7qQoRaKv457+wwQAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1530 (99.5%)</td>
+<td style="text-align: center;">8 (0.5%)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">23</td>
-<td style="text-align: left;">school_talento_ES [haven_labelled, vctrs_vctr, double]</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: left;">perc_talento_esc [numeric]</td>
 <td style="text-align: left;">En esta escuela, quienes son inteligentes obtienen buenas notas</td>
 <td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
@@ -1353,44 +1372,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">24</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">40</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">2.7%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">2.6%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">106</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">169</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">11.8%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">11.0%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">460</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">826</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">51.2%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">53.9%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">308</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">497</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">34.3%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">32.4%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 </tbody>
 </table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFkAAABmBAMAAABSCSDkAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwou9bGRAAAAZklEQVRYw+3UwQ2AIAxGYUaQDbRsAPvv5kG5EJQ2irHJe+fv1ORvCH4T2eK45dSpoNHo+dq2SwX9SEtNeZOjjEajJ2rbLqOq/2lRtTYXvA+NRj/Ttl16+Cc9fXmTjEaj39O2XXpsB4M4uBa63U5OAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">898 (99.6%)</td>
-<td style="text-align: center;">4 (0.4%)</td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAF0AAABmBAMAAABb4oCeAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJi1L9J42AAAAZklEQVRYw+3UwQkAIQwFUUtYO9BYgv335mGFBUFMDroGZs7vYuAbgv9EctT0dF8qHo+/xVv3q8IHvfRWr/ju84bH4//31v1GZbd6UZaGe67C4/H7vXW/Xv6fPPGz++Dx+PPeul/PNcrLxLBe1SqMAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1532 (99.6%)</td>
+<td style="text-align: center;">6 (0.4%)</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">24</td>
-<td style="text-align: left;">school_merito_ES [haven_labelled, vctrs_vctr, double]</td>
+<td style="text-align: center;">22</td>
+<td style="text-align: left;">perc_merit_esc [numeric]</td>
 <td style="text-align: left;">En esta escuela, los/as estudiantes obtienen las notas que merecen</td>
 <td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <tbody>
@@ -1404,7 +1423,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
 </tr>
 <tr class="even" style="background-color:transparent">
-<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 0.5 (0.3)</td>
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 0 (0.3)</td>
 </tr>
 </tbody>
 </table></td>
@@ -1413,50 +1432,178 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">39</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">65</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">4.4%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">4.3%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">185</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">311</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">20.7%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">20.4%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="odd" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">490</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">838</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">54.7%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">54.9%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 <tr class="even" style="background-color:transparent">
 <td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
 <td style="text-align: left; padding: 0 2px; border: 0;">:</td>
-<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">181</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">313</td>
 <td style="text-align: left; padding: 0; border: 0;">(</td>
-<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">20.2%</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">20.5%</td>
 <td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
 </tr>
 </tbody>
 </table></td>
-<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAF8AAABmBAMAAABfF1CjAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoChYRJwou9bGRAAAAZ0lEQVRYw+3UsQ2AMBAEQZeAO8BHB7j/3kgIkAXiPoEH7cae5KVzKf9IUqtO0w6W3gEAQF4Q3rT1+FmgIedKx1YAAJAKhDdd3RIDuc3nZ70OAAC8AcKbzv8vtVswXAkAAOQC4U1/vQ2XwMwzVdfTbQAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
-<td style="text-align: center;">895 (99.2%)</td>
-<td style="text-align: center;">7 (0.8%)</td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAF8AAABmBAMAAABfF1CjAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJi7S/c+MAAAAaElEQVRYw+3UsQ2AMAxE0YxANsDHCNl/NygoABHFbsCg/+u8xtKllH8kyaqnaQdLawAAIC8Ib9r1+FmgczYE25WOAQCAXCC86eotMZC3+f6s/QAAwBsgvOn8/5INweVKAAAgFwhv+uutIb7K7qPACFwAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1527 (99.3%)</td>
+<td style="text-align: center;">11 (0.7%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">23</td>
+<td style="text-align: left;">genero_ES [numeric]</td>
+<td style="text-align: left;">Género</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 1.6 (0.6)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 2 ≤ 3</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.4)</td>
+</tr>
+</tbody>
+</table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">757</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">49.3%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">712</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">46.4%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">67</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">4.4%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody>
+</table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFYAAABOBAMAAABI/fwyAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJi7S/c+MAAAAU0lEQVRIx2NgGHpAiRgAVatsTBgYjaodVTuqFqdaUvKbIDFgEKklwmdwtYTDzGhU7ajaEaeWlDw0GPI8ieWDIrFqgWE2qnZU7ahaCtSSkt+GEgAAWuFsS9SVDjcAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1536 (99.9%)</td>
+<td style="text-align: center;">2 (0.1%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">24</td>
+<td style="text-align: left;">libros_hogar [numeric]</td>
+<td style="text-align: left;">Aproximadamente ¿cuántos libros hay en tu hogar?</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.3 (1.3)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 2 ≤ 6</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 2 (0.6)</td>
+</tr>
+</tbody>
+</table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">487</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">31.8%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">438</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">28.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">376</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">24.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">111</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">7.3%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">5</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">70</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">4.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">6</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">49</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">3.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody>
+</table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAADwAAACVBAMAAAD2wYRnAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfoCwQCJi7S/c+MAAAAdUlEQVRYw+3SsQnAMAxEUa+gERJtoOy/myGEEIjkw0LYzV37Cqn4re3dGexhvdwZmTzNoDUJVsL+5Zfdz41MTjBobXHnx5f/n5PJSQatLeg85PtzI5MLGLQmwco6H7C6f5PJCQatSbCqzkes/uNk8jyD1natA5I1pyGpYnuyAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1531 (99.5%)</td>
+<td style="text-align: center;">7 (0.5%)</td>
 </tr>
 </tbody>
 </table>
 
-<p>Generated by <a href="https://github.com/dcomtois/summarytools">summarytools</a> 1.0.1 (<a href="https://www.r-project.org/">R</a> version 4.3.2)<br>2024-10-22</p>
+<p>Generated by <a href="https://github.com/dcomtois/summarytools">summarytools</a> 1.0.1 (<a href="https://www.r-project.org/">R</a> version 4.3.2)<br>2024-11-03</p>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(data, <span class="at">file=</span><span class="st">"../input/data/proc/data.RData"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(data, <span class="at">file=</span><span class="st">"../input/data/proc/data.RData"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 

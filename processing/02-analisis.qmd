@@ -16,12 +16,12 @@ load(here::here("input/data/proc/data.RData"))
 # Correlaciones
 
 ```{r}
-corr <- data %>% select(redistribucion, 
-                        merit_esfuerzo_percep_ES, merit_talento_percep_ES, social_merito_percep_ES, 
-                        padres_ricos_percep_ES, buenos_contactos_percep_ES,
-                        merit_esfuerzo_pref_ES, merit_talento_pref_ES, social_merit_pref_ES, 
-                        padres_ricos_pref_ES, buenos_contactos_pref_ES,
-                        school_esfuerzo_ES, school_talento_ES, school_merito_ES)
+corr <- data %>% select(redistribucion,
+                        perc_esfuerzo_soc, perc_talento_soc, perc_merit_soc,
+                        perc_padres_ricos, perc_contactos,
+                        pref_esfuerzo_soc, pref_talento_soc,
+                        pref_padres_ricos, pref_contactos,
+                        perc_esfuerzo_esc, perc_talento_esc, perc_merit_esc)
 ```
 
 ```{r}
@@ -35,13 +35,12 @@ rownames(M) <- c("A. Redistribución",
                  "F. Percepción: buenos contactos",
                  "G. Preferencia: esfuerzo",
                  "H. Preferencia: talento",
-                 "I. Preferencia: merecimiento",
-                 "J. Preferencia: padres ricos",
-                 "K. Preferencia: buenos contactos",
-                 "L. Escuela: esfuerzo",
-                 "M. Escuela: talento",
-                 "N. Escuela: merecimiento")
-colnames(M) <-c("(A)", "(B)","(C)", "(D)", "(E)", "(F)", "(G)", "(H)", "(I)", "(J)", "(K)", "(L)", "(M)", "(N)")
+                 "I. Preferencia: padres ricos",
+                 "J. Preferencia: buenos contactos",
+                 "J. Escuela: esfuerzo",
+                 "L. Escuela: talento",
+                 "M. Escuela: merecimiento")
+colnames(M) <-c("(A)", "(B)","(C)", "(D)", "(E)", "(F)", "(G)", "(H)", "(I)", "(J)", "(K)", "(L)", "(M)")
 ```
 
 ```{r}
@@ -60,26 +59,27 @@ corrplot::corrplot(M,
 data<-data %>%
   mutate(across(where(is.labelled), as.numeric))
 
-reg1.1<- lm(redistribucion~merit_esfuerzo_percep_ES,data=data)
-reg1.2<- lm(redistribucion~merit_talento_percep_ES,data=data)
-reg1.3<- lm(redistribucion~social_merito_percep_ES,data=data)
-reg1<- lm(redistribucion~merit_esfuerzo_percep_ES+merit_talento_percep_ES+social_merito_percep_ES,data=data)
-reg2.1<- lm(redistribucion~merit_esfuerzo_pref_ES,data=data)
-reg2.2<- lm(redistribucion~merit_talento_pref_ES,data=data)
-reg2.3<- lm(redistribucion~social_merit_pref_ES,data=data)
-reg2<- lm(redistribucion~merit_esfuerzo_pref_ES+merit_talento_pref_ES+social_merit_pref_ES,data=data)
-reg3.1<- lm(redistribucion~school_esfuerzo_ES,data=data)
-reg3.2<- lm(redistribucion~school_talento_ES,data=data)
-reg3.3<- lm(redistribucion~school_merito_ES,data=data)
-reg3<- lm(redistribucion~school_esfuerzo_ES+school_talento_ES+school_merito_ES,data=data)
-reg4<- lm(redistribucion~merit_esfuerzo_percep_ES+merit_talento_percep_ES+social_merito_percep_ES+merit_esfuerzo_pref_ES+merit_talento_pref_ES+social_merit_pref_ES+school_esfuerzo_ES+school_talento_ES+school_merito_ES,data=data)
+reg0 <- lm(redistribucion~ola, data=data)
+reg1.1<- lm(redistribucion~perc_esfuerzo_soc,data=data)
+reg1.2<- lm(redistribucion~perc_talento_soc,data=data)
+reg1.3<- lm(redistribucion~perc_merit_soc,data=data)
+reg1<- lm(redistribucion~perc_esfuerzo_soc+perc_talento_soc+perc_merit_soc,data=data)
+reg2.1<- lm(redistribucion~pref_esfuerzo_soc,data=data)
+reg2.2<- lm(redistribucion~pref_talento_soc,data=data)
+reg2<- lm(redistribucion~pref_esfuerzo_soc+pref_talento_soc, data=data)
+reg3.1<- lm(redistribucion~perc_esfuerzo_esc,data=data)
+reg3.2<- lm(redistribucion~perc_talento_esc,data=data)
+reg3.3<- lm(redistribucion~perc_merit_esc,data=data)
+reg3<- lm(redistribucion~perc_esfuerzo_esc+perc_talento_esc+perc_merit_esc,data=data)
+reg4<- lm(redistribucion~ola+perc_esfuerzo_soc+perc_talento_soc+perc_merit_soc+pref_esfuerzo_soc+pref_talento_soc+perc_esfuerzo_esc+perc_talento_esc+perc_merit_esc,data=data)
 
 labs02 <- c("Intercepto",
+            "Ola",
             "Percepción: esfuerzo", "Percepción: talento", "Percepción: merecimiento",
-            "Preferencia: esfuerzo", "Preferencia: talento", "Preferencia: merecimiento",
+            "Preferencia: esfuerzo", "Preferencia: talento",
             "Escuela: esfuerzo", "Escuela: talento", "Escuela: merecimiento")
 
-knitreg(list(reg1.1,reg1.2,reg1.3,reg1,reg2.1,reg2.2,reg2.3,reg2,reg3.1,reg3.2,reg3.3,reg3, reg4),
+knitreg(list(reg0,reg1.1,reg1.2,reg1.3,reg1,reg2.1,reg2.2,reg2,reg3.1,reg3.2,reg3.3,reg3, reg4),
         #custom.model.names = c("Modelo 1","Modelo 2","Modelo 3", "Modelo 4"),
         custom.coef.names = labs02)
 ```
@@ -88,17 +88,17 @@ knitreg(list(reg1.1,reg1.2,reg1.3,reg1,reg2.1,reg2.2,reg2.3,reg2,reg3.1,reg3.2,r
 
 ```{r}
 data_cfa <- data %>% dplyr::select(redistribucion,
-                                   merit_esfuerzo_percep_ES, merit_talento_percep_ES,
-                                   padres_ricos_percep_ES, buenos_contactos_percep_ES,
-                                   merit_esfuerzo_pref_ES, merit_talento_pref_ES,
-                                   padres_ricos_pref_ES, buenos_contactos_pref_ES) %>% 
+                                   perc_esfuerzo_soc, perc_talento_soc,
+                                   perc_padres_ricos, perc_contactos,
+                                   pref_esfuerzo_soc, pref_talento_soc,
+                                   pref_padres_ricos, pref_contactos) %>% 
   na.omit()
 # model
 model_cfa <- '
-  perc_merit = ~ merit_esfuerzo_percep_ES + merit_talento_percep_ES
-  perc_nmerit = ~ padres_ricos_percep_ES + buenos_contactos_percep_ES
-  pref_merit = ~ merit_esfuerzo_pref_ES + merit_talento_pref_ES
-  pref_nmerit = ~ padres_ricos_pref_ES + buenos_contactos_pref_ES
+  perc_merit = ~ perc_esfuerzo_soc + perc_talento_soc
+  perc_nmerit = ~ perc_padres_ricos + perc_contactos
+  pref_merit = ~ pref_esfuerzo_soc + pref_talento_soc
+  pref_nmerit = ~ pref_padres_ricos + pref_contactos
   '
 
 
@@ -136,26 +136,27 @@ knitreg(list(reg1.1, reg1.2, reg1.3, reg1.4, reg1.5))
 # Percepción desigualdad
 
 ```{r results='asis'}
-reg1.1<- lm(perc_des~merit_esfuerzo_percep_ES,data=data)
-reg1.2<- lm(perc_des~merit_talento_percep_ES,data=data)
-reg1.3<- lm(perc_des~social_merito_percep_ES,data=data)
-reg1<- lm(perc_des~merit_esfuerzo_percep_ES+merit_talento_percep_ES+social_merito_percep_ES,data=data)
-reg2.1<- lm(perc_des~merit_esfuerzo_pref_ES,data=data)
-reg2.2<- lm(perc_des~merit_talento_pref_ES,data=data)
-reg2.3<- lm(perc_des~social_merit_pref_ES,data=data)
-reg2<- lm(perc_des~merit_esfuerzo_pref_ES+merit_talento_pref_ES+social_merit_pref_ES,data=data)
-reg3.1<- lm(perc_des~school_esfuerzo_ES,data=data)
-reg3.2<- lm(perc_des~school_talento_ES,data=data)
-reg3.3<- lm(perc_des~school_merito_ES,data=data)
-reg3<- lm(perc_des~school_esfuerzo_ES+school_talento_ES+school_merito_ES,data=data)
-reg4<- lm(perc_des~merit_esfuerzo_percep_ES+merit_talento_percep_ES+social_merito_percep_ES+merit_esfuerzo_pref_ES+merit_talento_pref_ES+social_merit_pref_ES+school_esfuerzo_ES+school_talento_ES+school_merito_ES,data=data)
+reg0 <- lm(perc_des~ola, data=data)
+reg1.1<- lm(perc_des~perc_esfuerzo_soc,data=data)
+reg1.2<- lm(perc_des~perc_talento_soc,data=data)
+reg1.3<- lm(perc_des~perc_merit_soc,data=data)
+reg1<- lm(perc_des~perc_esfuerzo_soc+perc_talento_soc+perc_merit_soc,data=data)
+reg2.1<- lm(perc_des~pref_esfuerzo_soc,data=data)
+reg2.2<- lm(perc_des~pref_talento_soc,data=data)
+reg2<- lm(perc_des~pref_esfuerzo_soc+pref_talento_soc,data=data)
+reg3.1<- lm(perc_des~perc_esfuerzo_esc,data=data)
+reg3.2<- lm(perc_des~perc_talento_esc,data=data)
+reg3.3<- lm(perc_des~perc_merit_esc,data=data)
+reg3<- lm(perc_des~perc_esfuerzo_esc+perc_talento_esc+perc_merit_esc,data=data)
+reg4<- lm(perc_des~ola+perc_esfuerzo_soc+perc_talento_soc+perc_merit_soc+pref_esfuerzo_soc+pref_talento_soc+perc_esfuerzo_esc+perc_talento_esc+perc_merit_esc,data=data)
 
 labs02 <- c("Intercepto",
+            "Ola",
             "Percepción: esfuerzo", "Percepción: talento", "Percepción: merecimiento",
-            "Preferencia: esfuerzo", "Preferencia: talento", "Preferencia: merecimiento",
+            "Preferencia: esfuerzo", "Preferencia: talento",
             "Escuela: esfuerzo", "Escuela: talento", "Escuela: merecimiento")
 
-knitreg(list(reg1.1,reg1.2,reg1.3,reg1,reg2.1,reg2.2,reg2.3,reg2,reg3.1,reg3.2,reg3.3,reg3, reg4),
+knitreg(list(reg0,reg1.1,reg1.2,reg1.3,reg1,reg2.1,reg2.2,reg2,reg3.1,reg3.2,reg3.3,reg3, reg4),
         #custom.model.names = c("Modelo 1","Modelo 2","Modelo 3", "Modelo 4"),
         custom.coef.names = labs02)
 ```
@@ -164,19 +165,19 @@ knitreg(list(reg1.1,reg1.2,reg1.3,reg1,reg2.1,reg2.2,reg2.3,reg2,reg3.1,reg3.2,r
 
 ```{r}
 data_cfa <- data %>% dplyr::select(perc_des,
-                                   merit_esfuerzo_percep_ES, merit_talento_percep_ES,
-                                   padres_ricos_percep_ES, buenos_contactos_percep_ES,
-                                   merit_esfuerzo_pref_ES, merit_talento_pref_ES,
-                                   padres_ricos_pref_ES, buenos_contactos_pref_ES,
-                                   school_esfuerzo_ES, school_talento_ES, school_merito_ES) %>% 
+                                   perc_esfuerzo_soc, perc_talento_soc,
+                                   perc_padres_ricos, perc_contactos,
+                                   pref_esfuerzo_soc, pref_talento_soc,
+                                   pref_padres_ricos, pref_contactos,
+                                   perc_esfuerzo_esc, perc_talento_esc, perc_merit_esc) %>% 
   na.omit()
 # model
 model_cfa <- '
-  perc_merit = ~ merit_esfuerzo_percep_ES + merit_talento_percep_ES
-  perc_nmerit = ~ padres_ricos_percep_ES + buenos_contactos_percep_ES
-  pref_merit = ~ merit_esfuerzo_pref_ES + merit_talento_pref_ES
-  pref_nmerit = ~ padres_ricos_pref_ES + buenos_contactos_pref_ES
-  school_merit = ~ school_esfuerzo_ES + school_talento_ES + school_merito_ES
+  perc_merit = ~ perc_esfuerzo_soc + perc_talento_soc
+  perc_nmerit = ~ perc_padres_ricos + perc_contactos
+  pref_merit = ~ pref_esfuerzo_soc + pref_talento_soc
+  pref_nmerit = ~ pref_padres_ricos + pref_contactos
+  school_merit = ~ perc_esfuerzo_esc + perc_talento_esc + perc_merit_esc
   '
 
 # estimation for each order set
@@ -219,26 +220,27 @@ data <- data %>% rowwise() %>%
   mutate(market_justice=mean(c(just_salud, just_educ, just_pensiones), na.rm = TRUE))
 summary(data$market_justice)
 
-reg1.1<- lm(market_justice~merit_esfuerzo_percep_ES,data=data)
-reg1.2<- lm(market_justice~merit_talento_percep_ES,data=data)
-reg1.3<- lm(market_justice~social_merito_percep_ES,data=data)
-reg1<- lm(market_justice~merit_esfuerzo_percep_ES+merit_talento_percep_ES+social_merito_percep_ES,data=data)
-reg2.1<- lm(market_justice~merit_esfuerzo_pref_ES,data=data)
-reg2.2<- lm(market_justice~merit_talento_pref_ES,data=data)
-reg2.3<- lm(market_justice~social_merit_pref_ES,data=data)
-reg2<- lm(market_justice~merit_esfuerzo_pref_ES+merit_talento_pref_ES+social_merit_pref_ES,data=data)
-reg3.1<- lm(market_justice~school_esfuerzo_ES,data=data)
-reg3.2<- lm(market_justice~school_talento_ES,data=data)
-reg3.3<- lm(market_justice~school_merito_ES,data=data)
-reg3<- lm(market_justice~school_esfuerzo_ES+school_talento_ES+school_merito_ES,data=data)
-reg4<- lm(market_justice~merit_esfuerzo_percep_ES+merit_talento_percep_ES+social_merito_percep_ES+merit_esfuerzo_pref_ES+merit_talento_pref_ES+social_merit_pref_ES+school_esfuerzo_ES+school_talento_ES+school_merito_ES,data=data)
+reg0 <- lm(market_justice~ola, data=data)
+reg1.1<- lm(market_justice~perc_esfuerzo_soc,data=data)
+reg1.2<- lm(market_justice~perc_talento_soc,data=data)
+reg1.3<- lm(market_justice~perc_merit_soc,data=data)
+reg1<- lm(market_justice~perc_esfuerzo_soc+perc_talento_soc+perc_merit_soc,data=data)
+reg2.1<- lm(market_justice~pref_esfuerzo_soc,data=data)
+reg2.2<- lm(market_justice~pref_talento_soc,data=data)
+reg2<- lm(market_justice~pref_esfuerzo_soc+pref_talento_soc,data=data)
+reg3.1<- lm(market_justice~perc_esfuerzo_esc,data=data)
+reg3.2<- lm(market_justice~perc_talento_esc,data=data)
+reg3.3<- lm(market_justice~perc_merit_esc,data=data)
+reg3<- lm(market_justice~perc_esfuerzo_esc+perc_talento_esc+perc_merit_esc,data=data)
+reg4<- lm(market_justice~ola+perc_esfuerzo_soc+perc_talento_soc+perc_merit_soc+pref_esfuerzo_soc+pref_talento_soc+perc_esfuerzo_esc+perc_talento_esc+perc_merit_esc,data=data)
 
 labs02 <- c("Intercepto",
+            "Ola",
             "Percepción: esfuerzo", "Percepción: talento", "Percepción: merecimiento",
-            "Preferencia: esfuerzo", "Preferencia: talento", "Preferencia: merecimiento",
+            "Preferencia: esfuerzo", "Preferencia: talento",
             "Escuela: esfuerzo", "Escuela: talento", "Escuela: merecimiento")
 
-knitreg(list(reg1.1,reg1.2,reg1.3,reg1,reg2.1,reg2.2,reg2.3,reg2,reg3.1,reg3.2,reg3.3,reg3, reg4),
+knitreg(list(reg0,reg1.1,reg1.2,reg1.3,reg1,reg2.1,reg2.2,reg2,reg3.1,reg3.2,reg3.3,reg3, reg4),
         #custom.model.names = c("Modelo 1","Modelo 2","Modelo 3", "Modelo 4"),
         custom.coef.names = labs02)
 ```
@@ -247,19 +249,19 @@ knitreg(list(reg1.1,reg1.2,reg1.3,reg1,reg2.1,reg2.2,reg2.3,reg2,reg3.1,reg3.2,r
 
 ```{r}
 data_cfa <- data %>% dplyr::select(market_justice,
-                                   merit_esfuerzo_percep_ES, merit_talento_percep_ES,
-                                   padres_ricos_percep_ES, buenos_contactos_percep_ES,
-                                   merit_esfuerzo_pref_ES, merit_talento_pref_ES,
-                                   padres_ricos_pref_ES, buenos_contactos_pref_ES,
-                                   school_esfuerzo_ES, school_talento_ES, school_merito_ES) %>% 
+                                   perc_esfuerzo_soc, perc_talento_soc,
+                                   perc_padres_ricos, perc_contactos,
+                                   pref_esfuerzo_soc, pref_talento_soc,
+                                   pref_padres_ricos, pref_contactos,
+                                   perc_esfuerzo_esc, perc_talento_esc, perc_merit_esc) %>% 
   na.omit()
 # model
 model_cfa <- '
-  perc_merit = ~ merit_esfuerzo_percep_ES + merit_talento_percep_ES
-  perc_nmerit = ~ padres_ricos_percep_ES + buenos_contactos_percep_ES
-  pref_merit = ~ merit_esfuerzo_pref_ES + merit_talento_pref_ES
-  pref_nmerit = ~ padres_ricos_pref_ES + buenos_contactos_pref_ES
-  school_merit = ~ school_esfuerzo_ES + school_talento_ES + school_merito_ES
+  perc_merit = ~ perc_esfuerzo_soc + perc_talento_soc
+  perc_nmerit = ~ perc_padres_ricos + perc_contactos
+  pref_merit = ~ pref_esfuerzo_soc + pref_talento_soc
+  pref_nmerit = ~ pref_padres_ricos + pref_contactos
+  school_merit = ~ perc_esfuerzo_esc + perc_talento_esc + perc_merit_esc
   '
 
 # estimation for each order set
