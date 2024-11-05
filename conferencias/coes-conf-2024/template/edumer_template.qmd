@@ -60,15 +60,6 @@ rm(list = ls())
 ```
 
 
-```{r}
-#| label: data
-#| include: false
-
-load(url("https://github.com/educacion-meritocracia/market-justice-preferences-school/raw/refs/heads/main/input/data/mlm_models.RData"))
-load(url("https://github.com/educacion-meritocracia/market-justice-preferences-school/raw/refs/heads/main/input/data/dependientes.RData"))
-
-```
-
 
 ::: columns
 ::: {.column width="15%"}
@@ -184,40 +175,71 @@ $H_{5}$ A medida que los/as estudiantes avanzan en su escolarización, se espera
 
 #### Percepción de meritocracia en la sociedad
 
+::: {.columns}
+
+::: {.column width="10%"}
+:::
+
+::: {.column width="90%"}
+
 ![](https://educacion-meritocracia.github.io/special-issue-inequality/processing/02-analisis_files/figure-html/unnamed-chunk-11-1.png)
+
+:::
+:::
+:::
 
 ## Variables
 
 #### Preferencias por la meritocracia en la sociedad
 
+::: {.columns}
+
+::: {.column width="10%"}
+:::
+
+::: {.column width="90%"}
+
 ![](https://educacion-meritocracia.github.io/special-issue-inequality/processing/02-analisis_files/figure-html/unnamed-chunk-12-1.png)
+
+:::
+:::
+:::
 
 ## Variables
 
 #### Percepción de meritocracia en la escuela
 
+::: {.columns}
+
+::: {.column width="10%"}
+:::
+
+::: {.column width="90%"}
+
 ![](https://educacion-meritocracia.github.io/special-issue-inequality/processing/02-analisis_files/figure-html/unnamed-chunk-13-1.png)
+
+:::
+:::
+:::
+
 
 # Resultados {.xlarge }
 
 ## Modelos 
 ::: {style="font-size: 100%;"}
 
+::: {.columns}
+
+::: {.column width="10%"}
+:::
+
+::: {.column width="90%"}
+
 ![](https://educacion-meritocracia.github.io/special-issue-inequality/processing/02-analisis_files/figure-html/unnamed-chunk-15-1.png)
+:::
+:::
+:::
 
-```{r}
-#| label: fig-lineal-reg
-#| fig-cap: "Linear mixed-effects models for meritocracy perception and market justice preferences"
-#| fig-cap-location: top
-#| fig-align: center
-#| out-width: '80%'
-#| echo: false
-#| warning: false
-#| message: false
-#| results: asis
-
-
-```
 
 :::
 
