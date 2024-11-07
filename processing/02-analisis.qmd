@@ -6,7 +6,7 @@ bibliography: "../input/bib/merit-redis-school.bib"
 ---
 
 ```{r}
-pacman::p_load(dplyr, car, sjmisc, sjPlot, sjlabelled, stargazer, kableExtra, corrplot, texreg, ggplot2, ggpubr, lavaan, haven)
+pacman::p_load(dplyr, car, sjmisc, sjPlot, sjlabelled, stargazer, kableExtra, corrplot, texreg, ggplot2, ggpubr, lavaan, haven, lme4)
 ```
 
 ```{r}
@@ -179,19 +179,23 @@ data %>% dplyr::select(perc_esfuerzo_esc, perc_talento_esc, perc_merit_esc) %>%
 
 
 ```{r results='asis'}
-reg0 <- lm(perc_des~ola+curso_estudiante_rec, data=data)
-reg1.1<- lm(perc_des~perc_esfuerzo_soc,data=data)
-reg1.2<- lm(perc_des~perc_talento_soc,data=data)
-reg1.3<- lm(perc_des~perc_merit_soc,data=data)
-reg1<- lm(perc_des~perc_esfuerzo_soc+perc_talento_soc+perc_merit_soc,data=data)
-reg2.1<- lm(perc_des~pref_esfuerzo_soc,data=data)
-reg2.2<- lm(perc_des~pref_talento_soc,data=data)
-reg2<- lm(perc_des~pref_esfuerzo_soc+pref_talento_soc,data=data)
-reg3.1<- lm(perc_des~perc_esfuerzo_esc,data=data)
-reg3.2<- lm(perc_des~perc_talento_esc,data=data)
-reg3.3<- lm(perc_des~perc_merit_esc,data=data)
-reg3<- lm(perc_des~perc_esfuerzo_esc+perc_talento_esc+perc_merit_esc,data=data)
-reg4<- lm(perc_des~ola+curso_estudiante_rec+perc_esfuerzo_soc+perc_talento_soc+perc_merit_soc+perc_padres_ricos+perc_contactos+pref_esfuerzo_soc+pref_talento_soc+pref_padres_ricos+pref_contactos+perc_esfuerzo_esc+perc_talento_esc+perc_merit_esc,data=data)
+reg0 <- lmer(perc_des~ola+curso_estudiante_rec+(1|id_estudiante), data=data)
+reg1.1<- lmer(perc_des~perc_esfuerzo_soc+(1|id_estudiante),data=data)
+reg1.2<- lmer(perc_des~perc_talento_soc+(1|id_estudiante),data=data)
+reg1.3<- lmer(perc_des~perc_merit_soc+(1|id_estudiante),data=data)
+reg1.4<- lmer(perc_des~perc_padres_ricos+(1|id_estudiante),data=data)
+reg1.5<- lmer(perc_des~perc_contactos+(1|id_estudiante),data=data)
+reg1<- lmer(perc_des~perc_esfuerzo_soc+perc_talento_soc+perc_merit_soc+perc_padres_ricos+perc_contactos+(1|id_estudiante),data=data)
+reg2.1<- lmer(perc_des~pref_esfuerzo_soc+(1|id_estudiante),data=data)
+reg2.2<- lmer(perc_des~pref_talento_soc+(1|id_estudiante),data=data)
+reg2.3<- lmer(perc_des~pref_padres_ricos+(1|id_estudiante),data=data)
+reg2.4<- lmer(perc_des~pref_contactos+(1|id_estudiante),data=data)
+reg2<- lmer(perc_des~pref_esfuerzo_soc+pref_talento_soc+pref_padres_ricos+pref_contactos+(1|id_estudiante),data=data)
+reg3.1<- lmer(perc_des~perc_esfuerzo_esc+(1|id_estudiante),data=data)
+reg3.2<- lmer(perc_des~perc_talento_esc+(1|id_estudiante),data=data)
+reg3.3<- lmer(perc_des~perc_merit_esc+(1|id_estudiante),data=data)
+reg3<- lmer(perc_des~perc_esfuerzo_esc+perc_talento_esc+perc_merit_esc+(1|id_estudiante),data=data)
+reg4<- lmer(perc_des~ola+curso_estudiante_rec+perc_esfuerzo_soc+perc_talento_soc+perc_merit_soc+perc_padres_ricos+perc_contactos+pref_esfuerzo_soc+pref_talento_soc+pref_padres_ricos+pref_contactos+perc_esfuerzo_esc+perc_talento_esc+perc_merit_esc+(1|id_estudiante),data=data)
 
 labs02 <- c("Intercepto",
             "Ola",
