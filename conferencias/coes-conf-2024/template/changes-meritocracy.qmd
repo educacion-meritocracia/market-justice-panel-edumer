@@ -391,7 +391,7 @@ ggarrange(prefmeritsoc_1, prefmeritsoc_2, common.legend = TRUE, nrow=2, legend =
 ```
 
 ## 
-#### Cambio en las preferencias por que las personas con más talento sean recompensadas 
+#### Cambio en las preferencias por que las personas con buenos contactos les debería ir bien en la vida
 
 ```{r}
 data$pref_talento_soc <- factor(data$pref_talento_soc, labels= c("Muy en desacuerdo", "Desacuerdo", "De acuerdo", "Muy de acuerdo"))
