@@ -82,6 +82,7 @@ data <- data %>% filter(atricion==1)
 
 ![](images/edumer.png)
 
+![](images/qr.png)
 
 :::
 
@@ -154,7 +155,7 @@ XI Conferencia Internacional COES
 
 - propuesta escala de meritocracia de @castillo_multidimensional_2023 
 
-![](images/modelo_con.PNG)
+![](images/modelo_con.png)
 
 ## Antecedentes: **Meritocracia**
 
@@ -184,13 +185,13 @@ XI Conferencia Internacional COES
 
 - propuesta escala de meritocracia de @castillo_multidimensional_2023 
 
-![](images/modelo_con.PNG)
+![](images/modelo_con.png)
 
 ##
 
 - Agregamos una nueva dimensión: percepción de meritocracia en la escuela
 
-![](images/variables.PNG)
+![](images/variables.png)
     
 :::
 
