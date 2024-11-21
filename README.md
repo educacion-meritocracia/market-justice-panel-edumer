@@ -6,3 +6,5 @@
 [Conferencia COES](https://educacion-meritocracia.github.io/special-issue-inequality/conferencias/coes-conf-2024/template/changes-meritocracy.html#/cambio-en-las-creencias-sobre-meritocracia-en-el-contexto-escolar)
 
 [Preregistro](https://educacion-meritocracia.github.io/special-issue-inequality/preregistro.html)
+
+[Abstract demosal](https://educacion-meritocracia.github.io/special-issue-inequality/conferencias/demosal-2025/abstract.html)
