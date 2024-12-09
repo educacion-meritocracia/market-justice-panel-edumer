@@ -94,7 +94,12 @@ data <- edumer_students_long %>% select(id_estudiante,
                               perc_merit_esc=p2_3,
                               genero_ES=p20,
                               #educ_max, 
-                              libros_hogar=p30)
+                              libros_hogar=p30,
+                              prom_notas=p4,
+                              #nivel_educ,
+                              perc_educ=p25,
+                              educ_madre=p26,
+                              educ_padre=p27)
 
 ```
 
