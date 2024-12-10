@@ -1,0 +1,96 @@
+---
+format: 
+  html: 
+    code-fold: true
+    html-math-method: katex
+  pdf: 
+    geometry: 
+      - top=30mm
+      - left=20mm
+    template-partials: 
+      - title.tex
+    include-in-header:
+      text: |
+        \usepackage[noblocks]{authblk}
+        \renewcommand*{\Authsep}{, }
+        \renewcommand*{\Authand}{, }
+        \renewcommand*{\Authands}{, }
+        \renewcommand\Affilfont{\small}
+editor: source
+bibliography: "../../input/bib/merit-redis-school.bib"
+author:
+  - name: Juan Carlos Castillo
+    corresponding: true
+    orcid: 0000-0003-1265-7854
+    email: juancastillov@uchile.cl
+    affiliations:
+      - ref: 1
+      - ref: 2
+      - ref: 3
+  - name: Kevin Carrasco
+    orcid: 0000-0002-9348-8361
+    email: kevin.carrasco@ug.uchile.cl
+    affiliations:
+      - ref: 2
+  - name: Andreas Laffert
+    orcid: 0000-0002-9008-2454
+    email: kevin.carrasco@ug.uchile.cl
+    affiliations:
+      - ref: 4
+  - name: María Fernanda Núñez
+    orcid: 0009-0004-7559-9959
+    email: maria.nunez.2@ug.uchile.cl
+    affiliations:
+      - ref: 1
+  - name: Isidora Yañez
+    orcid: 0009-0004-7559-9959
+    email: isidora.yanez.a@ug.uchile.cl 
+    affiliations:
+      - ref: 1
+affiliations: 
+  - id: 1
+    name: Universidad de Chile
+  - id: 2
+    name: Centro de estudios del conflicto y cohesión social (COES)
+  - id: 3
+    name: Núcleo milenio de desigualdades y oportunidades digitales (NUDOS)
+  - id: 4
+    name: Pontificia Universidad Católica de Chile
+lang: es
+citeproc: true
+---
+
+# Cambio en las creencias sobre meritocracia y justicia de mercado en el contexto escolar
+
+
+## Abstract
+
+La desigualdad económica se refiere a la distribución desigual de la riqueza, los ingresos y otros recursos económicos dentro de una sociedad. Hay varias formas en que la desigualdad económica podría ser justificada por diferentes individuos y grupos. Por ejemplo, si las personas perciben que en la sociedad los esfuerzos y talentos son recomensandos -- como en una sociedad meritocrática --  probablemente tenderán a creer que las desigualdades existentes son producto de un proceso de distribución justo. Una de las formas de estudiar la desigualdad económica existente tiene que ver con la investigación sobre las preferencias por la justicia de mercado, entendidas como aquellas creencias sobre qué tan justo es que personas con más ingresos accedan a mejores servicios de salud, educación y obtengan mejores pensiones [@lane_market_1986; @lindh_bringing_2023]. Sin embargo, hasta ahora la mayor parte de las investigaciones sobre la justicia de mercado se han efectuado en población adulta, siendo escaso el estudio de los factores asociados a estas preferencias en edades más tempranas, así como también su formación [@castillo_socialization_2024]. Utilizando datos de la encuesta panel Educación y Meritocracia (N=900, año 2023-2024) de educación básica y media en Chile, el presente estudio ahonda en el cambio e influencia de las percepciones y preferencias de la meritocracia en la escuela y la sociedad sobre la justicia de mercado. Dado que la meritocracia se concibe como un sistema donde las recompensas se distribuyen según el esfuerzo y el talento individual [@young_rise_1958], la hipótesis central es que quienes perciban que existe más meritocracia en la escuela y en la sociedad, tenderán a mostrar mayores preferencias sobre la justicia de mercado.
+
+La investigación sobre la meritocracia y el esfuerzo ha destacado cómo las creencias meritocráticas se asocian con la justificación del acceso desigual a los recursos y las recompensas en la sociedad [@mijs_paradox_2019; @andersen_we_2021], argumentando que la meritocracia en realidad puede perpetuar o aumentar la desigualdad social a medida que genera una jerarquía en la que aquellos que ya tienen recursos y ventajas tienen más posibilidades de éxito. En este sentido, en los últimos años ha habido un creciente interés por abordar las creencias sobre la meritocracia y su asociación con variables individuales y contextuales, así como su impacto en la justificación de las desigualdades sociales. En lo que respecta a su operacionalización, se considerarán dos aspectos en su conceptualización y medición. En primer lugar, la percepción de meritocracia escolar, asociada a que la inteligencia y el esfuerzo son relevantes para obtener buenas calificaciones en la escuela [@resh_sense_2010]. En segundo lugar, se incluirá una medición de meritocracia en la sociedad, que también se divide en dos aspectos. Por un lado, la percepción de meritocracia, es decir, en qué medida se percibe que los esfuerzos y habilidades son recompensados en el país [@andersen_we_2021; @castillo_meritocracia_2019; @mijs_paradox_2019] y, por otro lado, las preferencias por la meritocracia, es decir, en qué medida la meritocracia es deseada en la sociedad [@castillo_multidimensional_2023]. De esta forma, se plantean las siguientes hipótesis:
+
+H1: Estudiantes que presentan mayor percepción de meritocracia en la escuela tendrán mayor preferencia por la justicia de mercado
+
+H2: Estudiantes que presentan mayor percepción de meritocracia en la sociedad tendrán mayor preferencia por la justicia de mercado.
+
+H3: Estudiantes que presentan mayor preferencia por la meritocracia en la sociedad tendrán mayor preferencia por la justicia de mercado.
+
+El interés de centrarse en la edad escolar parte del reconocimiento de que las escuelas juegan un papel importante en la socialización, ya que son una institución clave para transmitir normas, valores y expectativas culturales a los jóvenes. Las escuelas también pueden reproducir y reforzar los desequilibrios de poder y los sesgos existentes, ya que el currículo y otras prácticas escolares pueden estar moldeados por la cultura dominante o las preferencias de aquellos en posiciones de poder. Investigaciones han demostrado que los niños más pequeños muestran una preferencia por la igualdad, mientras que los niños mayores comienzan a aceptar la desigualdad si esta se justifica por el mérito [@almas_fairness_2010; @baumard_preschoolers_2012]. Por lo tanto, es de esperar que existan diferencias en las preferencias por la redistribución tanto por el nivel escolar (básica o media) como también un cambio a través del tiempo (2023-2024). Por lo tanto, se plantean dos hipótesis adicionales:
+
+H4: Estudiantes de educación media tendrán menor preferencia por la redistribución que estudiantes de educación básica
+
+H5: A medida que los/as estudiantes avanzan en su escolarización, se espera que las preferencias por la redistribución disminuyan.
+
+La base de datos a utilizar corresponde a la encuesta panel "Educación y Meritocracia" (EDUMER), realizada en Chile durante el 2023 y 2024. En este estudio se evaluaron estudiantes de sexto básico y primero medio provenientes de 9 escuelas de la región metropolitana (N=902). Los resultados muestran que estudiantes con mayor percepción y preferencias por la meritocracia en la sociedad y en la escuela manifiestan una mayor preferencia por la justicia de mercado. Asimismo, los estudiantes de educación media tienen menor preferencia por la justicia de mercado que los estudiantes de educación básica. Se discuten las implicancias de estos resultados para la socialización política de estudiantes por parte de la familia de origen y la escuela. 
+
+
+```{r}
+#| echo: false
+#| label: wordstats
+#| warning: false
+#| message: false
+wordcount <- wordcountaddin::text_stats('abstract.qmd')
+words <- substr(wordcount[3], start=19, stop=29)
+```
+
+**Word count**: `r words`

@@ -6,7 +6,7 @@ bibliography: "../input/bib/merit-redis-school.bib"
 ---
 
 ```{r}
-pacman::p_load(dplyr, car, sjmisc, sjPlot, sjlabelled, stargazer, kableExtra, corrplot, texreg, ggplot2, ggpubr, lavaan, haven)
+pacman::p_load(dplyr, car, sjmisc, sjPlot, sjlabelled, stargazer, kableExtra, corrplot, texreg, ggplot2, ggpubr, lavaan, haven, lme4)
 ```
 
 ```{r}
@@ -51,6 +51,28 @@ corrplot::corrplot(M,
   tl.col = "black", # COlor letras, rojo por defecto
   na.label = "-")
 ```
+
+```{r}
+data$curso_estudiante <- car::recode(data$curso_estudiante, recodes = c("'6a'='Basica';
+                                                                        '6b'='Basica';
+                                                                        '6c'='Basica';
+                                                                        '7a'='Basica';
+                                                                        '7b'='Basica';
+                                                                        '1a'='Media';
+                                                                        '1b'='Media';
+                                                                        '1c'='Media';
+                                                                        '2a'='Media';
+                                                                        '2b'='Media';
+                                                                        '2c'='Media'"))
+
+data <- data  %>% group_by(id_estudiante) %>%
+  mutate(curso_estudiante_rec = ifelse(ola == 2 & is.na(curso_estudiante),
+                                   curso_estudiante[ola == 1],
+                                   curso_estudiante)) %>% ungroup()
+
+table(data$curso_estudiante_rec)
+```
+
 
 # Redistribución
 
@@ -135,31 +157,74 @@ knitreg(list(reg1.1, reg1.2, reg1.3, reg1.4, reg1.5))
 
 # Percepción desigualdad
 
+```{r}
+data %>% dplyr::select(perc_esfuerzo_soc, perc_talento_soc, perc_merit_soc,
+                       perc_padres_ricos, perc_contactos) %>%  
+  sjPlot::plot_stackfrq()+
+  theme(legend.position = "bottom")
+```
+
+```{r}
+data %>% dplyr::select(pref_esfuerzo_soc, pref_talento_soc,
+                       pref_padres_ricos, pref_contactos) %>%  
+  sjPlot::plot_stackfrq()+
+  theme(legend.position = "bottom")
+```
+
+```{r}
+data %>% dplyr::select(perc_esfuerzo_esc, perc_talento_esc, perc_merit_esc) %>%  
+  sjPlot::plot_stackfrq()+
+  theme(legend.position = "bottom")
+```
+
+
 ```{r results='asis'}
-reg0 <- lm(perc_des~ola, data=data)
-reg1.1<- lm(perc_des~perc_esfuerzo_soc,data=data)
-reg1.2<- lm(perc_des~perc_talento_soc,data=data)
-reg1.3<- lm(perc_des~perc_merit_soc,data=data)
-reg1<- lm(perc_des~perc_esfuerzo_soc+perc_talento_soc+perc_merit_soc,data=data)
-reg2.1<- lm(perc_des~pref_esfuerzo_soc,data=data)
-reg2.2<- lm(perc_des~pref_talento_soc,data=data)
-reg2<- lm(perc_des~pref_esfuerzo_soc+pref_talento_soc,data=data)
-reg3.1<- lm(perc_des~perc_esfuerzo_esc,data=data)
-reg3.2<- lm(perc_des~perc_talento_esc,data=data)
-reg3.3<- lm(perc_des~perc_merit_esc,data=data)
-reg3<- lm(perc_des~perc_esfuerzo_esc+perc_talento_esc+perc_merit_esc,data=data)
-reg4<- lm(perc_des~ola+perc_esfuerzo_soc+perc_talento_soc+perc_merit_soc+pref_esfuerzo_soc+pref_talento_soc+perc_esfuerzo_esc+perc_talento_esc+perc_merit_esc,data=data)
+reg0 <- lmer(perc_des~ola+curso_estudiante_rec+(1|id_estudiante), data=data)
+reg1.1<- lmer(perc_des~perc_esfuerzo_soc+(1|id_estudiante),data=data)
+reg1.2<- lmer(perc_des~perc_talento_soc+(1|id_estudiante),data=data)
+reg1.3<- lmer(perc_des~perc_merit_soc+(1|id_estudiante),data=data)
+reg1.4<- lmer(perc_des~perc_padres_ricos+(1|id_estudiante),data=data)
+reg1.5<- lmer(perc_des~perc_contactos+(1|id_estudiante),data=data)
+reg1<- lmer(perc_des~perc_esfuerzo_soc+perc_talento_soc+perc_merit_soc+perc_padres_ricos+perc_contactos+(1|id_estudiante),data=data)
+reg2.1<- lmer(perc_des~pref_esfuerzo_soc+(1|id_estudiante),data=data)
+reg2.2<- lmer(perc_des~pref_talento_soc+(1|id_estudiante),data=data)
+reg2.3<- lmer(perc_des~pref_padres_ricos+(1|id_estudiante),data=data)
+reg2.4<- lmer(perc_des~pref_contactos+(1|id_estudiante),data=data)
+reg2<- lmer(perc_des~pref_esfuerzo_soc+pref_talento_soc+pref_padres_ricos+pref_contactos+(1|id_estudiante),data=data)
+reg3.1<- lmer(perc_des~perc_esfuerzo_esc+(1|id_estudiante),data=data)
+reg3.2<- lmer(perc_des~perc_talento_esc+(1|id_estudiante),data=data)
+reg3.3<- lmer(perc_des~perc_merit_esc+(1|id_estudiante),data=data)
+reg3<- lmer(perc_des~perc_esfuerzo_esc+perc_talento_esc+perc_merit_esc+(1|id_estudiante),data=data)
+reg4<- lmer(perc_des~ola+curso_estudiante_rec+perc_esfuerzo_soc+perc_talento_soc+perc_merit_soc+perc_padres_ricos+perc_contactos+pref_esfuerzo_soc+pref_talento_soc+pref_padres_ricos+pref_contactos+perc_esfuerzo_esc+perc_talento_esc+perc_merit_esc+(1|id_estudiante),data=data)
 
 labs02 <- c("Intercepto",
             "Ola",
-            "Percepción: esfuerzo", "Percepción: talento", "Percepción: merecimiento",
-            "Preferencia: esfuerzo", "Preferencia: talento",
+            "Media",
+            "Percepción: esfuerzo", "Percepción: talento", "Percepción: merecimiento", "Percepción: Padres ricos", "Percepción: buenos contactos",
+            "Preferencia: esfuerzo", "Preferencia: talento", "Preferencia: Padres ricos", "Preferencia: buenos contactos",
             "Escuela: esfuerzo", "Escuela: talento", "Escuela: merecimiento")
 
 knitreg(list(reg0,reg1.1,reg1.2,reg1.3,reg1,reg2.1,reg2.2,reg2,reg3.1,reg3.2,reg3.3,reg3, reg4),
         #custom.model.names = c("Modelo 1","Modelo 2","Modelo 3", "Modelo 4"),
         custom.coef.names = labs02)
 ```
+
+```{r}
+sjPlot::plot_model(reg4,
+                   show.values = TRUE,#mostrar valor de efectos
+            dot.size = 1.3, #tamaño circulos
+            line.size = 1, #tamaño CI
+            value.size = 3.5, #tamaño valor efectoss
+            value.offset = 0.35,
+            spacing = .7, #espacio entre efectos)
+            axis.labels = rev(c("Ola", "Media",
+            "Percepción: esfuerzo", "Percepción: talento", "Percepción: merecimiento", "Percepción: Padres ricos", "Percepción: buenos contactos",
+            "Preferencia: esfuerzo", "Preferencia: talento", "Preferencia: Padres ricos", "Preferencia: buenos contactos",
+            "Escuela: esfuerzo", "Escuela: talento", "Escuela: merecimiento"))
+)
+
+```
+
 
 ## Puntajes factoriales
 

@@ -97,7 +97,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(dplyr, car, sjmisc, sjPlot, sjlabelled, stargazer, kableExtra, corrplot, texreg, ggplot2, ggpubr, lavaan, haven)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(dplyr, car, sjmisc, sjPlot, sjlabelled, stargazer, kableExtra, corrplot, texreg, ggplot2, ggpubr, lavaan, haven, lme4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"input/data/proc/data.RData"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -145,35 +145,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>curso_estudiante <span class="ot">&lt;-</span> car<span class="sc">::</span><span class="fu">recode</span>(data<span class="sc">$</span>curso_estudiante, <span class="at">recodes =</span> <span class="fu">c</span>(<span class="st">"'6a'='Basica';</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="st">                                                                        '6b'='Basica';</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="st">                                                                        '6c'='Basica';</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="st">                                                                        '7a'='Basica';</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="st">                                                                        '7b'='Basica';</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="st">                                                                        '1a'='Media';</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="st">                                                                        '1b'='Media';</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="st">                                                                        '1c'='Media';</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="st">                                                                        '2a'='Media';</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="st">                                                                        '2b'='Media';</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="st">                                                                        '2c'='Media'"</span>))</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data  <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(id_estudiante) <span class="sc">%&gt;%</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">curso_estudiante_rec =</span> <span class="fu">ifelse</span>(ola <span class="sc">==</span> <span class="dv">2</span> <span class="sc">&amp;</span> <span class="fu">is.na</span>(curso_estudiante),</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                                   curso_estudiante[ola <span class="sc">==</span> <span class="dv">1</span>],</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                                   curso_estudiante)) <span class="sc">%&gt;%</span> <span class="fu">ungroup</span>()</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(data<span class="sc">$</span>curso_estudiante_rec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  1   2 
+761 770 </code></pre>
+</div>
+</div>
 </section>
 <section id="redistribución" class="level1">
 <h1>Redistribución</h1>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data<span class="ot">&lt;-</span>data <span class="sc">%&gt;%</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.labelled), as.numeric))</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>reg0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>ola, <span class="at">data=</span>data)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_esfuerzo_soc,<span class="at">data=</span>data)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_talento_soc,<span class="at">data=</span>data)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_merit_soc,<span class="at">data=</span>data)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>reg1<span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_esfuerzo_soc<span class="sc">+</span>perc_talento_soc<span class="sc">+</span>perc_merit_soc,<span class="at">data=</span>data)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>pref_esfuerzo_soc,<span class="at">data=</span>data)</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>pref_talento_soc,<span class="at">data=</span>data)</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>reg2<span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>pref_esfuerzo_soc<span class="sc">+</span>pref_talento_soc, <span class="at">data=</span>data)</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_esfuerzo_esc,<span class="at">data=</span>data)</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_talento_esc,<span class="at">data=</span>data)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_merit_esc,<span class="at">data=</span>data)</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>reg3<span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_esfuerzo_esc<span class="sc">+</span>perc_talento_esc<span class="sc">+</span>perc_merit_esc,<span class="at">data=</span>data)</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>reg4<span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>ola<span class="sc">+</span>perc_esfuerzo_soc<span class="sc">+</span>perc_talento_soc<span class="sc">+</span>perc_merit_soc<span class="sc">+</span>pref_esfuerzo_soc<span class="sc">+</span>pref_talento_soc<span class="sc">+</span>perc_esfuerzo_esc<span class="sc">+</span>perc_talento_esc<span class="sc">+</span>perc_merit_esc,<span class="at">data=</span>data)</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>labs02 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Intercepto"</span>,</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Ola"</span>,</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Percepción: esfuerzo"</span>, <span class="st">"Percepción: talento"</span>, <span class="st">"Percepción: merecimiento"</span>,</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Preferencia: esfuerzo"</span>, <span class="st">"Preferencia: talento"</span>,</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Escuela: esfuerzo"</span>, <span class="st">"Escuela: talento"</span>, <span class="st">"Escuela: merecimiento"</span>)</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="fu">knitreg</span>(<span class="fu">list</span>(reg0,reg1<span class="fl">.1</span>,reg1<span class="fl">.2</span>,reg1<span class="fl">.3</span>,reg1,reg2<span class="fl">.1</span>,reg2<span class="fl">.2</span>,reg2,reg3<span class="fl">.1</span>,reg3<span class="fl">.2</span>,reg3<span class="fl">.3</span>,reg3, reg4),</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>        <span class="co">#custom.model.names = c("Modelo 1","Modelo 2","Modelo 3", "Modelo 4"),</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">custom.coef.names =</span> labs02)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data<span class="ot">&lt;-</span>data <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.labelled), as.numeric))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>reg0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>ola, <span class="at">data=</span>data)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_esfuerzo_soc,<span class="at">data=</span>data)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_talento_soc,<span class="at">data=</span>data)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_merit_soc,<span class="at">data=</span>data)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>reg1<span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_esfuerzo_soc<span class="sc">+</span>perc_talento_soc<span class="sc">+</span>perc_merit_soc,<span class="at">data=</span>data)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>pref_esfuerzo_soc,<span class="at">data=</span>data)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>pref_talento_soc,<span class="at">data=</span>data)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>reg2<span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>pref_esfuerzo_soc<span class="sc">+</span>pref_talento_soc, <span class="at">data=</span>data)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_esfuerzo_esc,<span class="at">data=</span>data)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_talento_esc,<span class="at">data=</span>data)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_merit_esc,<span class="at">data=</span>data)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>reg3<span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_esfuerzo_esc<span class="sc">+</span>perc_talento_esc<span class="sc">+</span>perc_merit_esc,<span class="at">data=</span>data)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>reg4<span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>ola<span class="sc">+</span>perc_esfuerzo_soc<span class="sc">+</span>perc_talento_soc<span class="sc">+</span>perc_merit_soc<span class="sc">+</span>pref_esfuerzo_soc<span class="sc">+</span>pref_talento_soc<span class="sc">+</span>perc_esfuerzo_esc<span class="sc">+</span>perc_talento_esc<span class="sc">+</span>perc_merit_esc,<span class="at">data=</span>data)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>labs02 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Intercepto"</span>,</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Ola"</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Percepción: esfuerzo"</span>, <span class="st">"Percepción: talento"</span>, <span class="st">"Percepción: merecimiento"</span>,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Preferencia: esfuerzo"</span>, <span class="st">"Preferencia: talento"</span>,</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Escuela: esfuerzo"</span>, <span class="st">"Escuela: talento"</span>, <span class="st">"Escuela: merecimiento"</span>)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="fu">knitreg</span>(<span class="fu">list</span>(reg0,reg1<span class="fl">.1</span>,reg1<span class="fl">.2</span>,reg1<span class="fl">.3</span>,reg1,reg2<span class="fl">.1</span>,reg2<span class="fl">.2</span>,reg2,reg3<span class="fl">.1</span>,reg3<span class="fl">.2</span>,reg3<span class="fl">.3</span>,reg3, reg4),</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>        <span class="co">#custom.model.names = c("Modelo 1","Modelo 2","Modelo 3", "Modelo 4"),</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">custom.coef.names =</span> labs02)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <table class="texreg" style="margin: 10px auto;border-collapse: collapse;border-spacing: 0px;caption-side: bottom;color: #000000;border-top: 2px solid #000000;">
 <caption>
 Statistical models
@@ -1249,29 +1274,29 @@ Num. obs.
 <section id="puntajes-factoriales" class="level2">
 <h2 class="anchored" data-anchor-id="puntajes-factoriales">Puntajes factoriales</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(redistribucion,</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                                   perc_esfuerzo_soc, perc_talento_soc,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                                   perc_padres_ricos, perc_contactos,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                                   pref_esfuerzo_soc, pref_talento_soc,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                                   pref_padres_ricos, pref_contactos) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>()</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># model</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>model_cfa <span class="ot">&lt;-</span> <span class="st">'</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="st">  perc_merit = ~ perc_esfuerzo_soc + perc_talento_soc</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="st">  perc_nmerit = ~ perc_padres_ricos + perc_contactos</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="st">  pref_merit = ~ pref_esfuerzo_soc + pref_talento_soc</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="st">  pref_nmerit = ~ pref_padres_ricos + pref_contactos</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="st">  '</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co"># estimation for each order set</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>m1_cfa <span class="ot">&lt;-</span> <span class="fu">cfa</span>(<span class="at">model =</span> model_cfa, </span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> data_cfa,</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>              <span class="at">estimator =</span> <span class="st">"MLR"</span>, </span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>              <span class="at">std.lv =</span> F) <span class="co"># Continuous/ estimator ML Robust</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1_cfa, <span class="at">fit.measures =</span> T, <span class="at">standardized =</span> T, <span class="at">rsquare =</span> T, <span class="at">modindices =</span> T) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(redistribucion,</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                                   perc_esfuerzo_soc, perc_talento_soc,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                                   perc_padres_ricos, perc_contactos,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                                   pref_esfuerzo_soc, pref_talento_soc,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                                   pref_padres_ricos, pref_contactos) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>()</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># model</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>model_cfa <span class="ot">&lt;-</span> <span class="st">'</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="st">  perc_merit = ~ perc_esfuerzo_soc + perc_talento_soc</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="st">  perc_nmerit = ~ perc_padres_ricos + perc_contactos</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="st">  pref_merit = ~ pref_esfuerzo_soc + pref_talento_soc</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="st">  pref_nmerit = ~ pref_padres_ricos + pref_contactos</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="st">  '</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co"># estimation for each order set</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>m1_cfa <span class="ot">&lt;-</span> <span class="fu">cfa</span>(<span class="at">model =</span> model_cfa, </span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> data_cfa,</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>              <span class="at">estimator =</span> <span class="st">"MLR"</span>, </span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>              <span class="at">std.lv =</span> F) <span class="co"># Continuous/ estimator ML Robust</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1_cfa, <span class="at">fit.measures =</span> T, <span class="at">standardized =</span> T, <span class="at">rsquare =</span> T, <span class="at">modindices =</span> T) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>lavaan 0.6.16 ended normally after 43 iterations
 
@@ -1495,9 +1520,9 @@ Modification Indices:
 47    0.024
 48    0.120</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los puntajes factoriales</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>puntajes_factoriales <span class="ot">&lt;-</span> <span class="fu">lavPredict</span>(m1_cfa)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(puntajes_factoriales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los puntajes factoriales</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>puntajes_factoriales <span class="ot">&lt;-</span> <span class="fu">lavPredict</span>(m1_cfa)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(puntajes_factoriales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     perc_merit perc_nmerit  pref_merit  pref_nmerit
 [1,]  0.2247593  -0.2372637  0.15992446 -0.000174352
@@ -1507,20 +1532,20 @@ Modification Indices:
 [5,]  0.8704792  -0.4278630 -0.14890930 -0.357556205
 [6,] -0.6591819   0.5952127 -0.10252475 -0.362813201</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> <span class="fu">cbind</span>(data_cfa, puntajes_factoriales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> <span class="fu">cbind</span>(data_cfa, puntajes_factoriales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> data_cfa <span class="sc">%&gt;%</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_all</span>(<span class="sc">~</span><span class="fu">as.numeric</span>(<span class="fu">as_factor</span>(.)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> data_cfa <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_all</span>(<span class="sc">~</span><span class="fu">as.numeric</span>(<span class="fu">as_factor</span>(.)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_merit,<span class="at">data=</span>data_cfa)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_nmerit,<span class="at">data=</span>data_cfa)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>pref_merit,<span class="at">data=</span>data_cfa)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.4</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>pref_nmerit,<span class="at">data=</span>data_cfa)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.5</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_merit<span class="sc">+</span>perc_nmerit<span class="sc">+</span>pref_merit<span class="sc">+</span>pref_nmerit,<span class="at">data=</span>data_cfa)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">knitreg</span>(<span class="fu">list</span>(reg1<span class="fl">.1</span>, reg1<span class="fl">.2</span>, reg1<span class="fl">.3</span>, reg1<span class="fl">.4</span>, reg1<span class="fl">.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_merit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_nmerit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>pref_merit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.4</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>pref_nmerit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.5</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(redistribucion<span class="sc">~</span>perc_merit<span class="sc">+</span>perc_nmerit<span class="sc">+</span>pref_merit<span class="sc">+</span>pref_nmerit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">knitreg</span>(<span class="fu">list</span>(reg1<span class="fl">.1</span>, reg1<span class="fl">.2</span>, reg1<span class="fl">.3</span>, reg1<span class="fl">.4</span>, reg1<span class="fl">.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <table class="texreg" style="margin: 10px auto;border-collapse: collapse;border-spacing: 0px;caption-side: bottom;color: #000000;border-top: 2px solid #000000;">
 <caption>
 Statistical models
@@ -1821,29 +1846,72 @@ Num. obs.
 </section>
 <section id="percepción-desigualdad" class="level1">
 <h1>Percepción desigualdad</h1>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>reg0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>ola, <span class="at">data=</span>data)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>perc_esfuerzo_soc,<span class="at">data=</span>data)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>perc_talento_soc,<span class="at">data=</span>data)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>perc_merit_soc,<span class="at">data=</span>data)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>reg1<span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>perc_esfuerzo_soc<span class="sc">+</span>perc_talento_soc<span class="sc">+</span>perc_merit_soc,<span class="at">data=</span>data)</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>pref_esfuerzo_soc,<span class="at">data=</span>data)</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>pref_talento_soc,<span class="at">data=</span>data)</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>reg2<span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>pref_esfuerzo_soc<span class="sc">+</span>pref_talento_soc,<span class="at">data=</span>data)</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>perc_esfuerzo_esc,<span class="at">data=</span>data)</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>perc_talento_esc,<span class="at">data=</span>data)</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>perc_merit_esc,<span class="at">data=</span>data)</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>reg3<span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>perc_esfuerzo_esc<span class="sc">+</span>perc_talento_esc<span class="sc">+</span>perc_merit_esc,<span class="at">data=</span>data)</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>reg4<span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>ola<span class="sc">+</span>perc_esfuerzo_soc<span class="sc">+</span>perc_talento_soc<span class="sc">+</span>perc_merit_soc<span class="sc">+</span>pref_esfuerzo_soc<span class="sc">+</span>pref_talento_soc<span class="sc">+</span>perc_esfuerzo_esc<span class="sc">+</span>perc_talento_esc<span class="sc">+</span>perc_merit_esc,<span class="at">data=</span>data)</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>labs02 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Intercepto"</span>,</span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Ola"</span>,</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Percepción: esfuerzo"</span>, <span class="st">"Percepción: talento"</span>, <span class="st">"Percepción: merecimiento"</span>,</span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Preferencia: esfuerzo"</span>, <span class="st">"Preferencia: talento"</span>,</span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Escuela: esfuerzo"</span>, <span class="st">"Escuela: talento"</span>, <span class="st">"Escuela: merecimiento"</span>)</span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="fu">knitreg</span>(<span class="fu">list</span>(reg0,reg1<span class="fl">.1</span>,reg1<span class="fl">.2</span>,reg1<span class="fl">.3</span>,reg1,reg2<span class="fl">.1</span>,reg2<span class="fl">.2</span>,reg2,reg3<span class="fl">.1</span>,reg3<span class="fl">.2</span>,reg3<span class="fl">.3</span>,reg3, reg4),</span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>        <span class="co">#custom.model.names = c("Modelo 1","Modelo 2","Modelo 3", "Modelo 4"),</span></span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">custom.coef.names =</span> labs02)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(perc_esfuerzo_soc, perc_talento_soc, perc_merit_soc,</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                       perc_padres_ricos, perc_contactos) <span class="sc">%&gt;%</span>  </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  sjPlot<span class="sc">::</span><span class="fu">plot_stackfrq</span>()<span class="sc">+</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="02-analisis_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(pref_esfuerzo_soc, pref_talento_soc,</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                       pref_padres_ricos, pref_contactos) <span class="sc">%&gt;%</span>  </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  sjPlot<span class="sc">::</span><span class="fu">plot_stackfrq</span>()<span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="02-analisis_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(perc_esfuerzo_esc, perc_talento_esc, perc_merit_esc) <span class="sc">%&gt;%</span>  </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  sjPlot<span class="sc">::</span><span class="fu">plot_stackfrq</span>()<span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="02-analisis_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>reg0 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(perc_des<span class="sc">~</span>ola<span class="sc">+</span>curso_estudiante_rec<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>id_estudiante), <span class="at">data=</span>data)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lmer</span>(perc_des<span class="sc">~</span>perc_esfuerzo_soc<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>id_estudiante),<span class="at">data=</span>data)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lmer</span>(perc_des<span class="sc">~</span>perc_talento_soc<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>id_estudiante),<span class="at">data=</span>data)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lmer</span>(perc_des<span class="sc">~</span>perc_merit_soc<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>id_estudiante),<span class="at">data=</span>data)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.4</span><span class="ot">&lt;-</span> <span class="fu">lmer</span>(perc_des<span class="sc">~</span>perc_padres_ricos<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>id_estudiante),<span class="at">data=</span>data)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.5</span><span class="ot">&lt;-</span> <span class="fu">lmer</span>(perc_des<span class="sc">~</span>perc_contactos<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>id_estudiante),<span class="at">data=</span>data)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>reg1<span class="ot">&lt;-</span> <span class="fu">lmer</span>(perc_des<span class="sc">~</span>perc_esfuerzo_soc<span class="sc">+</span>perc_talento_soc<span class="sc">+</span>perc_merit_soc<span class="sc">+</span>perc_padres_ricos<span class="sc">+</span>perc_contactos<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>id_estudiante),<span class="at">data=</span>data)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lmer</span>(perc_des<span class="sc">~</span>pref_esfuerzo_soc<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>id_estudiante),<span class="at">data=</span>data)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lmer</span>(perc_des<span class="sc">~</span>pref_talento_soc<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>id_estudiante),<span class="at">data=</span>data)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lmer</span>(perc_des<span class="sc">~</span>pref_padres_ricos<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>id_estudiante),<span class="at">data=</span>data)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.4</span><span class="ot">&lt;-</span> <span class="fu">lmer</span>(perc_des<span class="sc">~</span>pref_contactos<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>id_estudiante),<span class="at">data=</span>data)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>reg2<span class="ot">&lt;-</span> <span class="fu">lmer</span>(perc_des<span class="sc">~</span>pref_esfuerzo_soc<span class="sc">+</span>pref_talento_soc<span class="sc">+</span>pref_padres_ricos<span class="sc">+</span>pref_contactos<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>id_estudiante),<span class="at">data=</span>data)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lmer</span>(perc_des<span class="sc">~</span>perc_esfuerzo_esc<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>id_estudiante),<span class="at">data=</span>data)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lmer</span>(perc_des<span class="sc">~</span>perc_talento_esc<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>id_estudiante),<span class="at">data=</span>data)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lmer</span>(perc_des<span class="sc">~</span>perc_merit_esc<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>id_estudiante),<span class="at">data=</span>data)</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>reg3<span class="ot">&lt;-</span> <span class="fu">lmer</span>(perc_des<span class="sc">~</span>perc_esfuerzo_esc<span class="sc">+</span>perc_talento_esc<span class="sc">+</span>perc_merit_esc<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>id_estudiante),<span class="at">data=</span>data)</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>reg4<span class="ot">&lt;-</span> <span class="fu">lmer</span>(perc_des<span class="sc">~</span>ola<span class="sc">+</span>curso_estudiante_rec<span class="sc">+</span>perc_esfuerzo_soc<span class="sc">+</span>perc_talento_soc<span class="sc">+</span>perc_merit_soc<span class="sc">+</span>perc_padres_ricos<span class="sc">+</span>perc_contactos<span class="sc">+</span>pref_esfuerzo_soc<span class="sc">+</span>pref_talento_soc<span class="sc">+</span>pref_padres_ricos<span class="sc">+</span>pref_contactos<span class="sc">+</span>perc_esfuerzo_esc<span class="sc">+</span>perc_talento_esc<span class="sc">+</span>perc_merit_esc<span class="sc">+</span>(<span class="dv">1</span><span class="sc">|</span>id_estudiante),<span class="at">data=</span>data)</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>labs02 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Intercepto"</span>,</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Ola"</span>,</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Media"</span>,</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Percepción: esfuerzo"</span>, <span class="st">"Percepción: talento"</span>, <span class="st">"Percepción: merecimiento"</span>, <span class="st">"Percepción: Padres ricos"</span>, <span class="st">"Percepción: buenos contactos"</span>,</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Preferencia: esfuerzo"</span>, <span class="st">"Preferencia: talento"</span>, <span class="st">"Preferencia: Padres ricos"</span>, <span class="st">"Preferencia: buenos contactos"</span>,</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Escuela: esfuerzo"</span>, <span class="st">"Escuela: talento"</span>, <span class="st">"Escuela: merecimiento"</span>)</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="fu">knitreg</span>(<span class="fu">list</span>(reg0,reg1<span class="fl">.1</span>,reg1<span class="fl">.2</span>,reg1<span class="fl">.3</span>,reg1,reg2<span class="fl">.1</span>,reg2<span class="fl">.2</span>,reg2,reg3<span class="fl">.1</span>,reg3<span class="fl">.2</span>,reg3<span class="fl">.3</span>,reg3, reg4),</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>        <span class="co">#custom.model.names = c("Modelo 1","Modelo 2","Modelo 3", "Modelo 4"),</span></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">custom.coef.names =</span> labs02)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <table class="texreg" style="margin: 10px auto;border-collapse: collapse;border-spacing: 0px;caption-side: bottom;color: #000000;border-top: 2px solid #000000;">
 <caption>
 Statistical models
@@ -1900,43 +1968,43 @@ Model 13
 Intercepto
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-3.26<sup>***</sup>
+2.82<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-3.33<sup>***</sup>
+3.29<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-3.27<sup>***</sup>
+3.28<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-3.55<sup>***</sup>
+3.49<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-3.46<sup>***</sup>
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-2.69<sup>***</sup>
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-3.04<sup>***</sup>
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-2.60<sup>***</sup>
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-2.81<sup>***</sup>
+2.45<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 2.75<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-3.18<sup>***</sup>
+3.03<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-2.59<sup>***</sup>
+2.69<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-2.41<sup>***</sup>
+2.82<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+2.79<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+3.16<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+2.61<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+1.73<sup>***</sup>
 </td>
 </tr>
 <tr>
@@ -1944,7 +2012,7 @@ Intercepto
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.03)
+(0.07)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 (0.07)
@@ -1956,16 +2024,16 @@ Intercepto
 (0.05)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.09)
+(0.13)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.08)
+(0.09)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 (0.07)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.10)
+(0.12)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 (0.08)
@@ -1980,7 +2048,7 @@ Intercepto
 (0.12)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.15)
+(0.17)
 </td>
 </tr>
 <tr>
@@ -1988,7 +2056,7 @@ Intercepto
 Ola
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.04
+0.03
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -2024,7 +2092,95 @@ Ola
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.04
+0.03
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.04)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.04)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Media
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.30<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.16<sup>***</sup>
 </td>
 </tr>
 <tr>
@@ -2079,7 +2235,7 @@ Percepción: esfuerzo
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
--0.02
+-0.01
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -2088,16 +2244,7 @@ Percepción: esfuerzo
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.00
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
+0.05
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -2112,7 +2259,16 @@ Percepción: esfuerzo
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
--0.02
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.04
 </td>
 </tr>
 <tr>
@@ -2170,13 +2326,13 @@ Percepción: talento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.00
+-0.00
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.03
+0.01
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -2261,13 +2417,10 @@ Percepción: merecimiento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
--0.13<sup>***</sup>
+-0.10<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
--0.13<sup>***</sup>
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
+-0.08<sup>**</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -2288,7 +2441,10 @@ Percepción: merecimiento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
--0.13<sup>***</sup>
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.07<sup>**</sup>
 </td>
 </tr>
 <tr>
@@ -2333,6 +2489,182 @@ Percepción: merecimiento
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 (0.02)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Percepción: Padres ricos
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.15<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.12<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.02)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.02)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Percepción: buenos contactos
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.12<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.08<sup>**</sup>
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
 </td>
 </tr>
 <tr>
@@ -2355,19 +2687,13 @@ Preferencia: esfuerzo
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.17<sup>***</sup>
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
-</td>
-<td style="padding-left: 5px;padding-right: 5px;">
 0.16<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-&nbsp;
+0.15<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -2376,7 +2702,13 @@ Preferencia: esfuerzo
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.11<sup>***</sup>
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.07<sup>**</sup>
 </td>
 </tr>
 <tr>
@@ -2449,7 +2781,7 @@ Preferencia: talento
 0.09<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.05
+0.06<sup>*</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -2464,7 +2796,7 @@ Preferencia: talento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.05
+0.03
 </td>
 </tr>
 <tr>
@@ -2493,7 +2825,183 @@ Preferencia: talento
 (0.02)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-(0.02)
+(0.03)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Preferencia: Padres ricos
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.03
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.00
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Preferencia: buenos contactos
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.06<sup>*</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.06<sup>*</sup>
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -2540,7 +3048,7 @@ Escuela: esfuerzo
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.15<sup>***</sup>
+0.14<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
@@ -2552,7 +3060,7 @@ Escuela: esfuerzo
 0.11<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.11<sup>***</sup>
+0.12<sup>***</sup>
 </td>
 </tr>
 <tr>
@@ -2631,16 +3139,16 @@ Escuela: talento
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.17<sup>***</sup>
+0.15<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 &nbsp;
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.13<sup>***</sup>
+0.12<sup>***</sup>
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.12<sup>***</sup>
+0.07<sup>*</sup>
 </td>
 </tr>
 <tr>
@@ -2777,98 +3285,142 @@ Escuela: merecimiento
 </tr>
 <tr style="border-top: 1px solid #000000;">
 <td style="padding-left: 5px;padding-right: 5px;">
-R<sup>2</sup>
+AIC
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.00
+3525.26
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.00
+3576.67
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.00
+3555.51
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.02
+3548.35
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.02
+3372.02
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.03
+3504.81
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.01
+3530.03
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.04
+3458.64
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.02
+3537.28
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.02
+3532.36
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.00
+3538.22
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.03
+3493.28
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.07
+3277.67
 </td>
 </tr>
 <tr>
 <td style="padding-left: 5px;padding-right: 5px;">
-Adj. R<sup>2</sup>
+BIC
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
--0.00
+3551.92
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
--0.00
+3598.01
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
--0.00
+3576.83
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.02
+3569.68
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.02
+3414.49
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.03
+3526.12
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.01
+3551.33
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.03
+3495.80
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.02
+3558.60
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.02
+3553.69
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.00
+3559.54
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.03
+3525.23
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-0.07
+3367.46
 </td>
 </tr>
-<tr style="border-bottom: 2px solid #000000;">
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Log Likelihood
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-1757.63
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-1784.33
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-1773.76
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-1770.18
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-1678.01
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-1748.40
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-1761.02
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-1722.32
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-1764.64
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-1762.18
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-1765.11
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-1740.64
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-1621.84
+</td>
+</tr>
+<tr>
 <td style="padding-left: 5px;padding-right: 5px;">
 Num. obs.
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-1533
+1528
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 1533
@@ -2880,7 +3432,7 @@ Num. obs.
 1528
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-1520
+1493
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 1523
@@ -2889,7 +3441,7 @@ Num. obs.
 1518
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-1509
+1494
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
 1528
@@ -2904,7 +3456,139 @@ Num. obs.
 1519
 </td>
 <td style="padding-left: 5px;padding-right: 5px;">
-1489
+1453
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Num. groups: id_estudiante
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+902
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+907
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+906
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+905
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+895
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+905
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+901
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+897
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+905
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+905
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+903
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+900
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+880
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Var: id_estudiante (Intercept)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.15
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.17
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.17
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.15
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.12
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.15
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.17
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.16
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.16
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.15
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.16
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.15
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.10
+</td>
+</tr>
+<tr style="border-bottom: 2px solid #000000;">
+<td style="padding-left: 5px;padding-right: 5px;">
+Var: Residual
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.45
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.45
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.45
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.46
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.44
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.44
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.44
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.44
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.44
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.45
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.45
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.44
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.43
 </td>
 </tr>
 </tbody>
@@ -2916,33 +3600,54 @@ Num. obs.
 </tr>
 </tfoot>
 </table>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>sjPlot<span class="sc">::</span><span class="fu">plot_model</span>(reg4,</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">show.values =</span> <span class="cn">TRUE</span>,<span class="co">#mostrar valor de efectos</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">dot.size =</span> <span class="fl">1.3</span>, <span class="co">#tamaño circulos</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">line.size =</span> <span class="dv">1</span>, <span class="co">#tamaño CI</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">value.size =</span> <span class="fl">3.5</span>, <span class="co">#tamaño valor efectoss</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">value.offset =</span> <span class="fl">0.35</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">spacing =</span> .<span class="dv">7</span>, <span class="co">#espacio entre efectos)</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">axis.labels =</span> <span class="fu">rev</span>(<span class="fu">c</span>(<span class="st">"Ola"</span>, <span class="st">"Media"</span>,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Percepción: esfuerzo"</span>, <span class="st">"Percepción: talento"</span>, <span class="st">"Percepción: merecimiento"</span>, <span class="st">"Percepción: Padres ricos"</span>, <span class="st">"Percepción: buenos contactos"</span>,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Preferencia: esfuerzo"</span>, <span class="st">"Preferencia: talento"</span>, <span class="st">"Preferencia: Padres ricos"</span>, <span class="st">"Preferencia: buenos contactos"</span>,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Escuela: esfuerzo"</span>, <span class="st">"Escuela: talento"</span>, <span class="st">"Escuela: merecimiento"</span>))</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="02-analisis_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 <section id="puntajes-factoriales-1" class="level2">
 <h2 class="anchored" data-anchor-id="puntajes-factoriales-1">Puntajes factoriales</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(perc_des,</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                                   perc_esfuerzo_soc, perc_talento_soc,</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                                   perc_padres_ricos, perc_contactos,</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                                   pref_esfuerzo_soc, pref_talento_soc,</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                                   pref_padres_ricos, pref_contactos,</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>                                   perc_esfuerzo_esc, perc_talento_esc, perc_merit_esc) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>()</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># model</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>model_cfa <span class="ot">&lt;-</span> <span class="st">'</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="st">  perc_merit = ~ perc_esfuerzo_soc + perc_talento_soc</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="st">  perc_nmerit = ~ perc_padres_ricos + perc_contactos</span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="st">  pref_merit = ~ pref_esfuerzo_soc + pref_talento_soc</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="st">  pref_nmerit = ~ pref_padres_ricos + pref_contactos</span></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="st">  school_merit = ~ perc_esfuerzo_esc + perc_talento_esc + perc_merit_esc</span></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="st">  '</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co"># estimation for each order set</span></span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>m1_cfa <span class="ot">&lt;-</span> <span class="fu">cfa</span>(<span class="at">model =</span> model_cfa, </span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> data_cfa,</span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>              <span class="at">estimator =</span> <span class="st">"MLR"</span>, </span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">std.lv =</span> F) <span class="co"># Continuous/ estimator ML Robust</span></span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1_cfa, <span class="at">fit.measures =</span> T, <span class="at">standardized =</span> T, <span class="at">rsquare =</span> T, <span class="at">modindices =</span> T) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(perc_des,</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>                                   perc_esfuerzo_soc, perc_talento_soc,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                                   perc_padres_ricos, perc_contactos,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>                                   pref_esfuerzo_soc, pref_talento_soc,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>                                   pref_padres_ricos, pref_contactos,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>                                   perc_esfuerzo_esc, perc_talento_esc, perc_merit_esc) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>()</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co"># model</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>model_cfa <span class="ot">&lt;-</span> <span class="st">'</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="st">  perc_merit = ~ perc_esfuerzo_soc + perc_talento_soc</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="st">  perc_nmerit = ~ perc_padres_ricos + perc_contactos</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="st">  pref_merit = ~ pref_esfuerzo_soc + pref_talento_soc</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="st">  pref_nmerit = ~ pref_padres_ricos + pref_contactos</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="st">  school_merit = ~ perc_esfuerzo_esc + perc_talento_esc + perc_merit_esc</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="st">  '</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="co"># estimation for each order set</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>m1_cfa <span class="ot">&lt;-</span> <span class="fu">cfa</span>(<span class="at">model =</span> model_cfa, </span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> data_cfa,</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>              <span class="at">estimator =</span> <span class="st">"MLR"</span>, </span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">std.lv =</span> F) <span class="co"># Continuous/ estimator ML Robust</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1_cfa, <span class="at">fit.measures =</span> T, <span class="at">standardized =</span> T, <span class="at">rsquare =</span> T, <span class="at">modindices =</span> T) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>lavaan 0.6.16 ended normally after 49 iterations
 
@@ -3276,9 +3981,9 @@ Modification Indices:
 94    0.081
 95   -0.055</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los puntajes factoriales</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>puntajes_factoriales <span class="ot">&lt;-</span> <span class="fu">lavPredict</span>(m1_cfa)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(puntajes_factoriales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los puntajes factoriales</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>puntajes_factoriales <span class="ot">&lt;-</span> <span class="fu">lavPredict</span>(m1_cfa)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(puntajes_factoriales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     perc_merit perc_nmerit  pref_merit pref_nmerit school_merit
 [1,]  0.2285374  -0.2304802  0.20020715  0.01284168   0.20614862
@@ -3288,26 +3993,26 @@ Modification Indices:
 [5,]  0.8566302  -0.4093825 -0.04537223 -0.34120889   0.33499081
 [6,] -0.5796801   0.6104914 -0.03413503 -0.35195807  -0.02129187</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> <span class="fu">cbind</span>(data_cfa, puntajes_factoriales)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data_cfa<span class="sc">$</span>perc_merit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> <span class="fu">cbind</span>(data_cfa, puntajes_factoriales)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data_cfa<span class="sc">$</span>perc_merit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 -1.53342 -0.30727  0.09162  0.00000  0.25150  1.03339 </code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> data_cfa <span class="sc">%&gt;%</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_all</span>(<span class="sc">~</span><span class="fu">as.numeric</span>(<span class="fu">as_factor</span>(.)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> data_cfa <span class="sc">%&gt;%</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_all</span>(<span class="sc">~</span><span class="fu">as.numeric</span>(<span class="fu">as_factor</span>(.)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>perc_merit,<span class="at">data=</span>data_cfa)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>perc_nmerit,<span class="at">data=</span>data_cfa)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>pref_merit,<span class="at">data=</span>data_cfa)</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.4</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>pref_nmerit,<span class="at">data=</span>data_cfa)</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.5</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>school_merit,<span class="at">data=</span>data_cfa)</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.6</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>perc_merit<span class="sc">+</span>perc_nmerit<span class="sc">+</span>pref_merit<span class="sc">+</span>pref_nmerit<span class="sc">+</span>school_merit,<span class="at">data=</span>data_cfa)</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">knitreg</span>(<span class="fu">list</span>(reg1<span class="fl">.1</span>, reg1<span class="fl">.2</span>, reg1<span class="fl">.3</span>, reg1<span class="fl">.4</span>, reg1<span class="fl">.5</span>,reg1<span class="fl">.6</span>), <span class="at">digits=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>perc_merit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>perc_nmerit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>pref_merit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.4</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>pref_nmerit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.5</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>school_merit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.6</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(perc_des<span class="sc">~</span>perc_merit<span class="sc">+</span>perc_nmerit<span class="sc">+</span>pref_merit<span class="sc">+</span>pref_nmerit<span class="sc">+</span>school_merit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="fu">knitreg</span>(<span class="fu">list</span>(reg1<span class="fl">.1</span>, reg1<span class="fl">.2</span>, reg1<span class="fl">.3</span>, reg1<span class="fl">.4</span>, reg1<span class="fl">.5</span>,reg1<span class="fl">.6</span>), <span class="at">digits=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <table class="texreg" style="margin: 10px auto;border-collapse: collapse;border-spacing: 0px;caption-side: bottom;color: #000000;border-top: 2px solid #000000;">
 <caption>
 Statistical models
@@ -3696,33 +4401,33 @@ Num. obs.
 </section>
 <section id="market-justice-preferences" class="level1">
 <h1>Market justice preferences</h1>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">market_justice=</span><span class="fu">mean</span>(<span class="fu">c</span>(just_salud, just_educ, just_pensiones), <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data<span class="sc">$</span>market_justice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">market_justice=</span><span class="fu">mean</span>(<span class="fu">c</span>(just_salud, just_educ, just_pensiones), <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data<span class="sc">$</span>market_justice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Min. 1st Qu. Median Mean 3rd Qu. Max. NA’s 1.000 1.667 2.000 2.133 2.667 4.000 4</p>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>reg0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>ola, <span class="at">data=</span>data)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_esfuerzo_soc,<span class="at">data=</span>data)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_talento_soc,<span class="at">data=</span>data)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_merit_soc,<span class="at">data=</span>data)</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>reg1<span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_esfuerzo_soc<span class="sc">+</span>perc_talento_soc<span class="sc">+</span>perc_merit_soc,<span class="at">data=</span>data)</span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>pref_esfuerzo_soc,<span class="at">data=</span>data)</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>pref_talento_soc,<span class="at">data=</span>data)</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>reg2<span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>pref_esfuerzo_soc<span class="sc">+</span>pref_talento_soc,<span class="at">data=</span>data)</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_esfuerzo_esc,<span class="at">data=</span>data)</span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_talento_esc,<span class="at">data=</span>data)</span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_merit_esc,<span class="at">data=</span>data)</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>reg3<span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_esfuerzo_esc<span class="sc">+</span>perc_talento_esc<span class="sc">+</span>perc_merit_esc,<span class="at">data=</span>data)</span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>reg4<span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>ola<span class="sc">+</span>perc_esfuerzo_soc<span class="sc">+</span>perc_talento_soc<span class="sc">+</span>perc_merit_soc<span class="sc">+</span>pref_esfuerzo_soc<span class="sc">+</span>pref_talento_soc<span class="sc">+</span>perc_esfuerzo_esc<span class="sc">+</span>perc_talento_esc<span class="sc">+</span>perc_merit_esc,<span class="at">data=</span>data)</span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>labs02 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Intercepto"</span>,</span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Ola"</span>,</span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Percepción: esfuerzo"</span>, <span class="st">"Percepción: talento"</span>, <span class="st">"Percepción: merecimiento"</span>,</span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Preferencia: esfuerzo"</span>, <span class="st">"Preferencia: talento"</span>,</span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Escuela: esfuerzo"</span>, <span class="st">"Escuela: talento"</span>, <span class="st">"Escuela: merecimiento"</span>)</span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a><span class="fu">knitreg</span>(<span class="fu">list</span>(reg0,reg1<span class="fl">.1</span>,reg1<span class="fl">.2</span>,reg1<span class="fl">.3</span>,reg1,reg2<span class="fl">.1</span>,reg2<span class="fl">.2</span>,reg2,reg3<span class="fl">.1</span>,reg3<span class="fl">.2</span>,reg3<span class="fl">.3</span>,reg3, reg4),</span>
-<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>        <span class="co">#custom.model.names = c("Modelo 1","Modelo 2","Modelo 3", "Modelo 4"),</span></span>
-<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">custom.coef.names =</span> labs02)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>reg0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>ola, <span class="at">data=</span>data)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_esfuerzo_soc,<span class="at">data=</span>data)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_talento_soc,<span class="at">data=</span>data)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_merit_soc,<span class="at">data=</span>data)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>reg1<span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_esfuerzo_soc<span class="sc">+</span>perc_talento_soc<span class="sc">+</span>perc_merit_soc,<span class="at">data=</span>data)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>pref_esfuerzo_soc,<span class="at">data=</span>data)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>reg2<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>pref_talento_soc,<span class="at">data=</span>data)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>reg2<span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>pref_esfuerzo_soc<span class="sc">+</span>pref_talento_soc,<span class="at">data=</span>data)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_esfuerzo_esc,<span class="at">data=</span>data)</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_talento_esc,<span class="at">data=</span>data)</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>reg3<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_merit_esc,<span class="at">data=</span>data)</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>reg3<span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_esfuerzo_esc<span class="sc">+</span>perc_talento_esc<span class="sc">+</span>perc_merit_esc,<span class="at">data=</span>data)</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>reg4<span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>ola<span class="sc">+</span>perc_esfuerzo_soc<span class="sc">+</span>perc_talento_soc<span class="sc">+</span>perc_merit_soc<span class="sc">+</span>pref_esfuerzo_soc<span class="sc">+</span>pref_talento_soc<span class="sc">+</span>perc_esfuerzo_esc<span class="sc">+</span>perc_talento_esc<span class="sc">+</span>perc_merit_esc,<span class="at">data=</span>data)</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>labs02 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Intercepto"</span>,</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Ola"</span>,</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Percepción: esfuerzo"</span>, <span class="st">"Percepción: talento"</span>, <span class="st">"Percepción: merecimiento"</span>,</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Preferencia: esfuerzo"</span>, <span class="st">"Preferencia: talento"</span>,</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Escuela: esfuerzo"</span>, <span class="st">"Escuela: talento"</span>, <span class="st">"Escuela: merecimiento"</span>)</span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a><span class="fu">knitreg</span>(<span class="fu">list</span>(reg0,reg1<span class="fl">.1</span>,reg1<span class="fl">.2</span>,reg1<span class="fl">.3</span>,reg1,reg2<span class="fl">.1</span>,reg2<span class="fl">.2</span>,reg2,reg3<span class="fl">.1</span>,reg3<span class="fl">.2</span>,reg3<span class="fl">.3</span>,reg3, reg4),</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>        <span class="co">#custom.model.names = c("Modelo 1","Modelo 2","Modelo 3", "Modelo 4"),</span></span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">custom.coef.names =</span> labs02)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <table class="texreg" style="margin: 10px auto;border-collapse: collapse;border-spacing: 0px;caption-side: bottom;color: #000000;border-top: 2px solid #000000;">
 <caption>
 Statistical models
@@ -4798,30 +5503,30 @@ Num. obs.
 <section id="puntajes-factoriales-2" class="level2">
 <h2 class="anchored" data-anchor-id="puntajes-factoriales-2">Puntajes factoriales</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(market_justice,</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>                                   perc_esfuerzo_soc, perc_talento_soc,</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>                                   perc_padres_ricos, perc_contactos,</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>                                   pref_esfuerzo_soc, pref_talento_soc,</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>                                   pref_padres_ricos, pref_contactos,</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>                                   perc_esfuerzo_esc, perc_talento_esc, perc_merit_esc) <span class="sc">%&gt;%</span> </span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>()</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co"># model</span></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>model_cfa <span class="ot">&lt;-</span> <span class="st">'</span></span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="st">  perc_merit = ~ perc_esfuerzo_soc + perc_talento_soc</span></span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="st">  perc_nmerit = ~ perc_padres_ricos + perc_contactos</span></span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="st">  pref_merit = ~ pref_esfuerzo_soc + pref_talento_soc</span></span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="st">  pref_nmerit = ~ pref_padres_ricos + pref_contactos</span></span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="st">  school_merit = ~ perc_esfuerzo_esc + perc_talento_esc + perc_merit_esc</span></span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="st">  '</span></span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="co"># estimation for each order set</span></span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>m1_cfa <span class="ot">&lt;-</span> <span class="fu">cfa</span>(<span class="at">model =</span> model_cfa, </span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> data_cfa,</span>
-<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>              <span class="at">estimator =</span> <span class="st">"MLR"</span>, </span>
-<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">std.lv =</span> F) <span class="co"># Continuous/ estimator ML Robust</span></span>
-<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1_cfa, <span class="at">fit.measures =</span> T, <span class="at">standardized =</span> T, <span class="at">rsquare =</span> T, <span class="at">modindices =</span> T) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(market_justice,</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>                                   perc_esfuerzo_soc, perc_talento_soc,</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>                                   perc_padres_ricos, perc_contactos,</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>                                   pref_esfuerzo_soc, pref_talento_soc,</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>                                   pref_padres_ricos, pref_contactos,</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>                                   perc_esfuerzo_esc, perc_talento_esc, perc_merit_esc) <span class="sc">%&gt;%</span> </span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>()</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="co"># model</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>model_cfa <span class="ot">&lt;-</span> <span class="st">'</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="st">  perc_merit = ~ perc_esfuerzo_soc + perc_talento_soc</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="st">  perc_nmerit = ~ perc_padres_ricos + perc_contactos</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="st">  pref_merit = ~ pref_esfuerzo_soc + pref_talento_soc</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="st">  pref_nmerit = ~ pref_padres_ricos + pref_contactos</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="st">  school_merit = ~ perc_esfuerzo_esc + perc_talento_esc + perc_merit_esc</span></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a><span class="st">  '</span></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a><span class="co"># estimation for each order set</span></span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>m1_cfa <span class="ot">&lt;-</span> <span class="fu">cfa</span>(<span class="at">model =</span> model_cfa, </span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> data_cfa,</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>              <span class="at">estimator =</span> <span class="st">"MLR"</span>, </span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">std.lv =</span> F) <span class="co"># Continuous/ estimator ML Robust</span></span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1_cfa, <span class="at">fit.measures =</span> T, <span class="at">standardized =</span> T, <span class="at">rsquare =</span> T, <span class="at">modindices =</span> T) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>lavaan 0.6.16 ended normally after 51 iterations
 
@@ -5155,9 +5860,9 @@ Modification Indices:
 94    0.078
 95   -0.047</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los puntajes factoriales</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>puntajes_factoriales <span class="ot">&lt;-</span> <span class="fu">lavPredict</span>(m1_cfa)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(puntajes_factoriales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los puntajes factoriales</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>puntajes_factoriales <span class="ot">&lt;-</span> <span class="fu">lavPredict</span>(m1_cfa)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(puntajes_factoriales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     perc_merit perc_nmerit  pref_merit pref_nmerit school_merit
 [1,]  0.2322682  -0.2279155  0.20587038  0.01559669   0.21019262
@@ -5167,26 +5872,26 @@ Modification Indices:
 [5,]  0.8694376  -0.4032951 -0.04682253 -0.34040711   0.33530261
 [6,] -0.5845883   0.6088301 -0.03751592 -0.35058190  -0.02289105</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> <span class="fu">cbind</span>(data_cfa, puntajes_factoriales)</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data_cfa<span class="sc">$</span>perc_merit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> <span class="fu">cbind</span>(data_cfa, puntajes_factoriales)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data_cfa<span class="sc">$</span>perc_merit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 -1.54532 -0.32290  0.09549  0.00000  0.25474  1.04663 </code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> data_cfa <span class="sc">%&gt;%</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_all</span>(<span class="sc">~</span><span class="fu">as.numeric</span>(<span class="fu">as_factor</span>(.)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>data_cfa <span class="ot">&lt;-</span> data_cfa <span class="sc">%&gt;%</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_all</span>(<span class="sc">~</span><span class="fu">as.numeric</span>(<span class="fu">as_factor</span>(.)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_merit,<span class="at">data=</span>data_cfa)</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_nmerit,<span class="at">data=</span>data_cfa)</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>pref_merit,<span class="at">data=</span>data_cfa)</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.4</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>pref_nmerit,<span class="at">data=</span>data_cfa)</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.5</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>school_merit,<span class="at">data=</span>data_cfa)</span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.6</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_merit<span class="sc">+</span>perc_nmerit<span class="sc">+</span>pref_merit<span class="sc">+</span>pref_nmerit<span class="sc">+</span>school_merit,<span class="at">data=</span>data_cfa)</span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="fu">knitreg</span>(<span class="fu">list</span>(reg1<span class="fl">.1</span>, reg1<span class="fl">.2</span>, reg1<span class="fl">.3</span>, reg1<span class="fl">.4</span>, reg1<span class="fl">.5</span>,reg1<span class="fl">.6</span>), <span class="at">digits=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.1</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_merit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.2</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_nmerit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.3</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>pref_merit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.4</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>pref_nmerit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.5</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>school_merit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>reg1<span class="fl">.6</span><span class="ot">&lt;-</span> <span class="fu">lm</span>(market_justice<span class="sc">~</span>perc_merit<span class="sc">+</span>perc_nmerit<span class="sc">+</span>pref_merit<span class="sc">+</span>pref_nmerit<span class="sc">+</span>school_merit,<span class="at">data=</span>data_cfa)</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="fu">knitreg</span>(<span class="fu">list</span>(reg1<span class="fl">.1</span>, reg1<span class="fl">.2</span>, reg1<span class="fl">.3</span>, reg1<span class="fl">.4</span>, reg1<span class="fl">.5</span>,reg1<span class="fl">.6</span>), <span class="at">digits=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <table class="texreg" style="margin: 10px auto;border-collapse: collapse;border-spacing: 0px;caption-side: bottom;color: #000000;border-top: 2px solid #000000;">
 <caption>
 Statistical models
