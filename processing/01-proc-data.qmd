@@ -237,7 +237,6 @@ db_long <- left_join(
 
 )
 
-
 frq(db_long$p12_1_apoderado)
 frq(db_long$educ_m)
 frq(db_long$educ_p)
