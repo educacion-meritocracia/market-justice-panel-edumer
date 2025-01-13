@@ -1,72 +1,84 @@
 ---
-title: "preregistro (english version)"
+title: "Changes in Beliefs about Meritocracy and Preferences for Market Justice in the Chilean School Context"
+subtitle: "Pre-registration (english version)"
 format: pdf
 editor: source
 bibliography: "../input/bib/merit-redis-school.bib"
+link-citations: true
 ---
-
-# Changes in Beliefs about Meritocracy and Redistribution in the School Context
 
 1- What is the hypothesis that will be investigated?
 
-*Provide a brief description of the relevant theory and formulize the hypothesis as precisely as possible.*
+*Provide a brief description of the relevant theory and formulate the hypothesis as precisely as possible.*
 
-The increasing levels of economic inequality and income concentration have driven research in recent years on preferences for economic redistribution [@becker_significant_2021; @rueda_who_2019], understood as beliefs about the need for financial transfers to those with less, usually through the state. However, most research on redistributive preferences has focused on adult populations, leaving aside the study of factors associated with these preferences at younger ages and their formation. Using data from the Education and Meritocracy panel survey (N=900, year 2023-2024) of primary and secondary education in Chile, this study delves into the change in perceptions and preferences regarding meritocracy in schools and society on preferences for redistribution. Given that meritocracy is conceived as a system where rewards are distributed according to individual effort and talent [@young_rise_1958], the central hypothesis is that those who perceive more meritocracy in school and society will tend to show lower preferences for the role of government in redistribution, as social conditions are believed to allow for the achievement of individual success.
+Economic inequality refers to the unequal distribution of wealth, income, and other economic resources and opportunities within a society. Various ways of justifying economic inequality exist among individuals and groups, where perceptions about meritocracy might play an important role [@castillo_socialization_2024]. One way to study economic inequality involves research on preferences for market justice, understood as beliefs regarding how fair it is for individuals with higher incomes to gain better access to social services such as healthcare, education, and pensions [@lane_market_1986; @lindh_bringing_2023]. However, most studies on market justice have focused on adult populations, leaving limited knowledge of factors associated with these preferences at earlier ages, as well as how they are formed [@castillo_socialization_2024]. Using data from the two-wave panel survey “Educación y Meritocracia” (N=900, 2023–2024), conducted among basic and secondary education students in Chile, this study delves into changes in and the influence of perceptions and preferences about meritocracy in the school and broader society on market justice. Since meritocracy is conceived as a system in which rewards are distributed based on individual effort and talent [@young_rise_1958], the central hypothesis posits that those who perceive greater meritocracy and prefer meritocracy both in school and in society will tend to exhibit higher preferences for market justice.
 
-Two aspects of the operationalization of meritocracy will be considered in its conceptualization and measurement. First, the perception of school meritocracy is associated with the idea that intelligence and effort are relevant for obtaining good grades in school [@resh_sense_2010]. Second, a measurement of meritocracy in society will be included and divided into two aspects. On the one hand, the perception of meritocracy, i.e., the extent to which efforts and abilities are perceived to be rewarded in the country [@andersen_we_2021; @castillo_meritocracia_2019; @mijs_paradox_2019] and, on the other hand, preferences for meritocracy, i.e., the extent to which meritocracy is desired in society [@castillo_multidimensional_2023]. Thus, the following hypotheses are proposed:
+Following the conceptual and measurement framework proposed by Castillo et al. [-@castillo_multidimensional_2023] (see Figure 1), we operationalize meritocracy around three key distinctions. First, we differentiate between perceptions and preferences: while perceptions address how individuals observe meritocratic principles in society (i.e., what is), preferences concern normative judgments about how meritocracy should ideally function (i.e., what should be) [@janmaat_subjective_2013]. Second, we distinguish between meritocratic and non-meritocratic elements: although personal contacts and family wealth [@reynolds_perceptions_2014; @sandel_tyranny_2020] might seem incompatible with the valuation of effort and talent, they need not wholly contradict the acknowledgment of these factors in achieving success [@young_rise_1958]. Third, we examine two levels at which meritocratic principles operate: at the school level, meritocracy relates to whether students believe intelligence and effort predict academic achievement (e.g., good grades) [@resh_sense_2010], whereas at the societal level, it addresses how meritocratic principles are both perceived and desired more broadly.
 
-* H1: Students with a higher perception of meritocracy in school will have a lower preference for redistribution.
-* H2: Students with a higher perception of meritocracy in society will have a lower preference for redistribution.
-* H3: Students with a higher preference for meritocracy in society will have a lower preference for redistribution.
+Thus, the following hypotheses are proposed:
 
-Finally, research has shown that younger children prefer equality, while older children accept inequality if it is justified by merit [@almas_fairness_2010; @baumard_preschoolers_2012]. Therefore, differences in preferences for redistribution are expected depending on the educational level (primary or secondary) as well as a change over time (2023-2024). Thus, two additional hypotheses are proposed:
+* H1: Students with a higher perception of social meritocracy will show a greater preference for market justice.
+* H2: Students with a higher preference of social meritocracy will show a greater preference for market justice.
+* H3: Students with a higher perception of social non-meritocratic aspects will show lower preference for market justice.
+* H4: Students with a higher preference of social non-meritocratic aspects will show a greater preference for market justice.
+* H5: Students with a higher perception of school meritocracy will show a greater preference for market justice.
 
-* H4: Secondary school students will have lower preferences for redistribution than primary school students.
-* H5: As students advance in their schooling, preferences for redistribution are expected to decrease.
+Finally, research has shown that younger children tend to display a preference for equality, while older children begin to accept inequality if it is justified by merit [@almas_fairness_2010; @baumard_preschoolers_2012]. Therefore, differences in preferences for market justice are expected according to school level (primary vs. secondary) as well as over time (2023–2024). Hence, two additional hypotheses are set forth:
+
+* H6: As students advance through successive grade levels (within effect) and belong to later cohorts (between effect), their preferences for market-based justice will increase.
+* H7: The association between perceptions of meritocracy and preferences for market-based justice will strengthen as students progress in their schooling (within effect).
 
 2- How will the crucial variables be operationalized?
 
 *State exactly how the variables specified in the hypothesis will be measured.*
 
-Our dependent variable is redistributive preferences, which are operationalized as follows:
 
-* Preferences or support for public policies that reduce income differences between the rich and the poor. The question is: "Is it the government's responsibility to reduce economic differences between people with high incomes and those with low incomes?" The response categories range from 1 to 4, where one indicates strongly disagree and four strongly agree.
+**Preferences for market justice**: Our dependent variable is market justice. This construct is measured through three items that assess the extent to which respondents justify whether access to social services (health, pensions, and education) should be conditioned by income. The items are the following:
 
-Regarding meritocracy, there are two versions:
+- Health: “Is it good that those who can pay more have better access to healthcare?” 
+- Education: “Is it good that those who can pay more have better education?”
+- Pensions: “Is it good that in Chile, people with higher incomes can have better pensions than people with lower incomes?”
 
-* Perception of social meritocracy: The perception of rewards based on effort and intelligence will be measured separately. The questions are: a) In Chile, people are rewarded for their effort; b) In Chile, people are rewarded for their intelligence and ability; and c) In Chile, everyone gets what they deserve. The response categories range from 1 to 4, where one indicates strongly disagree and four strongly agree.
+In all cases, respondents indicate their preferences using a four-point Likert scale ranging from “strongly disagree” (1) to “strongly agree” (4). Additionally, we include a summary indicator of “preferences for market justice,” measured by an average index of these items, with values ranging from 1 to 4, where higher values represent stronger preferences for market justice.
 
-* Perception of school meritocracy: The perception of the importance of effort and intelligence for obtaining good grades will be measured. The questions are: a) In this school, those who make an effort get good grades; b) In this school, the intelligents get good grades; and c) In this school, students get the grades they deserve. The response categories range from 1 to 4, where one indicates strongly disagree and four strongly agree.
+Concerning meritocracy, there are two variants:
 
-* Preferences for meritocracy: The degree to which students believe meritocracy should operate based on effort and talent will be measured. The questions are: a) Those who make more effort should receive greater rewards than those who make less effort; b) Those who have more talent should receive greater rewards than those who have less talent; and c) It is acceptable for more intelligent and/or talented people to earn more money, even if they require less effort to do so.
+_Societal level_
+
+**Scale of perceptions and preferences about social meritocracy**: The variables included in the measurement model for perceptions and preferences of both meritocratic and non-meritocratic elements are operationalized based on the items proposed by Castillo et al. [-@castillo_multidimensional_2023]. Perception of meritocracy is measured through two items that gauge the level of agreement regarding whether effort and ability are rewarded in Chile, while non-meritocratic perceptions are measured with two items that assess the extent to which success is seen as stemming from personal connections and family wealth. Preference for meritocracy is measured by two items that evaluate the degree of agreement that those who work harder or have more talent should be more rewarded. Preference for non-meritocratic factors is assessed by two indicators that measure the degree of agreement with the idea that it is acceptable for those with better connections or wealthy parents to achieve greater success. Each item was answered on a four-point Likert scale ranging from “strongly disagree” (1) to “strongly agree” (4).
+
+_School level_
+
+**Perception of school meritocracy**: This variable captures the perceived importance of effort and intelligence for obtaining good grades. The items are: (a) “In this school, those who work hard get good grades,” (b) “In this school, those who are intelligent get good grades,” and (c) “In this school, students get the grades they deserve.” Response categories range from 1 to 4, where 1 indicates strongly disagree and 4 strongly agree.
 
 3- What is the source of the data included in the analyses?
 
 *Specify the source of the obtained data. Also provide information about the context of the data source and clarify whether the data has been previously published. In case of simulated data, provide information on how the data was generated.*
 
-The database corresponds to the "Education and Meritocracy" (EDUMER) panel survey conducted in Chile during 2023 and 2024. This study evaluated students from sixth grade and first year of high school from 9 schools in the Metropolitan Region. The total number of complete responses is 902 students.
+The dataset to be used comes from the panel survey “Educación y Meritocracia” (EDUMER), conducted in Chile during 2023 and 2024. This study evaluated sixth-grade and first-year high school students from nine schools in the Metropolitan Region. The total sample of complete responses is 902 students. Link to the repository and documentation [here](https://github.com/educacion-meritocracia/special-issue-inequality).
 
 4- How will this data be obtained?
 
 *Specify how the data will be requested or accessed. Clarify whether the data were already available and whether the dataset has been previously explored or analyzed.*
 
-The data from the first wave (2023) of the "Education and Meritocracy" (EDUMER) panel study are available. The second wave (2024) is currently being collected.
+The data from the first (2023) and second (2024) waves of the panel study “Educación y Meritocracia” (EDUMER) are already available.
 
-No previous studies have been conducted with these data except for descriptive analysis and evaluation of the applied experiment.
+No prior analyses have been conducted, apart from descriptive analyses and tests to evaluate the applied experiment.
+
 
 5- Are there any exclusion criteria for the data?
 
 *Specify whether there were any criteria for the exclusions of certain datasets, observations or time points*
 
-Cases with incomplete responses (missing data and/or NA) will be excluded from the sample. Additionally, using the R statistical package responsePatterns, it is possible to detect repetitive response patterns, which contributes to higher-quality research data (Gottfried et al. 2022). For example, cases where only the "1" option is chosen or patterns such as "1-2-3-4-1-2-3-4" are followed will be excluded.
+Cases with incomplete responses (missing data and/or NA) will be excluded from the sample. Additionally, using the R statistical package responsePatterns, it is possible to detect repetitive response patterns, which contributes to higher-quality research data [@gottfried_autocorrelation_2022]. For example, cases where only the "1" option is chosen or patterns such as "1-2-3-4-1-2-3-4" are followed will be excluded.
 
 6- What are the planned statistical analyses?
 
 *Specify the statistical model that will be used to analyze the data and describe the data pre-processing steps. Be as specific as possible and avoid ambiguity.*
 
-Before analyzing the data, the variables of interest will be recoded, and missing cases and atypical or problematic response patterns will be eliminated.
+Prior to data analysis, the variables of interest will be recoded, and missing cases and atypical or problematic response patterns will be removed.
 
-For data analysis, a univariate descriptive analysis will first be performed, followed by a bivariate (correlational) analysis and multiple linear regression models. For the longitudinal analyses cross-lagged panel models will be estimated.
+First, a univariate descriptive analysis will be carried out. Next, bivariate (correlational) analyses will be performed. Finally, longitudinal multilevel regression models will be applied, with individuals as the unit of clustering.
 
 7- What are the criteria for confirming and disconfirming the hypotheses?
 
@@ -78,7 +90,7 @@ Statistically significant effects at an alpha level of 0.05 (p<0.05).
 
 *Indicate whether the proposed data-analyses have previously been validated on a subset of the data or a simulated dataset. If so, provide the data files and data syntax.*
 
-The analyses have not been validated.
+No analyses have been validated so far.
 
 9- What is known about the data that could be relevant for the tested hypotheses?
 
@@ -90,6 +102,4 @@ Basic descriptive statistics of the variables (mean, mode, and frequencies) are 
 
 *Provide the (foreseen) dates for the different steps in this preregistration form.*
 
-* August-September: End of data collection for wave 2
-* September-October: Consolidation of longitudinal database
-* October-November: First draft
+* 15 February: First draft

@@ -1,73 +1,83 @@
 ---
-title: "preregistro (spanish version)"
+title: "Cambios en las Creencias sobre la Meritocracia y las Preferencias por la Justicia de Mercado en el Contexto Escolar Chileno"
+subtitle: "Pre-registro (versión en español)"
 format: pdf
 editor: source
 bibliography: "../input/bib/merit-redis-school.bib"
+link-citations: true
 ---
 
-# Cambio en las creencias sobre meritocracia y redistribución en el contexto escolar
 
 1. ¿Cuál es la hipótesis que se investigará?
 
 *Proporcione una breve descripción de la teoría relevante y formule la hipótesis con la mayor precisión posible* 
     
-Los crecientes niveles de desigualdad económica y concentración de ingresos han impulsado en los últimos años la investigación sobre las preferencias por la redistribución económica [@becker_significant_2021; @rueda_who_2019], entendidas como aquellas creencias sobre la necesidad de transferencias económicas hacia quienes poseen menos, por lo general a través del Estado. Sin embargo, hasta ahora la mayor parte de las investigaciones sobre preferencias redistributivas se han efectuado en población adulta, dejando de lado el estudio de los factores asociados a estas preferencias en edades más tempranas, así como también su formación. Utilizando datos de la encuesta panel Educación y Meritocracia (N=900, año 2023-2024) de educación básica y media en Chile, el presente estudio ahonda en el cambio de las percepciones y preferencias de la meritocracia en la escuela y la sociedad sobre las preferencias por la redistribución. Dado que la meritocracia se concibe como un sistema donde las recompensas se distribuyen según el esfuerzo y el talento individual [@young_rise_1958], la hipótesis central es que quienes perciban que existe más meritocracia en la escuela y en la sociedad, tenderán a mostrar menores preferencias por el rol del gobierno en la redistribución al existir las condiciones sociales que permitirían la consecución de logros individuales. 
+La desigualdad económica se refiere a la distribución desigual de la riqueza, los ingresos y otros recursos y oportunidades económicas dentro de una sociedad. Existen diversas formas de justificar la desigualdad económica entre individuos y grupos, donde las percepciones acerca de la meritocracia pueden desempeñar un papel importante [@castillo_socialization_2024]. Una manera de estudiar la desigualdad económica consiste en analizar las preferencias por la justicia de mercado, entendidas como las creencias en torno a cuán justo es que quienes tienen mayores ingresos accedan en mejores condiciones a servicios sociales como salud, educación y pensiones [@lane_market_1986; @lindh_bringing_2023]. Sin embargo, la mayoría de los estudios sobre justicia de mercado se ha centrado en poblaciones adultas, dejando un conocimiento limitado acerca de los factores asociados a estas preferencias en edades más tempranas y acerca de cómo se forman [@castillo_socialization_2024]. Utilizando datos de la encuesta panel de dos olas “Educación y Meritocracia” (N=900, 2023–2024), realizada entre estudiantes de educación básica y media en Chile, este estudio profundiza en los cambios y en la influencia de las percepciones y preferencias sobre la meritocracia en el ámbito escolar y en la sociedad en general, en relación con la justicia de mercado. Dado que la meritocracia se concibe como un sistema en el cual las recompensas se distribuyen en función del esfuerzo y el talento [@young_rise_1958], la hipótesis central plantea que quienes perciban mayor meritocracia y prefieran la meritocracia tanto en la escuela como en la sociedad tenderán a exhibir mayores preferencias por la justicia de mercado.
 
-En lo que respecta a la operacionalización de meritocracia, se considerarán dos aspectos en su conceptualización y medición. En primer lugar, la percepción de meritocracia escolar, asociada a que la inteligencia y el esfuerzo son relevantes para obtener buenas calificaciones en la escuela [@resh_sense_2010]. En segundo lugar, se incluirá una medición de meritocracia en la sociedad, que también se divide en dos aspectos. Por un lado, la percepción de meritocracia, es decir, en qué medida se percibe que los esfuerzos y habilidades son recompensados en el país [@andersen_we_2021; @castillo_meritocracia_2019; @mijs_paradox_2019] y, por otro lado, las preferencias por la meritocracia, es decir, en qué medida la meritocracia es deseada en la sociedad [@castillo_multidimensional_2023]. De esta forma, se plantean las siguientes hipótesis: 
+Siguiendo el marco conceptual y de medición propuesto por Castillo et al. [-@castillo_multidimensional_2023] (véase Figura 1), operacionalizamos la meritocracia a partir de tres distinciones clave. En primer lugar, diferenciamos entre percepciones y preferencias: mientras las percepciones se refieren a cómo las personas observan los principios meritocráticos en la sociedad (es decir, lo que es), las preferencias aluden a juicios normativos sobre cómo debería funcionar idealmente la meritocracia (es decir, lo que debería ser) [@janmaat_subjective_2013]. En segundo lugar, distinguimos entre elementos meritocráticos y no meritocráticos: si bien los contactos personales y la riqueza familiar [@reynolds_perceptions_2014; @sandel_tyranny_2020] pueden parecer incompatibles con la valoración del esfuerzo y el talento, no necesariamente contradicen por completo el reconocimiento de estos factores para lograr el éxito [@young_rise_1958]. En tercer lugar, examinamos dos niveles en los cuales operan los principios meritocráticos: a nivel escolar, la meritocracia se relaciona con si el estudiantado considera que la inteligencia y el esfuerzo predicen el rendimiento académico (p. ej., buenas calificaciones) [@resh_sense_2010], mientras que a nivel social, se aborda cómo se perciben y se desean dichos principios de forma más amplia.
 
-* H1: Estudiantes que presentan mayor percepción de meritocracia en la escuela tendrán menor preferencia por la redistribución. 
+Por ende, se plantean las siguientes hipótesis:
 
-* H2: Estudiantes que presentan mayor percepción de meritocracia en la sociedad tendrán menor preferencia por la redistribución. 
+  * H1: Los estudiantes con mayor percepción de meritocracia social mostrarán una mayor preferencia por la justicia de mercado.
+  * H2: Los estudiantes con mayor preferencia de meritocracia social mostrarán una mayor preferencia por la justicia de mercado.
+  * H3: Los estudiantes con mayor percepción de elementos sociales no meritocráticos mostrarán una menor preferencia por la justicia de mercado.
+  * H4: Los estudiantes con mayor preferencia de elementos sociales no meritocráticos mostrarán una mayor preferencia por la justicia de mercado.
+  * H5: Los estudiantes con mayor percepción de meritocracia escolar mostrarán una mayor preferencia por la justicia de mercado.
 
-* H3: Estudiantes que presentan mayor preferencia por la meritocracia en la sociedad tendrán menor preferencia por la redistribución. 
+Finalmente, investigaciones previas señalan que los niños más pequeños suelen mostrar una preferencia por la igualdad, mientras que a medida que crecen comienzan a aceptar la desigualdad si está justificada por el mérito [@almas_fairness_2010; @baumard_preschoolers_2012]. Por tanto, se esperan diferencias en las preferencias por la justicia de mercado según el nivel escolar (básica vs. media) y a lo largo del tiempo (2023–2024). Así, se formulan dos hipótesis adicionales:
 
-Finalmente, investigaciones han demostrado que los niños más pequeños muestran una preferencia por la igualdad, mientras que los niños mayores comienzan a aceptar la desigualdad si esta se justifica por el mérito [@almas_fairness_2010; @baumard_preschoolers_2012]. Por lo tanto, es de esperar que existan diferencias en las preferencias por la redistribución tanto por el nivel escolar (básica o media) como también un cambio a través del tiempo (2023-2024). Por lo tanto, se plantean dos hipótesis adicionales: 
-
-* H4: Estudiantes de educación media tendrán menor preferencia por la redistribución que estudiantes de educación básica 
-
-* H5: A medida que los/as estudiantes avanzan en su escolarización, se espera que las preferencias por la redistribución disminuyan.
+  *  H6: A medida que los estudiantes avanzan en los cursos sucesivos (efecto within) y pertenecen a cohortes más recientes (efecto between), sus preferencias por la justicia de mercado aumentarán.
+  *  H7: La asociación entre las percepciones de meritocracia y las preferencias por la justicia de mercado se fortalecerá a medida que los estudiantes progresen en su escolarización (efecto within).
 
 2.¿Cómo se operacionalizarán las variables cruciales?
 
 *Indique exactamente cómo se medirán las variables especificadas en la hipótesis. *
 
-Nuestra variable dependiente son las preferencias redistributivas, las que se operacionalizan de la siguiente forma: 
+Preferencias por la justicia de mercado: Nuestra variable dependiente es la justicia de mercado. Este constructo se mide a través de tres ítems que evalúan hasta qué punto los encuestados justifican que el acceso a servicios sociales (salud, pensiones y educación) deba estar condicionado por el ingreso. Los ítems son los siguientes:
 
-* Preferencias o apoyo a políticas públicas que disminuyan las diferencias de ingresos entre ricos y pobres. La pregunta es: “Es responsabilidad del gobierno reducir las diferencias económicas entre las personas con altos ingresos y aquellas con bajos ingresos”. Las categorías de respuesta van de 1 a 4, donde 1 indica muy en desacuerdo y 4 muy de acuerdo.
+- Salud: “¿Es bueno que quienes pueden pagar más tengan mejor acceso a la salud?”
+- Educación: “¿Es bueno que quienes pueden pagar más tengan mejor educación?”
+- Pensiones: “¿Es bueno que en Chile las personas con mayores ingresos puedan tener mejores pensiones que las personas con menores ingresos?”
 
-En relación con meritocracia, existen tres versiones: 
+En todos los casos, los encuestados indican sus preferencias utilizando una escala Likert de cuatro puntos que va desde “muy en desacuerdo” (1) hasta “muy de acuerdo” (4). Además, se incluye un indicador resumen de “preferencias por la justicia de mercado,” medido por un índice promedio de estos ítems, con valores que van de 1 a 4, donde valores más altos representan preferencias más fuertes por la justicia de mercado.
 
-* Percepción de meritocracia social: Se plantea medir la percepción de recompensas según esfuerzo e inteligencia por separado. Las preguntas son: a) En Chile, las personas son recompensadas por su esfuerzo; b) En Chile, las personas son recompensadas por su inteligencia y habilidad; y c) En Chile, todas las personas obtienen lo que merecen. Las categorías de respuesta van de 1 a 4, donde 1 indica muy en desacuerdo y 4 muy de acuerdo. 
+En lo referente a la meritocracia, se consideran dos variantes:
 
-* Percepción de meritocracia en la escuela: Se plantea medir la percepción de la importancia del esfuerzo y la inteligencia para obtener buenas notas. Las preguntas son: a) En esta escuela, quienes se esfuerzan obtienen buenas notas; b) En esta escuela, quienes son inteligentes obtienen buenas notas; y c) En esta escuela, los/as estudiantes obtienen las notas que merecen. Las categorías de respuesta van de 1 a 4, donde 1 indica muy en desacuerdo y 4 muy de acuerdo. 
+_Nivel social_
 
-* Preferencias por la meritocracia: Se plantea medir el grado en que los/as estudiantes creen que debería operar la meritocracia según esfuerzo y talento. Las preguntas son a) Quienes más se esfuerzan deberían obtener mayores recompensas que quienes se esfuerzan menos; b) Quienes poseen más talento deberían obtener mayores recompensas que quienes poseen menos talento; y c) Está bien que las personas más inteligentes y/o talentosas ganen más dinero, aun cuando requieran esforzarse menos para ello.
+**Escala de percepciones y preferencias sobre la meritocracia social**: Las variables incluidas en el modelo de medición para las percepciones y preferencias de elementos tanto meritocráticos como no meritocráticos se operacionalizan con base en los ítems propuestos por Castillo et al. [-@castillo_multidimensional_2023]. La percepción de meritocracia se mide mediante dos ítems que indagan el nivel de acuerdo sobre si en Chile se recompensa el esfuerzo y la habilidad, mientras que las percepciones no meritocráticas se miden con dos ítems que evalúan hasta qué punto se considera que el éxito proviene de contactos personales y riqueza familiar. La preferencia por la meritocracia se mide a través de dos ítems que evalúan el grado de acuerdo con que quienes trabajan más o tienen más talento deberían recibir mayores recompensas. La preferencia por factores no meritocráticos se evalúa mediante dos indicadores que miden el grado de acuerdo con la idea de que es aceptable que quienes tengan mejores contactos o padres adinerados logren un mayor éxito. Cada ítem se respondió en una escala Likert de cuatro puntos que va de “muy en desacuerdo” (1) a “muy de acuerdo” (4).
+
+_Nivel escolar_
+
+**Percepción de la meritocracia escolar**: Esta variable capta la importancia percibida del esfuerzo y la inteligencia para obtener buenas calificaciones. Los ítems son: (a) “En este colegio, quienes se esfuerzan obtienen buenas notas,” (b) “En este colegio, quienes son inteligentes obtienen buenas notas,” y (c) “En este colegio, los estudiantes reciben las notas que merecen.” Las categorías de respuesta van de 1 a 4, donde 1 indica “muy en desacuerdo” y 4 “muy de acuerdo.”
 
 3. ¿Cuál es la fuente de los datos incluidos en los análisis?
 
 *Especifique la fuente de los datos obtenidos. También proporcione información sobre el contexto de la fuente de datos y aclare si los datos se han publicado anteriormente. En el caso de datos simulados, proporcione información sobre cómo se generaron los datos. *
 
-La base de datos a utilizar corresponde a la encuesta panel "Educación y Meritocracia" (EDUMER), realizada en Chile durante el 2023 y 2024. En este estudio se evaluaron estudiantes de sexto básico y primero medio provenientes de 9 escuelas de la región metropolitana. El N total de respuestas completas es de 902 estudiantes.
+El conjunto de datos que se utilizará proviene de la encuesta panel “Educación y Meritocracia” (EDUMER), llevada a cabo en Chile durante 2023 y 2024. Este estudio evaluó a estudiantes de sexto básico y primero medio de nueve colegios de la Región Metropolitana. El total de respuestas completas alcanza los 902 estudiantes. Enlace al repositorio y a la documentación [aquí](https://github.com/educacion-meritocracia/special-issue-inequality).
 
 4. ¿Cómo se obtendrán estos datos?
 
 *Especifique cómo se solicitarán o accederán a los datos. Aclare si los datos ya estaban disponibles y si el conjunto de datos se ha explorado o analizado previamente. *
   
-Los datos de la primera ola (2023) del estudio panel “Educación y Meritocracia” (EDUMER) se encuentran disponibles. Actualmente, se está levantando la segunda ola (2024). 
-  
-No se han realizado estudios previos con estos datos, salvo análisis descriptivo y pruebas de evaluación del experimento aplicado.
+Los datos de la primera (2023) y la segunda (2024) ola del estudio panel “Educación y Meritocracia” (EDUMER) ya están disponibles.
+
+No se han realizado análisis previos, más allá de análisis descriptivos y pruebas para evaluar el experimento aplicado.
 
 5. ¿Existe algún criterio de exclusión para los datos?
 
 *Especifique si hubo algún criterio para la exclusión de ciertos conjuntos de datos, observaciones o puntos de tiempo.* 
 
-Se excluirán de la muestra utilizada aquellos casos que presenten respuestas incompletas (casos perdidos y/o NA). Además, a partir del paquete estadístico de R responsePatterns es posible detectar patrones de respuesta repetitivos, lo que contribuye a una mayor calidad de los datos de investigación (Gottfried, et al 2022). Por ejemplo, se pueden presentar casos en que solo se responda con la alternativa “1”, o que sigan patrones del tipo “1-2-3-4-1-2-3-4”, los que serán excluidos.
+Se excluirán los casos con respuestas incompletas (datos perdidos y/o NA). Adicionalmente, a través del paquete estadístico de R responsePatterns, es posible detectar patrones de respuesta repetitivos, lo que contribuye a obtener datos de investigación de mayor calidad [@gottfried_autocorrelation_2022]. Por ejemplo, se excluirán casos donde solo se elija la opción “1” o patrones como “1-2-3-4-1-2-3-4.”.
 
 6. ¿Cuáles son los análisis estadísticos previstos?
 
 *Especifique el modelo estadístico que se utilizará para analizar los datos y describa los pasos previos al procesamiento de los datos. Sea lo más específico posible y evite la ambigüedad. *
 
-Antes de analizar los datos se recodificarán las variables de interés y se eliminarán los casos perdidos y patrones de respuesta atípicos o problemáticos. Para el análisis de datos se realizará, en primer lugar, un análisis descriptivo univariado, luego un análisis bivariado (correlacional) y finalmente se utilizarán modelos de regresión lineal múltiple.
+Antes del análisis de datos, se recodificarán las variables de interés y se eliminarán los casos perdidos y los patrones de respuesta atípicos o problemáticos.
+
+Primero, se realizará un análisis descriptivo univariado. Posteriormente, se efectuarán análisis bivariados (correlacionales). Por último, se aplicarán modelos de regresión multinivel longitudinal, considerando a las personas como la unidad de agrupación.
 
 7. ¿Cuáles son los criterios para confirmar y refutar las hipótesis?
 
@@ -79,7 +89,7 @@ Efectos estadísticamente significativos a un nivel alfa = 0.05 (p\<0.05)
 
 *En caso afirmativo, especifique y proporcione los archivos pertinentes. Indique si los análisis de datos propuestos se han validado previamente en un subconjunto de los datos o en un conjunto de datos simulado. Si es así, proporcione los archivos de datos y la sintaxis de los datos. *
 
-No se han validado los análisis.
+No se han validado análisis hasta el momento.
 
 9. ¿Qué se sabe acerca de los datos que podrían ser relevantes para las hipótesis probadas?
 
@@ -91,6 +101,4 @@ Se conocen los estadísticos descriptivos básicos de las variables a utilizar (
     
 *Proporcione las fechas (previstas) para los diferentes pasos en este formulario de preinscripción.*
 
--   Agosto-septiembre: Fin de levantamiento ola 2
--   Septiembre-octubre: Consolidación de base longitudinal
--   Octubre-noviembre: primer draft
+-   15 de febrero: Primer borrador

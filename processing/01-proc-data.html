@@ -1,0 +1,2569 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="EDUMER Team">
+<meta name="dcterms.date" content="2025-01-13">
+<title>Data preparation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="01-proc-data_files/libs/clipboard/clipboard.min.js"></script>
+<script src="01-proc-data_files/libs/quarto-html/quarto.js"></script>
+<script src="01-proc-data_files/libs/quarto-html/popper.min.js"></script>
+<script src="01-proc-data_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="01-proc-data_files/libs/quarto-html/anchor.min.js"></script>
+<link href="01-proc-data_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="01-proc-data_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="01-proc-data_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="01-proc-data_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="01-proc-data_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+</head>
+<body>
+
+<header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Data preparation</h1>
+            <p class="subtitle lead">Changes in Beliefs about Meritocracy and Preferences for Market Justice in the Chilean School Context</p>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>EDUMER Team </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">January 13, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2"><h2 id="toc-title">Contents</h2>
+   
+  <ul class="collapse">
+<li><a href="#presentation" id="toc-presentation" class="nav-link active" data-scroll-target="#presentation"><span class="header-section-number">1</span> Presentation</a></li>
+  <li><a href="#libraries" id="toc-libraries" class="nav-link" data-scroll-target="#libraries"><span class="header-section-number">2</span> Libraries</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"><span class="header-section-number">3</span> Data</a></li>
+  <li>
+<a href="#processing" id="toc-processing" class="nav-link" data-scroll-target="#processing"><span class="header-section-number">4</span> Processing</a>
+  <ul class="collapse">
+<li><a href="#select" id="toc-select" class="nav-link" data-scroll-target="#select"><span class="header-section-number">4.1</span> Select</a></li>
+  </ul>
+</li>
+  <li><a href="#filter" id="toc-filter" class="nav-link" data-scroll-target="#filter"><span class="header-section-number">5</span> Filter</a></li>
+  <li><a href="#recode-and-transform" id="toc-recode-and-transform" class="nav-link" data-scroll-target="#recode-and-transform"><span class="header-section-number">6</span> Recode and transform</a></li>
+  <li><a href="#missings" id="toc-missings" class="nav-link" data-scroll-target="#missings"><span class="header-section-number">7</span> Missings</a></li>
+  <li><a href="#save-and-export" id="toc-save-and-export" class="nav-link" data-scroll-target="#save-and-export"><span class="header-section-number">8</span> Save and export</a></li>
+  </ul><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="01-proc-data.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</div>
+<main class="content quarto-banner-title-block" id="quarto-document-content"><section id="presentation" class="level1" data-number="1"><h1 data-number="1">
+<span class="header-section-number">1</span> Presentation</h1>
+<p>This is the data preparation code for the paper “Changes in Beliefs about Meritocracy and Preferences for Market Justice in the Chilean School Context”. The prepared data is <code>edumer_students_long.RData</code>.</p>
+</section><section id="libraries" class="level1" data-number="2"><h1 data-number="2">
+<span class="header-section-number">2</span> Libraries</h1>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span> <span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="st"><a href="https://github.com/trinker/pacman">"pacman"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"pacman"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">pacman</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pacman/man/p_load.html">p_load</a></span><span class="op">(</span><span class="va">tidyverse</span>,</span>
+<span>               <span class="va">sjmisc</span>, </span>
+<span>               <span class="va">here</span>,</span>
+<span>               <span class="va">sjlabelled</span>,</span>
+<span>               <span class="va">naniar</span>,</span>
+<span>               <span class="va">car</span>,</span>
+<span>               <span class="va">kableExtra</span>,</span>
+<span>               <span class="va">summarytools</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>scipen<span class="op">=</span><span class="fl">999</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="data" class="level1" data-number="3"><h1 data-number="3">
+<span class="header-section-number">3</span> Data</h1>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html">url</a></span><span class="op">(</span><span class="st">"https://github.com/educacion-meritocracia/edumer-data/raw/main/output/data/edumer_students_long.RData"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html">url</a></span><span class="op">(</span><span class="st">"https://github.com/educacion-meritocracia/edumer-data/raw/main/output/data/db_proc_parents.RData"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">db_long</span> <span class="op">&lt;-</span> <span class="va">edumer_students_long</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span><span class="va">edumer_students_long</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">glimpse</span><span class="op">(</span><span class="va">db_long</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 1,576
+Columns: 118
+$ id_estudiante    &lt;dbl&gt; 191617388, 191617388, 191617613, 191617613, 191647334…
+$ ola              &lt;fct&gt; 1, 2, 1, 2, 1, 2, 1, 2, 1, 1, 1, 1, 2, 1, 2, 1, 2, 1,…
+$ d2_def           &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,…
+$ consentimiento   &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…
+$ fecha            &lt;dttm&gt; 2023-10-11 19:37:50, 2024-08-30 10:14:16, 2023-10-11…
+$ d3_def           &lt;fct&gt; 6a, NA, 1a, NA, 6a, NA, 6a, NA, 6a, 6a, 6a, 6a, NA, 6…
+$ d3_def_w01_V     &lt;fct&gt; NA, 6a, NA, 1a, NA, 6a, NA, 6a, NA, NA, NA, NA, 6a, N…
+$ nivel_def        &lt;dbl&gt; 1, NA, 3, NA, 1, NA, 1, NA, NA, NA, NA, 1, NA, 1, NA,…
+$ nivel_estudiante &lt;fct&gt; 6to, 7mo, 1ro, 2do, 6to, 7mo, 6to, 7mo, 6to, 6to, 6to…
+$ asignacion       &lt;dbl&gt; 2, NA, 1, NA, 2, NA, 1, NA, 2, 2, 2, 2, NA, 1, NA, 2,…
+$ tratamiento      &lt;dbl&gt; NA, NA, 2, NA, NA, NA, 2, NA, NA, NA, NA, NA, NA, 2, …
+$ control          &lt;dbl&gt; 2, NA, NA, NA, 2, NA, NA, NA, 1, 2, 2, 2, NA, NA, NA,…
+$ exp_t1_a         &lt;dbl&gt; NA, 3, NA, 3, NA, 2, NA, 3, NA, NA, NA, NA, 2, NA, 3,…
+$ exp_t1_b         &lt;dbl&gt; NA, 2, NA, 2, NA, 3, NA, 2, NA, NA, NA, NA, 3, NA, 2,…
+$ exp_t2_a         &lt;dbl&gt; NA, 2, NA, 3, NA, 1, NA, 4, NA, NA, NA, NA, 3, NA, 4,…
+$ exp_t2_b         &lt;dbl&gt; NA, 3, NA, 2, NA, 4, NA, 1, NA, NA, NA, NA, 2, NA, 1,…
+$ exp_t3_a         &lt;dbl&gt; NA, 5, NA, 4, NA, 5, NA, 5, NA, NA, NA, NA, 5, NA, 5,…
+$ exp_t3_b         &lt;dbl&gt; NA, 0, NA, 1, NA, 0, NA, 0, NA, NA, NA, NA, 0, NA, 0,…
+$ exp_t4_a         &lt;dbl&gt; NA, 4, NA, 3, NA, 4, NA, 4, NA, NA, NA, NA, 3, NA, 3,…
+$ exp_t4_b         &lt;dbl&gt; NA, 0, NA, 3, NA, 0, NA, 1, NA, NA, NA, NA, 1, NA, 2,…
+$ exp_t4_c         &lt;dbl&gt; NA, 3, NA, 3, NA, 3, NA, 3, NA, NA, NA, NA, 3, NA, 3,…
+$ exp_t4_d         &lt;dbl&gt; NA, 3, NA, 1, NA, 3, NA, 2, NA, NA, NA, NA, 3, NA, 2,…
+$ p1_1             &lt;dbl&gt; 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 3, 2, 2, 3, 3, 3, 4, 3,…
+$ p1_2             &lt;dbl&gt; 3, 3, 3, 3, 4, 2, 4, 3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3,…
+$ p1_3             &lt;dbl&gt; 2, 4, 4, 3, 2, 4, 4, 4, 3, 2, 4, 4, 3, 4, 4, 4, 3, 4,…
+$ p1_4             &lt;dbl&gt; 3, 4, 4, 3, 3, 4, 4, 4, 2, 2, 4, 3, 2, 4, 3, 3, 3, 3,…
+$ p1_5             &lt;dbl&gt; 4, 3, 4, 3, 3, 3, 4, 4, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4,…
+$ p1_6             &lt;dbl&gt; 3, 2, 3, 3, 2, 2, 2, 4, 2, 2, 3, 3, 3, 4, 3, 3, 4, 3,…
+$ p1_7             &lt;dbl&gt; 2, 2, 4, 2, 2, 2, 2, 2, 3, 2, 2, 3, 4, 2, 2, 3, 2, 3,…
+$ p1_8             &lt;dbl&gt; 3, 2, 4, 2, 2, 2, 3, 3, 2, 3, 2, 3, 3, 2, 2, 3, 2, 3,…
+$ p1_9             &lt;dbl&gt; 4, 2, 2, 2, 4, 2, 4, 4, 4, 3, 3, 2, 1, 1, 1, 4, 1, 3,…
+$ p1_10            &lt;dbl&gt; 4, 2, 3, 2, 4, 1, 1, 2, 2, 4, 2, 2, 2, 1, 2, 2, 1, 3,…
+$ p2_1             &lt;dbl&gt; 4, 3, 3, 3, 4, 3, 3, 3, 3, 2, 4, 4, 4, 3, 3, 3, 4, 3,…
+$ p2_2             &lt;dbl&gt; 4, 3, 3, 3, 4, 3, 3, 3, 4, 2, 4, 4, 3, 4, 4, 3, 3, 3,…
+$ p2_3             &lt;dbl&gt; 2, 3, 3, 3, 3, 4, 3, 4, 2, 3, 2, 2, 3, 3, 3, 2, 3, 3,…
+$ p3               &lt;dbl&gt; 10, 3, 5, 5, 5, 3, 5, 5, 6, 5, 10, 10, 5, 5, 7, 5, 5,…
+$ p4               &lt;dbl&gt; 5.8, 5.7, 6.7, 6.0, 6.4, 6.5, 5.9, 6.4, 6.6, 6.2, 5.9…
+$ p5               &lt;dbl&gt; 2, 2, 2, 2, 2, 3, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2,…
+$ p6               &lt;dbl&gt; NA, NA, NA, NA, NA, 5.6, NA, NA, NA, 6.0, 6.0, NA, NA…
+$ p7               &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 3, 3, 2, 2, 1, 1, 3, 2, 2, 2, 2, 2,…
+$ p8_1             &lt;dbl&gt; 3, 4, 3, 4, 3, 4, 4, 4, 3, 3, 4, 4, 3, 4, 4, 4, 3, 4,…
+$ p8_2             &lt;dbl&gt; 4, 4, 3, 4, 4, 4, 3, 4, 3, 3, 4, 3, 2, 4, 3, 4, 3, 4,…
+$ p9_1             &lt;dbl&gt; 2, 3, 3, 4, 4, 3, 4, 4, 2, 3, 4, 4, 4, 4, 2, 4, 4, 3,…
+$ p9_2             &lt;dbl&gt; 4, 3, 3, 3, 4, 3, 4, 4, 3, 2, 3, 4, 3, 4, 3, 4, 2, 3,…
+$ p9_3             &lt;dbl&gt; 3, 2, 3, 3, 2, 1, 1, 2, 1, 1, 3, 4, 1, 2, 3, 3, 4, 3,…
+$ p9_4             &lt;dbl&gt; 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 3, 4, 1, 2, 3, 2, 1, 1,…
+$ p9_5             &lt;dbl&gt; 2, 2, 2, 2, 4, 1, 1, 1, 3, 1, 2, 4, 1, 1, 2, 3, 1, 2,…
+$ p9_6             &lt;dbl&gt; 2, 2, 2, 2, 2, 1, 3, 3, 2, 2, 3, 4, 4, 3, 2, 3, 2, 2,…
+$ p10_1            &lt;dbl&gt; 3, NA, 3, NA, 3, NA, 4, NA, 4, 2, 3, 3, NA, 4, NA, 4,…
+$ p10_2            &lt;dbl&gt; 3, NA, 3, NA, 3, NA, 2, NA, 4, 3, 3, 4, NA, 2, NA, 2,…
+$ p10_3            &lt;dbl&gt; 3, NA, 4, NA, 3, NA, 4, NA, 4, 3, 3, 4, NA, 3, NA, 4,…
+$ p10_4            &lt;dbl&gt; 3, NA, 2, NA, 3, NA, 2, NA, 4, 3, 2, 1, NA, 4, NA, 2,…
+$ p10_5            &lt;dbl&gt; 3, NA, 4, NA, 3, NA, 3, NA, 4, 2, 4, 1, NA, 3, NA, 4,…
+$ p10_6            &lt;dbl&gt; 3, NA, 3, NA, 3, NA, 4, NA, 4, 3, 4, 1, NA, 3, NA, 4,…
+$ p10_7            &lt;dbl&gt; 3, NA, 3, NA, 4, NA, 4, NA, 4, 3, 4, 3, NA, 4, NA, 4,…
+$ p10_8            &lt;dbl&gt; 3, NA, 3, NA, 4, NA, 3, NA, 3, 3, 4, 3, NA, 4, NA, 4,…
+$ p11_1            &lt;dbl&gt; 3, NA, 3, NA, 4, NA, 4, NA, 4, 2, 3, 4, NA, 3, NA, 3,…
+$ p11_2            &lt;dbl&gt; 3, NA, 3, NA, 4, NA, 4, NA, 4, 3, 4, 4, NA, 4, NA, 4,…
+$ p11_3            &lt;dbl&gt; 3, NA, 4, NA, 4, NA, 4, NA, 3, 3, 4, 4, NA, 4, NA, 4,…
+$ p12_1            &lt;dbl&gt; 2, NA, 2, NA, 2, NA, 2, NA, 2, 2, 1, 2, NA, 1, NA, 2,…
+$ p12_2            &lt;dbl&gt; 2, NA, 2, NA, 2, NA, 2, NA, 2, 2, 2, 2, NA, 1, NA, 2,…
+$ p12_3            &lt;dbl&gt; 2, NA, 2, NA, 2, NA, 2, NA, 2, 2, 2, 1, NA, 2, NA, 2,…
+$ p13_1            &lt;dbl&gt; 1, 1, 4, 1, 2, 1, 1, 1, 1, 3, 3, 4, 2, 1, 2, 4, 2, 1,…
+$ p13_2            &lt;dbl&gt; 1, 1, 4, 1, 2, 1, 2, 1, 4, 3, 3, 4, 1, 1, 1, 5, 1, 1,…
+$ p13_3            &lt;dbl&gt; 1, 1, 3, 1, 1, 1, 1, 1, 1, 4, 1, 5, 1, 1, 1, 1, 1, 1,…
+$ p13_4            &lt;dbl&gt; 1, 2, 3, 1, 1, 2, 3, 1, 1, 2, 3, 3, 2, 1, 1, 2, 1, 1,…
+$ p13_5            &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 4, 1, 1, 1, 1, 2, 1,…
+$ p13_6            &lt;dbl&gt; 1, 1, 3, 1, 1, 1, 2, 1, 1, 4, 5, 3, 1, 1, 1, 4, 1, 1,…
+$ p13_7            &lt;dbl&gt; NA, 1, NA, 1, NA, 1, NA, 1, NA, NA, NA, NA, 2, NA, 1,…
+$ p13_8            &lt;dbl&gt; NA, 2, NA, 1, NA, 1, NA, 2, NA, NA, NA, NA, 1, NA, 1,…
+$ p13_9            &lt;dbl&gt; NA, 2, NA, 2, NA, 2, NA, 1, NA, NA, NA, NA, 2, NA, 3,…
+$ p13_10           &lt;dbl&gt; NA, 3, NA, 2, NA, 2, NA, 2, NA, NA, NA, NA, 1, NA, 3,…
+$ p13_11           &lt;dbl&gt; NA, 2, NA, 2, NA, 2, NA, 2, NA, NA, NA, NA, 2, NA, 3,…
+$ p13_12           &lt;dbl&gt; NA, 2, NA, 2, NA, 2, NA, 2, NA, NA, NA, NA, 1, NA, 3,…
+$ p14_otra         &lt;chr&gt; "", NA, "", NA, "", NA, "", NA, "", "", "", "", NA, "…
+$ p14              &lt;dbl&gt; 1, NA, 2, NA, 2, NA, 2, NA, 2, 1, 6, 2, NA, 2, NA, 2,…
+$ p15              &lt;dbl&gt; 4, NA, 2, NA, 4, NA, 1, NA, 3, 2, 4, 1, NA, 4, NA, 4,…
+$ p16_o1_orig      &lt;dbl&gt; 1, NA, 6, NA, 1, NA, 6, NA, 6, 6, 2, 1, NA, 6, NA, 6,…
+$ p16_o1           &lt;dbl&gt; 1, NA, 1, NA, 1, NA, 1, NA, 1, 1, 1, 1, NA, 1, NA, 1,…
+$ p16_o2_orig      &lt;dbl&gt; 2, NA, NA, NA, 4, NA, NA, NA, NA, NA, 4, 4, NA, NA, N…
+$ p16_o2           &lt;dbl&gt; 1, NA, 0, NA, 0, NA, 0, NA, 0, 0, 1, 0, NA, 0, NA, 0,…
+$ p16_o3_orig      &lt;dbl&gt; 5, NA, NA, NA, 5, NA, NA, NA, NA, NA, 5, NA, NA, NA, …
+$ p16_o3           &lt;dbl&gt; 0, NA, 0, NA, 0, NA, 0, NA, 0, 0, 0, 0, NA, 0, NA, 0,…
+$ p16_o4_orig      &lt;dbl&gt; 6, NA, NA, NA, 6, NA, NA, NA, NA, NA, 6, NA, NA, NA, …
+$ p16_o4           &lt;dbl&gt; 0, NA, 0, NA, 1, NA, 0, NA, 0, 0, 1, 1, NA, 0, NA, 0,…
+$ p16_o5_orig      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
+$ p16_o5           &lt;dbl&gt; 1, NA, 0, NA, 1, NA, 0, NA, 0, 0, 1, 0, NA, 0, NA, 0,…
+$ p16_o6_orig      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
+$ p16_o6           &lt;dbl&gt; 1, NA, 1, NA, 1, NA, 1, NA, 1, 1, 1, 0, NA, 1, NA, 1,…
+$ p16_o88          &lt;dbl&gt; 0, NA, 0, NA, 0, NA, 0, NA, 0, 0, 0, 0, NA, 0, NA, 0,…
+$ p16_o99          &lt;dbl&gt; 0, NA, 0, NA, 0, NA, 0, NA, 0, 0, 0, 0, NA, 0, NA, 0,…
+$ s_115_6          &lt;chr&gt; "viajes", NA, "sobre como nos fue en el dia", NA, "co…
+$ p17_1            &lt;dbl&gt; 1, 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 4, 3, 1, 1, 3, 2, 4,…
+$ p17_2            &lt;dbl&gt; 1, 2, 3, 3, 4, 2, 4, 2, 3, 3, 3, 4, 4, 2, 2, 4, 1, 3,…
+$ p18_1            &lt;dbl&gt; 1, NA, 2, NA, 3, NA, 4, NA, 3, 2, 2, 4, NA, 4, NA, 2,…
+$ p18_2            &lt;dbl&gt; 3, NA, 3, NA, 3, NA, 3, NA, 4, 3, 3, 1, NA, 3, NA, 4,…
+$ p18_3            &lt;dbl&gt; 1, NA, 3, NA, 2, NA, 1, NA, 2, 2, 2, 2, NA, 1, NA, 1,…
+$ p18_4            &lt;dbl&gt; 3, NA, 3, NA, 2, NA, 4, NA, 3, 2, 4, 1, NA, 3, NA, 4,…
+$ p18_5            &lt;dbl&gt; 3, NA, 3, NA, 2, NA, 2, NA, 3, 3, 4, 1, NA, 3, NA, 4,…
+$ p18_6            &lt;dbl&gt; 3, NA, 3, NA, 3, NA, 2, NA, 3, 3, 4, 1, NA, 3, NA, 3,…
+$ p19              &lt;dbl&gt; 3, 3, 3, 3, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 2, 4, 4, 4,…
+$ p20              &lt;fct&gt; H, H, M, M, H, O, M, M, H, O, M, H, H, H, H, M, M, H,…
+$ p21_ano          &lt;dbl&gt; 2011, 2011, 2007, 2007, 2011, 2011, 2012, 2012, 2011,…
+$ p21_mes          &lt;dbl&gt; 10, 10, 10, 10, 8, 8, 2, 2, 9, 10, 10, 7, 7, 8, 8, 10…
+$ p22_1            &lt;dbl&gt; 1, NA, 1, NA, 1, NA, 1, NA, 1, 1, 1, 1, NA, 1, NA, 1,…
+$ p22_2            &lt;dbl&gt; 1, NA, 1, NA, 1, NA, 1, NA, 1, 1, 1, 1, NA, 1, NA, 1,…
+$ p22_3            &lt;dbl&gt; 1, NA, 1, NA, 1, NA, 1, NA, 1, 1, 1, 1, NA, 1, NA, 1,…
+$ p22_otro_1       &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
+$ p22_otro_2       &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
+$ p22_otro_3       &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
+$ p23              &lt;dbl&gt; 4, NA, 7, NA, 5, NA, 3, NA, 4, 7, 4, 4, NA, 4, NA, 4,…
+$ p24              &lt;dbl&gt; 5, NA, 1, NA, 5, NA, 5, NA, 5, 1, 1, 5, NA, 5, NA, 5,…
+$ p25              &lt;dbl&gt; 1, 1, 2, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3, 3, 3, 3, 3, 3,…
+$ p26              &lt;dbl&gt; 3, 3, 99, 3, 1, 2, 2, 5, 5, 4, 5, 4, 4, 3, 99, 99, 3,…
+$ p27              &lt;dbl&gt; 3, 3, 5, 4, 2, 88, 3, 5, 5, 5, 5, 4, 4, 3, 99, 99, 88…
+$ p28              &lt;dbl&gt; 8, NA, 1, NA, 6, NA, 5, NA, 2, 1, 1, 6, NA, 1, NA, 1,…
+$ p29              &lt;dbl&gt; 1, NA, 3, NA, 3, NA, 1, NA, 5, 1, 4, 1, NA, 1, NA, 1,…
+$ p30              &lt;dbl&gt; 2, 1, 2, 1, 1, 3, 3, 3, 2, 3, 3, 5, 5, 3, 3, 1, 1, 1,…</code></pre>
+</div>
+</div>
+</section><section id="processing" class="level1" data-number="4"><h1 data-number="4">
+<span class="header-section-number">4</span> Processing</h1>
+<section id="select" class="level2" data-number="4.1"><h2 data-number="4.1" class="anchored" data-anchor-id="select">
+<span class="header-section-number">4.1</span> Select</h2>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">db_long</span> <span class="op">&lt;-</span> <span class="va">db_long</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">id_estudiante</span>,</span>
+<span>         <span class="va">ola</span>,</span>
+<span>         consent <span class="op">=</span> <span class="va">consentimiento</span>,</span>
+<span>         curse_level <span class="op">=</span> <span class="va">nivel_estudiante</span>,</span>
+<span>         perc_effort <span class="op">=</span> <span class="va">p1_1</span>,</span>
+<span>         perc_talent <span class="op">=</span> <span class="va">p1_2</span>,</span>
+<span>         perc_rich_parents <span class="op">=</span> <span class="va">p1_3</span>,</span>
+<span>         perc_contact <span class="op">=</span> <span class="va">p1_4</span>,</span>
+<span>         pref_effort <span class="op">=</span> <span class="va">p1_5</span>,</span>
+<span>         pref_talent <span class="op">=</span> <span class="va">p1_6</span>,</span>
+<span>         pref_rich_parents <span class="op">=</span> <span class="va">p1_7</span>,</span>
+<span>         pref_contact <span class="op">=</span> <span class="va">p1_8</span>,</span>
+<span>         school_effort <span class="op">=</span> <span class="va">p2_1</span>,</span>
+<span>         school_talent <span class="op">=</span> <span class="va">p2_2</span>,</span>
+<span>         inequality <span class="op">=</span> <span class="va">p9_1</span>,</span>
+<span>         just_educ <span class="op">=</span> <span class="va">p9_3</span>,</span>
+<span>         just_health <span class="op">=</span> <span class="va">p9_4</span>,</span>
+<span>         just_pension <span class="op">=</span> <span class="va">p9_5</span>,</span>
+<span>         gender <span class="op">=</span> <span class="va">p20</span>,</span>
+<span>         age <span class="op">=</span> <span class="va">p21_ano</span>,</span>
+<span>         educ_m <span class="op">=</span> <span class="va">p26</span>,</span>
+<span>         educ_p <span class="op">=</span> <span class="va">p27</span>,</span>
+<span>         books <span class="op">=</span> <span class="va">p30</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section><section id="filter" class="level1" data-number="5"><h1 data-number="5">
+<span class="header-section-number">5</span> Filter</h1>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">db_long</span> <span class="op">&lt;-</span> <span class="va">db_long</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">consent</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">consent</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="recode-and-transform" class="level1" data-number="6"><h1 data-number="6">
+<span class="header-section-number">6</span> Recode and transform</h1>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># level</span></span>
+<span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">curse_level</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>x &lt;categorical&gt; 
+# total N=1576 valid N=1576 mean=2.68 sd=1.04
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+1ro   | 190 | 12.06 |   12.06 |  12.06
+2do   | 609 | 38.64 |   38.64 |  50.70
+6to   | 294 | 18.65 |   18.65 |  69.35
+7mo   | 483 | 30.65 |   30.65 | 100.00
+&lt;NA&gt;  |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">db_long</span> <span class="op">&lt;-</span> <span class="va">db_long</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    cohort_level <span class="op">=</span> <span class="fu">if_else</span><span class="op">(</span><span class="va">curse_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"6to"</span>, <span class="st">"7mo"</span><span class="op">)</span>, <span class="st">"Básica"</span>, <span class="st">"Media"</span><span class="op">)</span>,</span>
+<span>    cohort_level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">cohort_level</span>, </span>
+<span>                          labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Básica"</span>, <span class="st">"Media"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    curse_level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">curse_level</span>, </span>
+<span>                         levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"6to"</span>, <span class="st">"7mo"</span>, <span class="st">"1ro"</span>, <span class="st">"2do"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># merit-scale society</span></span>
+<span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">perc_effort</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>En Chile, las personas son recompensadas por sus esfuerzos (x) &lt;numeric&gt; 
+# total N=1576 valid N=1576 mean=2.78 sd=2.29
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+    1 | 116 |  7.36 |    7.36 |   7.36
+    2 | 436 | 27.66 |   27.66 |  35.03
+    3 | 783 | 49.68 |   49.68 |  84.71
+    4 | 240 | 15.23 |   15.23 |  99.94
+   88 |   1 |  0.06 |    0.06 | 100.00
+ &lt;NA&gt; |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">perc_talent</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>En Chile, las personas son recompensadas por su inteligencia y habilidad (x) &lt;numeric&gt; 
+# total N=1576 valid N=1576 mean=3.39 sd=6.99
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+    1 |  87 |  5.52 |    5.52 |   5.52
+    2 | 354 | 22.46 |   22.46 |  27.98
+    3 | 859 | 54.51 |   54.51 |  82.49
+    4 | 266 | 16.88 |   16.88 |  99.37
+   88 |   8 |  0.51 |    0.51 |  99.87
+   99 |   2 |  0.13 |    0.13 | 100.00
+ &lt;NA&gt; |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">perc_rich_parents</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>En Chile, a quienes tienen padres ricos les va mucho mejor en la vida (x) &lt;numeric&gt; 
+# total N=1576 valid N=1576 mean=3.95 sd=9.11
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+    1 | 126 |  7.99 |    7.99 |   7.99
+    2 | 333 | 21.13 |   21.13 |  29.12
+    3 | 506 | 32.11 |   32.11 |  61.23
+    4 | 594 | 37.69 |   37.69 |  98.92
+   88 |  13 |  0.82 |    0.82 |  99.75
+   99 |   4 |  0.25 |    0.25 | 100.00
+ &lt;NA&gt; |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">perc_contact</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>En Chile, quienes tienen buenos contactos les va mejor en la vida (x) &lt;numeric&gt; 
+# total N=1576 valid N=1576 mean=3.93 sd=8.80
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+    1 |  76 |  4.82 |    4.82 |   4.82
+    2 | 288 | 18.27 |   18.27 |  23.10
+    3 | 637 | 40.42 |   40.42 |  63.52
+    4 | 560 | 35.53 |   35.53 |  99.05
+   88 |   8 |  0.51 |    0.51 |  99.56
+   99 |   7 |  0.44 |    0.44 | 100.00
+ &lt;NA&gt; |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">pref_effort</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Quienes más se esfuerzan deberían obtener mayores recompensas que quienes se esfuerzan menos (x) &lt;numeric&gt; 
+# total N=1576 valid N=1576 mean=3.92 sd=6.95
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+    1 |  67 |  4.25 |    4.25 |   4.25
+    2 | 128 |  8.12 |    8.12 |  12.37
+    3 | 529 | 33.57 |   33.57 |  45.94
+    4 | 842 | 53.43 |   53.43 |  99.37
+   88 |   8 |  0.51 |    0.51 |  99.87
+   99 |   2 |  0.13 |    0.13 | 100.00
+ &lt;NA&gt; |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">pref_talent</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Quienes poseen más talento deberían obtener mayores recompensas que quienes poseen menos talento (x) &lt;numeric&gt; 
+# total N=1576 valid N=1576 mean=3.54 sd=9.24
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+    1 | 103 |  6.54 |    6.54 |   6.54
+    2 | 635 | 40.29 |   40.29 |  46.83
+    3 | 588 | 37.31 |   37.31 |  84.14
+    4 | 234 | 14.85 |   14.85 |  98.98
+   88 |   7 |  0.44 |    0.44 |  99.43
+   99 |   9 |  0.57 |    0.57 | 100.00
+ &lt;NA&gt; |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">pref_rich_parents</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Está bien que quienes tienen padres ricos les vaya bien en la vida (x) &lt;numeric&gt; 
+# total N=1576 valid N=1576 mean=3.16 sd=7.59
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+    1 | 156 |  9.90 |    9.90 |   9.90
+    2 | 568 | 36.04 |   36.04 |  45.94
+    3 | 691 | 43.85 |   43.85 |  89.78
+    4 | 150 |  9.52 |    9.52 |  99.30
+   88 |   6 |  0.38 |    0.38 |  99.68
+   99 |   5 |  0.32 |    0.32 | 100.00
+ &lt;NA&gt; |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">pref_contact</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Está bien que quienes tienen buenos contactos les vaya bien en la vida (x) &lt;numeric&gt; 
+# total N=1576 valid N=1576 mean=3.23 sd=7.36
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+    1 | 129 |  8.19 |    8.19 |   8.19
+    2 | 499 | 31.66 |   31.66 |  39.85
+    3 | 727 | 46.13 |   46.13 |  85.98
+    4 | 211 | 13.39 |   13.39 |  99.37
+   88 |   4 |  0.25 |    0.25 |  99.62
+   99 |   6 |  0.38 |    0.38 | 100.00
+ &lt;NA&gt; |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">labels1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Muy en desacuerdo"</span> <span class="op">=</span> <span class="fl">1</span>, </span>
+<span>             <span class="st">"En desacuerdo"</span> <span class="op">=</span> <span class="fl">2</span>, </span>
+<span>             <span class="st">"De acuerdo"</span> <span class="op">=</span> <span class="fl">3</span>, </span>
+<span>             <span class="st">"Muy de acuerdo"</span> <span class="op">=</span> <span class="fl">4</span>, </span>
+<span>             <span class="st">"No sabe"</span> <span class="op">=</span> <span class="fl">88</span>, </span>
+<span>             <span class="st">"No responde"</span> <span class="op">=</span> <span class="fl">99</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">db_long</span> <span class="op">&lt;-</span> <span class="va">db_long</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">mutate_at</span><span class="op">(</span>.vars <span class="op">=</span> <span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">11</span><span class="op">)</span>,.funs <span class="op">=</span> <span class="op">~</span> <span class="fu">sjlabelled</span><span class="fu">::</span><span class="fu"><a href="https://strengejacke.github.io/sjlabelled/reference/set_labels.html">set_labels</a></span><span class="op">(</span><span class="va">.</span>, labels <span class="op">=</span> <span class="va">labels1</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">db_long</span> <span class="op">&lt;-</span> <span class="va">db_long</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">mutate_at</span><span class="op">(</span>.vars <span class="op">=</span> <span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">11</span><span class="op">)</span>,.funs <span class="op">=</span> <span class="op">~</span> <span class="fu">set_na</span><span class="op">(</span><span class="va">.</span>, na <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">88</span>,<span class="fl">99</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># merit school</span></span>
+<span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">school_effort</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>En esta escuela, quienes se esfuerzan obtienen buenas notas (x) &lt;numeric&gt; 
+# total N=1576 valid N=1576 mean=3.52 sd=5.74
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+    1 |  68 |  4.31 |    4.31 |   4.31
+    2 | 161 | 10.22 |   10.22 |  14.53
+    3 | 775 | 49.18 |   49.18 |  63.71
+    4 | 566 | 35.91 |   35.91 |  99.62
+   88 |   2 |  0.13 |    0.13 |  99.75
+   99 |   4 |  0.25 |    0.25 | 100.00
+ &lt;NA&gt; |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">school_talent</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>En esta escuela, quienes son inteligentes obtienen buenas notas (x) &lt;numeric&gt; 
+# total N=1576 valid N=1576 mean=3.40 sd=4.75
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+    1 |  40 |  2.54 |    2.54 |   2.54
+    2 | 172 | 10.91 |   10.91 |  13.45
+    3 | 848 | 53.81 |   53.81 |  67.26
+    4 | 512 | 32.49 |   32.49 |  99.75
+   88 |   1 |  0.06 |    0.06 |  99.81
+   99 |   3 |  0.19 |    0.19 | 100.00
+ &lt;NA&gt; |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">db_long</span> <span class="op">&lt;-</span> <span class="va">db_long</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">mutate_at</span><span class="op">(</span>.vars <span class="op">=</span> <span class="op">(</span><span class="fl">12</span><span class="op">:</span><span class="fl">13</span><span class="op">)</span>,.funs <span class="op">=</span> <span class="op">~</span> <span class="fu">sjlabelled</span><span class="fu">::</span><span class="fu"><a href="https://strengejacke.github.io/sjlabelled/reference/set_labels.html">set_labels</a></span><span class="op">(</span><span class="va">.</span>, labels <span class="op">=</span> <span class="va">labels1</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">db_long</span> <span class="op">&lt;-</span> <span class="va">db_long</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">mutate_at</span><span class="op">(</span>.vars <span class="op">=</span> <span class="op">(</span><span class="fl">12</span><span class="op">:</span><span class="fl">13</span><span class="op">)</span>,.funs <span class="op">=</span> <span class="op">~</span> <span class="fu">set_na</span><span class="op">(</span><span class="va">.</span>, na <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">88</span>,<span class="fl">99</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># percep inequality</span></span>
+<span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">inequality</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Las diferencias económicas entre ricos y pobres en Chile son demasiado grandes (x) &lt;numeric&gt; 
+# total N=1576 valid N=1576 mean=3.44 sd=4.10
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+    1 |  63 |  4.00 |    4.00 |   4.00
+    2 | 146 |  9.26 |    9.26 |  13.26
+    3 | 673 | 42.70 |   42.70 |  55.96
+    4 | 691 | 43.85 |   43.85 |  99.81
+   88 |   1 |  0.06 |    0.06 |  99.87
+   99 |   2 |  0.13 |    0.13 | 100.00
+ &lt;NA&gt; |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">db_long</span> <span class="op">&lt;-</span> <span class="va">db_long</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>inequality <span class="op">=</span> <span class="fu">sjlabelled</span><span class="fu">::</span><span class="fu"><a href="https://strengejacke.github.io/sjlabelled/reference/set_labels.html">set_labels</a></span><span class="op">(</span><span class="va">inequality</span>, labels <span class="op">=</span> <span class="va">labels1</span><span class="op">)</span>,</span>
+<span>         inequality <span class="op">=</span> <span class="fu">set_na</span><span class="op">(</span><span class="va">inequality</span>, na <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">88</span>,<span class="fl">99</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># market justice preference</span></span>
+<span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">just_educ</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Está bien que aquellos que puedan pagar más tengan mejor educación (x) &lt;numeric&gt; 
+# total N=1576 valid N=1576 mean=2.63 sd=5.59
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+    1 | 322 | 20.43 |   20.43 |  20.43
+    2 | 630 | 39.97 |   39.97 |  60.41
+    3 | 459 | 29.12 |   29.12 |  89.53
+    4 | 159 | 10.09 |   10.09 |  99.62
+   88 |   4 |  0.25 |    0.25 |  99.87
+   99 |   2 |  0.13 |    0.13 | 100.00
+ &lt;NA&gt; |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">just_health</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Está bien que aquellos que puedan pagar más tengan mejor acceso a salud (x) &lt;numeric&gt; 
+# total N=1576 valid N=1576 mean=2.44 sd=6.22
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+    1 | 545 | 34.58 |   34.58 |  34.58
+    2 | 565 | 35.85 |   35.85 |  70.43
+    3 | 320 | 20.30 |   20.30 |  90.74
+    4 | 139 |  8.82 |    8.82 |  99.56
+   88 |   3 |  0.19 |    0.19 |  99.75
+   99 |   4 |  0.25 |    0.25 | 100.00
+ &lt;NA&gt; |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">just_pension</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Está bien que en Chile las personas con mayores ingresos puedan tener mejores pensiones que las personas de ingresos más bajos. (x) &lt;numeric&gt; 
+# total N=1576 valid N=1576 mean=2.42 sd=5.60
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+    1 | 438 | 27.79 |   27.79 |  27.79
+    2 | 664 | 42.13 |   42.13 |  69.92
+    3 | 372 | 23.60 |   23.60 |  93.53
+    4 |  96 |  6.09 |    6.09 |  99.62
+   88 |   4 |  0.25 |    0.25 |  99.87
+   99 |   2 |  0.13 |    0.13 | 100.00
+ &lt;NA&gt; |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">db_long</span> <span class="op">&lt;-</span> <span class="va">db_long</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">mutate_at</span><span class="op">(</span>.vars <span class="op">=</span> <span class="op">(</span><span class="fl">15</span><span class="op">:</span><span class="fl">17</span><span class="op">)</span>,.funs <span class="op">=</span> <span class="op">~</span> <span class="fu">sjlabelled</span><span class="fu">::</span><span class="fu"><a href="https://strengejacke.github.io/sjlabelled/reference/set_labels.html">set_labels</a></span><span class="op">(</span><span class="va">.</span>, labels <span class="op">=</span> <span class="va">labels1</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">db_long</span> <span class="op">&lt;-</span> <span class="va">db_long</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">mutate_at</span><span class="op">(</span>.vars <span class="op">=</span> <span class="op">(</span><span class="fl">15</span><span class="op">:</span><span class="fl">17</span><span class="op">)</span>,.funs <span class="op">=</span> <span class="op">~</span> <span class="fu">set_na</span><span class="op">(</span><span class="va">.</span>, na <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">88</span>,<span class="fl">99</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">db_long</span><span class="op">$</span><span class="va">mjp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowMeans</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">db_long</span><span class="op">[</span><span class="fl">15</span><span class="op">:</span><span class="fl">17</span><span class="op">]</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">db_long</span><span class="op">$</span><span class="va">mjp</span> <span class="op">&lt;-</span> <span class="fu">if_else</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/is.finite.html">is.nan</a></span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">mjp</span><span class="op">)</span>, <span class="cn">NA</span>, <span class="va">db_long</span><span class="op">$</span><span class="va">mjp</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">mjp</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+  1.000   1.667   2.000   2.135   2.667   4.000       2 </code></pre>
+</div>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># gender</span></span>
+<span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">gender</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>x &lt;categorical&gt; 
+# total N=1576 valid N=1576 mean=1.54 sd=0.58
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+H     | 789 | 50.06 |   50.06 |  50.06
+M     | 720 | 45.69 |   45.69 |  95.75
+O     |  67 |  4.25 |    4.25 | 100.00
+&lt;NA&gt;  |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">db_long</span><span class="op">$</span><span class="va">gender</span> <span class="op">&lt;-</span> <span class="fu">car</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/car/man/recode.html">recode</a></span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">gender</span>, </span>
+<span>                               recodes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"'H'= 'Hombre'; 'M' = 'Mujer'; 'O' = 'Otro'"</span><span class="op">)</span>,</span>
+<span>                               as.factor <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># age</span></span>
+<span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">age</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>x &lt;numeric&gt; 
+# total N=1576 valid N=1576 mean=2009.68 sd=1.62
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+ 1999 |   2 |  0.13 |    0.13 |   0.13
+ 2006 |  12 |  0.76 |    0.76 |   0.89
+ 2007 |  36 |  2.28 |    2.28 |   3.17
+ 2008 | 499 | 31.66 |   31.66 |  34.84
+ 2009 | 255 | 16.18 |   16.18 |  51.02
+ 2010 |  40 |  2.54 |    2.54 |  53.55
+ 2011 | 540 | 34.26 |   34.26 |  87.82
+ 2012 | 192 | 12.18 |   12.18 | 100.00
+ &lt;NA&gt; |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">db_long</span><span class="op">$</span><span class="va">age</span> <span class="op">&lt;-</span> <span class="fl">2024</span> <span class="op">-</span> <span class="va">db_long</span><span class="op">$</span><span class="va">age</span></span>
+<span></span>
+<span><span class="va">db_long</span><span class="op">$</span><span class="va">age2</span> <span class="op">&lt;-</span> <span class="va">db_long</span><span class="op">$</span><span class="va">age</span><span class="op">^</span><span class="fl">2</span></span>
+<span></span>
+<span><span class="co"># ses</span></span>
+<span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">books</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Aproximadamente ¿cuántos libros hay en tu hogar? (x) &lt;numeric&gt; 
+# total N=1576 valid N=1576 mean=2.60 sd=5.11
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+    1 | 509 | 32.30 |   32.30 |  32.30
+    2 | 448 | 28.43 |   28.43 |  60.72
+    3 | 380 | 24.11 |   24.11 |  84.84
+    4 | 113 |  7.17 |    7.17 |  92.01
+    5 |  71 |  4.51 |    4.51 |  96.51
+    6 |  50 |  3.17 |    3.17 |  99.68
+   88 |   4 |  0.25 |    0.25 |  99.94
+   99 |   1 |  0.06 |    0.06 | 100.00
+ &lt;NA&gt; |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">db_long</span> <span class="op">&lt;-</span> <span class="va">db_long</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>books <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span><span class="va">books</span> <span class="op">&lt;=</span> <span class="fl">2</span> <span class="op">~</span> <span class="st">"Menos de 25"</span>,</span>
+<span>                           <span class="va">books</span> <span class="op">&gt;=</span> <span class="fl">3</span> <span class="op">&amp;</span> <span class="va">books</span> <span class="op">&lt;=</span> <span class="fl">6</span> <span class="op">~</span> <span class="st">"Más de 25"</span>,</span>
+<span>                           <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_character_</span><span class="op">)</span>,</span>
+<span>         books <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">books</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Menos de 25"</span>, <span class="st">"Más de 25"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">db_long</span> <span class="op">&lt;-</span> <span class="fu">left_join</span><span class="op">(</span></span>
+<span>  <span class="va">db_long</span>,</span>
+<span>  <span class="va">db_parents</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id_estudiante_apoderado"</span>, <span class="st">"id_apoderado"</span>, <span class="st">"p12_1_apoderado"</span><span class="op">)</span><span class="op">]</span>, </span>
+<span>  by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id_estudiante"</span> <span class="op">=</span> <span class="st">"id_estudiante_apoderado"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">p12_1_apoderado</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>. ¿Cuál es el último curso o nivel de estudios que completó? (x) &lt;numeric&gt; 
+# total N=1576 valid N=319 mean=6.41 sd=7.70
+
+Value |                                                                                                                 Label |    N | Raw % | Valid % | Cum. %
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+    1 |                                                                                                 Sin estudios formales |    5 |  0.32 |    1.57 |   1.57
+    2 |                                                                Básica incompleta / primaria o preparatoria incompleta |   16 |  1.02 |    5.02 |   6.58
+    3 |                                                                    Básica completa / primaria o preparatoria completa |   30 |  1.90 |    9.40 |  15.99
+    4 |                            Media científico humanista o media técnico profesional incompleta / humanidades incompleta |   35 |  2.22 |   10.97 |  26.96
+    5 |                                Media científico humanista o media técnico profesional completa / humanidades completa |   77 |  4.89 |   24.14 |  51.10
+    6 |                                      Instituto técnico (CFT) o instituto profesional incompleto (carreras 1 a 3 años) |   35 |  2.22 |   10.97 |  62.07
+    7 | Instituto técnico (CFT) o instituto profesional completo (carreras 1 a 3 años) / hasta suboficial de FFAA/Carabineros |   40 |  2.54 |   12.54 |  74.61
+    8 |                                                                      Universitaria incompleta (carreras 4 o más años) |   23 |  1.46 |    7.21 |  81.82
+    9 |                                            Universitaria completa (carreras 4 años o más) / Oficial de FF/Carabineros |   40 |  2.54 |   12.54 |  94.36
+   10 |                                                                       Postgrado (postítulo, master, magíster, doctor) |   16 |  1.02 |    5.02 |  99.37
+   88 |                                                                                                               No sabe |    0 |  0.00 |    0.00 |  99.37
+   99 |                                                                                                           No responde |    2 |  0.13 |    0.63 | 100.00
+ &lt;NA&gt; |                                                                                                                  &lt;NA&gt; | 1257 | 79.76 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">educ_m</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>¿Cuál es el último curso o nivel de estudios que completó tu madre   ? (x) &lt;numeric&gt; 
+# total N=1576 valid N=1576 mean=27.23 sd=39.59
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+    1 |  48 |  3.05 |    3.05 |   3.05
+    2 |  73 |  4.63 |    4.63 |   7.68
+    3 | 444 | 28.17 |   28.17 |  35.85
+    4 | 245 | 15.55 |   15.55 |  51.40
+    5 | 308 | 19.54 |   19.54 |  70.94
+    6 |  45 |  2.86 |    2.86 |  73.79
+   88 | 208 | 13.20 |   13.20 |  86.99
+   99 | 205 | 13.01 |   13.01 | 100.00
+ &lt;NA&gt; |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">educ_p</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>¿Cuál es el último curso o nivel de estudios que completó tu padre   ? (x) &lt;numeric&gt; 
+# total N=1576 valid N=1576 mean=34.27 sd=42.46
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+    1 |  40 |  2.54 |    2.54 |   2.54
+    2 |  74 |  4.70 |    4.70 |   7.23
+    3 | 378 | 23.98 |   23.98 |  31.22
+    4 | 185 | 11.74 |   11.74 |  42.96
+    5 | 316 | 20.05 |   20.05 |  63.01
+    6 |  44 |  2.79 |    2.79 |  65.80
+   88 | 296 | 18.78 |   18.78 |  84.58
+   99 | 243 | 15.42 |   15.42 | 100.00
+ &lt;NA&gt; |   0 |  0.00 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">db_long</span> <span class="op">&lt;-</span> <span class="va">db_long</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    <span class="fu">across</span><span class="op">(</span></span>
+<span>      .cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">educ_m</span>, <span class="va">educ_p</span>, <span class="va">p12_1_apoderado</span><span class="op">)</span>,</span>
+<span>      .fns <span class="op">=</span> <span class="op">~</span> <span class="fu">set_na</span><span class="op">(</span><span class="va">.</span>, na <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">88</span>,<span class="fl">99</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">db_long</span> <span class="op">&lt;-</span> <span class="va">db_long</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">rowwise</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    aux1 <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span></span>
+<span>      <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">educ_p</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">educ_m</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">educ_p</span>, <span class="va">educ_m</span><span class="op">)</span>,  </span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">educ_p</span><span class="op">)</span>   <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">educ_m</span><span class="op">)</span> <span class="op">~</span> <span class="va">educ_m</span>,               </span>
+<span>      <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">educ_p</span><span class="op">)</span>  <span class="op">&amp;</span>  <span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">educ_m</span><span class="op">)</span> <span class="op">~</span> <span class="va">educ_p</span>,               </span>
+<span>      <span class="cn">TRUE</span>                                  <span class="op">~</span> <span class="cn">NA_real_</span>         </span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">aux1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>x &lt;numeric&gt; 
+# total N=1576 valid N=1238 mean=4.02 sd=1.11
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+    1 |  25 |  1.59 |    2.02 |   2.02
+    2 |  48 |  3.05 |    3.88 |   5.90
+    3 | 385 | 24.43 |   31.10 |  37.00
+    4 | 268 | 17.01 |   21.65 |  58.64
+    5 | 442 | 28.05 |   35.70 |  94.35
+    6 |  70 |  4.44 |    5.65 | 100.00
+ &lt;NA&gt; | 338 | 21.45 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">p12_1_apoderado</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>. ¿Cuál es el último curso o nivel de estudios que completó? (x) &lt;numeric&gt; 
+# total N=1576 valid N=317 mean=5.82 sd=2.25
+
+Value |                                                                                                                 Label |    N | Raw % | Valid % | Cum. %
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+    1 |                                                                                                 Sin estudios formales |    5 |  0.32 |    1.58 |   1.58
+    2 |                                                                Básica incompleta / primaria o preparatoria incompleta |   16 |  1.02 |    5.05 |   6.62
+    3 |                                                                    Básica completa / primaria o preparatoria completa |   30 |  1.90 |    9.46 |  16.09
+    4 |                            Media científico humanista o media técnico profesional incompleta / humanidades incompleta |   35 |  2.22 |   11.04 |  27.13
+    5 |                                Media científico humanista o media técnico profesional completa / humanidades completa |   77 |  4.89 |   24.29 |  51.42
+    6 |                                      Instituto técnico (CFT) o instituto profesional incompleto (carreras 1 a 3 años) |   35 |  2.22 |   11.04 |  62.46
+    7 | Instituto técnico (CFT) o instituto profesional completo (carreras 1 a 3 años) / hasta suboficial de FFAA/Carabineros |   40 |  2.54 |   12.62 |  75.08
+    8 |                                                                      Universitaria incompleta (carreras 4 o más años) |   23 |  1.46 |    7.26 |  82.33
+    9 |                                            Universitaria completa (carreras 4 años o más) / Oficial de FF/Carabineros |   40 |  2.54 |   12.62 |  94.95
+   10 |                                                                       Postgrado (postítulo, master, magíster, doctor) |   16 |  1.02 |    5.05 | 100.00
+ &lt;NA&gt; |                                                                                                                  &lt;NA&gt; | 1259 | 79.89 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">db_long</span> <span class="op">&lt;-</span> <span class="va">db_long</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">id_estudiante</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">rowwise</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>parental_educ <span class="op">=</span> <span class="fu">if_else</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">p12_1_apoderado</span><span class="op">)</span>, <span class="va">aux1</span>, <span class="va">p12_1_apoderado</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">frq</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">parental_educ</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>x &lt;numeric&gt; 
+# total N=1576 valid N=1305 mean=4.45 sd=1.66
+
+Value |   N | Raw % | Valid % | Cum. %
+--------------------------------------
+    1 |  22 |  1.40 |    1.69 |   1.69
+    2 |  55 |  3.49 |    4.21 |   5.90
+    3 | 344 | 21.83 |   26.36 |  32.26
+    4 | 255 | 16.18 |   19.54 |  51.80
+    5 | 420 | 26.65 |   32.18 |  83.98
+    6 |  90 |  5.71 |    6.90 |  90.88
+    7 |  40 |  2.54 |    3.07 |  93.95
+    8 |  23 |  1.46 |    1.76 |  95.71
+    9 |  40 |  2.54 |    3.07 |  98.77
+   10 |  16 |  1.02 |    1.23 | 100.00
+ &lt;NA&gt; | 271 | 17.20 |    &lt;NA&gt; |   &lt;NA&gt;</code></pre>
+</div>
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">db_long</span> <span class="op">&lt;-</span> <span class="va">db_long</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">rowwise</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>parental_educ <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span><span class="va">parental_educ</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">~</span> <span class="st">"Primaria o menos"</span>,</span>
+<span>                              <span class="va">parental_educ</span> <span class="op">==</span> <span class="fl">2</span> <span class="op">~</span> <span class="st">"Primaria o menos"</span>,</span>
+<span>                              <span class="va">parental_educ</span> <span class="op">==</span> <span class="fl">3</span> <span class="op">~</span> <span class="st">"Primaria o menos"</span>,</span>
+<span>                              <span class="va">parental_educ</span> <span class="op">==</span> <span class="fl">4</span> <span class="op">~</span> <span class="st">"Secundaria"</span>,</span>
+<span>                              <span class="va">parental_educ</span> <span class="op">==</span> <span class="fl">5</span> <span class="op">~</span> <span class="st">"Secundaria"</span>,</span>
+<span>                              <span class="va">parental_educ</span> <span class="op">==</span> <span class="fl">6</span> <span class="op">~</span> <span class="st">"Superior técnica"</span>,</span>
+<span>                              <span class="va">parental_educ</span> <span class="op">==</span> <span class="fl">7</span> <span class="op">~</span> <span class="st">"Superior técnica"</span>,</span>
+<span>                              <span class="va">parental_educ</span> <span class="op">==</span> <span class="fl">8</span> <span class="op">~</span> <span class="st">"Universitaria o Posgrado"</span>,</span>
+<span>                              <span class="va">parental_educ</span> <span class="op">==</span> <span class="fl">9</span> <span class="op">~</span> <span class="st">"Universitaria o Posgrado"</span>,</span>
+<span>                              <span class="va">parental_educ</span> <span class="op">==</span> <span class="fl">10</span> <span class="op">~</span> <span class="st">"Universitaria o Posgrado"</span>,</span>
+<span>                              <span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">parental_educ</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Valor perdido"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">db_long</span><span class="op">$</span><span class="va">parental_educ</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">parental_educ</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Primaria o menos"</span>, <span class="st">"Secundaria"</span>, <span class="st">"Superior técnica"</span>, <span class="st">"Universitaria o Posgrado"</span>, <span class="st">"Valor perdido"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">db_long</span><span class="op">$</span><span class="va">curse_level</span> <span class="op">&lt;-</span> <span class="fu">set_label</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">curse_level</span>,label <span class="op">=</span> <span class="st">"Curso estudiante"</span><span class="op">)</span></span>
+<span><span class="va">db_long</span><span class="op">$</span><span class="va">cohort_level</span> <span class="op">&lt;-</span> <span class="fu">set_label</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">cohort_level</span>,label <span class="op">=</span> <span class="st">"Cohorte estudiante"</span><span class="op">)</span></span>
+<span><span class="va">db_long</span><span class="op">$</span><span class="va">gender</span> <span class="op">&lt;-</span> <span class="fu">set_label</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">gender</span>,label <span class="op">=</span> <span class="st">"Género"</span><span class="op">)</span></span>
+<span><span class="va">db_long</span><span class="op">$</span><span class="va">age</span> <span class="op">&lt;-</span> <span class="fu">set_label</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">age</span>,label <span class="op">=</span> <span class="st">"Edad"</span><span class="op">)</span></span>
+<span><span class="va">db_long</span><span class="op">$</span><span class="va">age2</span> <span class="op">&lt;-</span> <span class="fu">set_label</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">age2</span>,label <span class="op">=</span> <span class="st">"Edad^2"</span><span class="op">)</span></span>
+<span><span class="va">db_long</span><span class="op">$</span><span class="va">books</span> <span class="op">&lt;-</span> <span class="fu">set_label</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">books</span>,label <span class="op">=</span> <span class="st">"Libros en el hogar"</span><span class="op">)</span></span>
+<span><span class="va">db_long</span><span class="op">$</span><span class="va">mjp</span> <span class="op">&lt;-</span> <span class="fu">set_label</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">mjp</span>,label <span class="op">=</span> <span class="st">"Justicia de mercado"</span><span class="op">)</span></span>
+<span><span class="va">db_long</span><span class="op">$</span><span class="va">parental_educ</span> <span class="op">&lt;-</span> <span class="fu">set_label</span><span class="op">(</span><span class="va">db_long</span><span class="op">$</span><span class="va">parental_educ</span>,label <span class="op">=</span> <span class="st">"Nivel educacional parental"</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">db_proc</span> <span class="op">&lt;-</span> <span class="va">db_long</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">educ_m</span>, <span class="va">educ_p</span>, <span class="va">aux1</span>, <span class="va">p12_1_apoderado</span>, <span class="va">id_apoderado</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="missings" class="level1" data-number="7"><h1 data-number="7">
+<span class="header-section-number">7</span> Missings</h1>
+<div class="cell">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colSums</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">db_proc</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    id_estudiante               ola       curse_level       perc_effort 
+                0                 0                 0                 1 
+      perc_talent perc_rich_parents      perc_contact       pref_effort 
+               10                17                15                10 
+      pref_talent pref_rich_parents      pref_contact     school_effort 
+               16                11                10                 6 
+    school_talent        inequality         just_educ       just_health 
+                4                 3                 6                 7 
+     just_pension            gender               age             books 
+                6                 0                 0                 5 
+     cohort_level               mjp              age2     parental_educ 
+                0                 2                 0                 0 </code></pre>
+</div>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">n_miss</span><span class="op">(</span><span class="va">db_proc</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 129</code></pre>
+</div>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">prop_miss</span><span class="op">(</span><span class="va">db_proc</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3410533</code></pre>
+</div>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">miss_var_summary</span><span class="op">(</span><span class="va">db_proc</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 24 × 3
+   variable          n_miss pct_miss
+   &lt;chr&gt;              &lt;int&gt;    &lt;num&gt;
+ 1 perc_rich_parents     17    1.08 
+ 2 pref_talent           16    1.02 
+ 3 perc_contact          15    0.952
+ 4 pref_rich_parents     11    0.698
+ 5 perc_talent           10    0.635
+ 6 pref_effort           10    0.635
+ 7 pref_contact          10    0.635
+ 8 just_health            7    0.444
+ 9 school_effort          6    0.381
+10 just_educ              6    0.381
+# ℹ 14 more rows</code></pre>
+</div>
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">vis_miss</span><span class="op">(</span><span class="va">db_proc</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme</span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle<span class="op">=</span><span class="fl">80</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="01-proc-data_files/figure-html/missings-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu">summarytools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/summarytools/man/dfSummary.html">dfSummary</a></span><span class="op">(</span><span class="va">db_proc</span><span class="op">)</span>, method<span class="op">=</span><span class="st">"render"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<div class="container st-container">
+<h3 class="anchored" data-anchor-id="missings">Data Frame Summary</h3>
+<h4 class="anchored">db_proc</h4>
+<strong>Dimensions</strong>: 1576 x 24
+  <br><strong>Duplicates</strong>: 0
+<br><table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-multiline table-sm small" data-quarto-postprocess="true">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead><tr class="header">
+<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>No</strong></th>
+<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>Variable</strong></th>
+<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>Label</strong></th>
+<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>Stats / Values</strong></th>
+<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>Freqs (% of Valid)</strong></th>
+<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>Graph</strong></th>
+<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>Valid</strong></th>
+<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>Missing</strong></th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">id_estudiante [numeric]</td>
+<td style="text-align: left;">Identificador único estudiante</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 205414491 (65398366)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">191617388 ≤ 194639514 ≤ 981526269</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 7618334 (0.3)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle;">937 distinct values</td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAABO0lEQVR42u3dwQnCMABAUSvd0R10Ht3BKfWaqigfkVZ47xYCIXxIDrlkuu0o9mtv4N8IFgkWzePg8nShnaa1N7gFY5Z5OXVYjK5r73SDHMlIsEiwSLBIsEiwSLBIsEiwSLBIsEiwSLBofj999uDz4EOww8PYg48jGQkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWCRYJFgkWzd8vMVr/05Vf72Aa17/4Jf2l45B80qhxh0WCRYJFd8o6EOFxEpb5AAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1576 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">ola [factor]</td>
+<td style="text-align: left;">Ola</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. 1</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. 2</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">902</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">57.2%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">674</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">42.8%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAGIAAAA3CAQAAABd71fBAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAAAn0lEQVRo3u3YQQqAIBQAUY3u2B3qPHUHT1lbC4JwkeNn3s6NOPANMp9pfFPvAxgRKWKuF8dAF2TNLxEpLb3P9lG5rUKMkxEURlAYQWEEhREURlAYQWEEhREUj3/s0rZLZ7l+4MjN2/yvPneIcQoRcbsTe/fHs61polGPZ62flRDjZASFERRGUBhBYQSFERRGUBhBYQRFvMezUYUYJyMoLru8C8dh1fGXAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1576 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td style="text-align: left;">curse_level [factor]</td>
+<td style="text-align: left;">Curso estudiante</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. 6to</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. 7mo</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">3. 1ro</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">4. 2do</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">294</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">18.7%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">483</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">30.6%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">190</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">12.1%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">609</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">38.6%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEcAAABmCAQAAAAzSUQHAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAAA20lEQVRo3u3ZSwqEMBCEYSPe0UPMeWbu4Cl146ITiPR0fJTkr90gOB92AimS1kEp49MAOP5M9scvvJA+KU6wfzrlj+bQC5f2z7JHbFhw4MCBA0cpcODA6YBTHE7PO2bGkuzBueH83RArEBuWGCdbO99LC7uni53SszzxbRKxYcGBAwcOHKXAgQOnAw49qww966WcQO1ruUr7i+OpfdfuPbFhwYEDBw4cpcCBA6cDDrWvDLXPmxuv16oxa+S267Va8s0jNiw4cODAgaMUOHDgdMBR7lnPR2xYcI6yAfaXGBQswvAvAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1576 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: left;">perc_effort [numeric]</td>
+<td style="text-align: left;">En Chile, las personas son recompensadas por sus esfuerzos</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.7 (0.8)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.3)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">116</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">7.4%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">436</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">27.7%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">783</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">49.7%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">240</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">15.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFcAAABmCAQAAAAU58XvAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAAA4ElEQVR42u3bQQrCMBBAUSu9o4fwPHoHT6m7kJYUhCSdDry/K3XxFpNCBly+t0zdowG412mtH94Hg/xcIok1at2+ejR+/om07ko2DLi4uLi4uLi4uNHh4pZ2l58rXXRaLfXFLfQGeVgtTDYMybib2X1NWJiN3VH8sWfoafTRTTYMuLi4uLi4uLi40eHiluwZRmfPgNts+lpkQNWRmrwW6W/7rUo2DLi4uLi4uLi4uNHh4pasRUZnLXJWXXuG8//+0bFniDiWyYYBFxcXFxcXFxc3OlzcUuY9w/VLNgy4M/sBaOEYFPR0a8wAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1575 (99.9%)</td>
+<td style="text-align: center;">1 (0.1%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: left;">perc_talent [numeric]</td>
+<td style="text-align: left;">En Chile, las personas son recompensadas por su inteligencia y habilidad</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.8 (0.8)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.3)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">87</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">5.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">354</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">22.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">859</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">54.9%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">266</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">17.0%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAF8AAABmCAQAAAAHMIUbAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAAA6UlEQVR42u3bwQ3CMAxAUYK6I0MwD+zAlHC1aQUSbeJ89P+t6uUdnEqx1PY8kTtXA+RzW+LDfXUQrq0auC4il/zqkp4e1dKvwYdHvnz5yOTLl49Mvnz5yORX9nZZnP96mGvx4jvhvXyjKIYPD5yfZv92yMJz5G7o457nl8YefvjwyJcvH5l8+fKRyZcvH5n8ytzzjM49zyzB+R3WVN0LR/TwNVXv8rcRPjzy5ctHJl++fGTy5ctHJr8y11Sjc001S7v3PLU/pu3c81QfdfjwyJcvH5l8+fKRyZcvH5n8yv5pz8MLPjzyK3sB7ksYFG176vIAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1566 (99.4%)</td>
+<td style="text-align: center;">10 (0.6%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">6</td>
+<td style="text-align: left;">perc_rich_parents [numeric]</td>
+<td style="text-align: left;">En Chile, a quienes tienen padres ricos les va mucho mejor en la vida</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 3 (1)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 2 (0.3)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">126</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">8.1%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">333</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">21.4%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">506</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">32.5%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">594</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">38.1%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEYAAABmCAQAAADciy85AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAAA0klEQVRo3u3XQQqDMBAFUC3esYfoeeodesp2O7ZRA8Y4hfd3IpKHk0D++B7y5HY1AKYmU3yYVzfQYzwLEJeclq/uxQ9ePX7LkGxMMDAwMDAwMDAwDfN17ex1wSxnjBfi027dG4nrpxpTKsxizzwPF+9j/aqqN9Xm6PZPNSYYGBgYGBgYGJiG0Zti9Ka/wzQucXvZLnlNS9xe9s5qqjHBwMDAwMDAwMA0jBIXo8TVpHNvKiTsja696TfLA5NqTDAwMDAwMDAwMA2TtzddnVRjglnLBxQPGBTJkCEGAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1559 (98.9%)</td>
+<td style="text-align: center;">17 (1.1%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">7</td>
+<td style="text-align: left;">perc_contact [numeric]</td>
+<td style="text-align: left;">En Chile, quienes tienen buenos contactos les va mejor en la vida</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 3.1 (0.9)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.3)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">76</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">4.9%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">288</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">18.4%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">637</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">40.8%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">560</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">35.9%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEoAAABmCAQAAADGt8+3AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAAA1ElEQVRo3u3ZQQqDMBQE0Fq8Yw/R87R36CnbbbQQxH6SobxZKS588BPI6PK+5OU6GwD1S9b25rlbYPdlHKR99bp9dGuuX+NEu0SODwoKCgoKCiogUFDV2R2H5x2B2yztgX1gT/hK64gcXyRqs6YeJz8sVPfDTu87mvrNETk+KCgoKCgoqIBAQVVH7+tF7/sbVEkZLUmzoAvKaEW2uz5yfFBQUFBQUFABgYKqjjLaizJ6JtN6X+/H5aTe199QkeODgoKCgoKCCggUVHXye19KIscHdTQf0iwYFMwyEtUAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1561 (99.0%)</td>
+<td style="text-align: center;">15 (1.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">8</td>
+<td style="text-align: left;">pref_effort [numeric]</td>
+<td style="text-align: left;">Quienes más se esfuerzan deberían obtener mayores recompensas que quienes se esfuerzan menos</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 3.4 (0.8)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 4 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.2)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">67</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">4.3%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">128</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">8.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">529</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">33.8%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">842</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">53.8%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAF0AAABmCAQAAAADxVUmAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAAA6klEQVR42u3YQQrCQBBEUUdyRw/hefQOnlJ32hMJBjJMVcn/K8XNW7SBVHueUjurAdCzWuqXe3f416bGfVeBS//T5f3poVb+LPhgoEOHbh906NDtgw4dun3QFa1e8Pxf6z61+qJq+B69qmqDDyaY3t36bXOAdNxkNneYmuefN/hgoEOHbh906NDtgw4dun3QFbHDzIodRl0wfeeENLJRc9SuCWlk455hwQcDHTp0+6BDh24fdOjQ7YOuiAlpVkxI6gQ7zKHKTU/fYY7UP0SCDwY6dOj2QYcO3T7o0KHbB13Rv+wwWQUfDHRFL6NjGBSKLizmAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1566 (99.4%)</td>
+<td style="text-align: center;">10 (0.6%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">9</td>
+<td style="text-align: left;">pref_talent [numeric]</td>
+<td style="text-align: left;">Quienes poseen más talento deberían obtener mayores recompensas que quienes poseen menos talento</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.6 (0.8)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.3)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">103</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">6.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">635</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">40.7%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">588</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">37.7%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">234</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">15.0%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEoAAABmCAQAAADGt8+3AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAAA1UlEQVRo3u3aWwrCMBQEUCvdo4twPboHV6m/6VPpIxnkzF+x0AM3gUxr977k5doaALUnfXnxnF1g964GpHx0P/zpNrn5VUM0SuT4oKCgoKCgoAICBXV0RsfhFoffabrywF6lISykdESOLxI1WFOPli8WirXztffVyXCDRY4PCgoKCgoKKiBQUEdH71uL3vc3qMZldP4DZ9MyurTXI8cHBQUFBQUFFRAoqKOjjK5FGd2SHb3vvD+lbu59Z26JyPFBQUFBQUFBBQQK6ujk976URI4P6td8ALq5GBR5qz0XAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1560 (99.0%)</td>
+<td style="text-align: center;">16 (1.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">10</td>
+<td style="text-align: left;">pref_rich_parents [numeric]</td>
+<td style="text-align: left;">Está bien que quienes tienen padres ricos les vaya bien en la vida</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.5 (0.8)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.3)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">156</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">10.0%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">568</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">36.3%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">691</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">44.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">150</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">9.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAE8AAABmCAQAAAAgngTzAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAAA3ElEQVRo3u3a0QmDMBQF0Ka4Y4foPO0OnbL9TQSjoTZ5Jef+iQgHXiK5YnpfIuc6GoD3uyz5xXNnId5TD1KOWMpbt8pjrx62VYIPFw8PDw8vVPDw8PBm460O8yMO7LWkvHh0aTq7yUXBhxucV6y9R9cPLkdac0PPPTfHNmHw4eLh4eHhhQoeHh7ebDw9tzV67iS8gTV8M9kWGFbDt1K+O4IPFw8PDw8vVPDw8PBm46nhrVHDz0pDz+3zU3WFV+u5YzZN8OHi4eHh4YUKHh4e3my8f+q58RJ8uHjf5APjaBgUQW45pAAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1565 (99.3%)</td>
+<td style="text-align: center;">11 (0.7%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">11</td>
+<td style="text-align: left;">pref_contact [numeric]</td>
+<td style="text-align: left;">Está bien que quienes tienen buenos contactos les vaya bien en la vida</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.7 (0.8)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.3)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">129</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">8.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">499</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">31.9%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">727</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">46.4%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">211</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">13.5%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFIAAABmCAQAAADyzg6rAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAAA50lEQVR42u3aUQqDMBBFUSPusYvoeuweukr9nYiWGnV8D+/9K6VwYIwwoWXq9OvvBoDMbIgfPpsP6LtkwyJlqL96rf7gmy1cZDFukCDVAglSLZAg1QIJUi0L5GJ9uHtRWK/EhSd92/pRdFmM2wJZPZPjxRdDrdv7X3v3ObUfSotxgwSpFkiQaoEEqRZIkGpZINm7j8Te/Vhk6uXArsIBSbwc2FP9lrEYN0iQaoEEqRZIkGqBBKmWBZLLgSNxOXBFjXt37p/jm/bu7ONlMW6QINUCCVItkCDVAglSLQuk396tmsW4QZ7VDFelGBRFMWexAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1566 (99.4%)</td>
+<td style="text-align: center;">10 (0.6%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">12</td>
+<td style="text-align: left;">school_effort [numeric]</td>
+<td style="text-align: left;">En esta escuela, quienes se esfuerzan obtienen buenas notas</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 3.2 (0.8)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.2)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">68</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">4.3%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">161</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">10.3%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">775</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">49.4%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">566</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">36.1%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFcAAABmCAQAAAAU58XvAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAAA4ElEQVR42u3aQQrCMBBAUSO9o4fwPHoHT6kLISa1Ii3VycD7qxY3bzEpZLDcD5k6RgNwx2lqX67dIJ9LNO5Zi5r6n0716RatXCzZMODi4uLi4uLi4kaHi1ubXX7GvPK8Ku3FbZC75KxWmGwYknG72b18WZjFbx4+7hneG+EYJhsGXFxcXFxcXFzc6HBxa/YMe2fPgLvYqrVIUM2RWrEWian/ViUbBlxcXFxcXFxc3OhwcWvWIntnLfKvAvcMW/7MEbZn2Haokw0DLi4uLi4uLi5udLi4tcx7hvFLNgy4v+wBaOEYFMO94WgAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1570 (99.6%)</td>
+<td style="text-align: center;">6 (0.4%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">13</td>
+<td style="text-align: left;">school_talent [numeric]</td>
+<td style="text-align: left;">En esta escuela, quienes son inteligentes obtienen buenas notas</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 3.2 (0.7)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.2)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">40</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">2.5%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">172</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">10.9%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">848</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">53.9%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">512</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">32.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAF0AAABmCAQAAAADxVUmAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAAA7UlEQVR42u3aQQrCQBBE0RnJHT2E59E7eEpdCNITIhoIU1Xy/y5k8xY9gWnSHy21kxoAPaulPtzeg3/path29WQu46tza621u1r4U8EDAx06dPugQ4duH3To0O2Drmh1wcu42r3q9aJqepcuVW3wwATTh1m/fl1AOu1nNvcwn/I6xMEDAx06dPugQ4duH3To0O2Drog9zKzYw6gLpu9cIckrx3HXCknd+P0LHhjo0KHbBx06dPugQ4duH3RFrJBmxQpJ3eQ9zJG/Ak3dwxz7EQgeGOjQodsHHTp0+6BDh24fdEX/sofJKnhgoCt6Ak8iGBSpymqAAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1572 (99.7%)</td>
+<td style="text-align: center;">4 (0.3%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">14</td>
+<td style="text-align: left;">inequality [numeric]</td>
+<td style="text-align: left;">Las diferencias económicas entre ricos y pobres en Chile son demasiado grandes</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 3.3 (0.8)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.2)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">63</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">4.0%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">146</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">9.3%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">673</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">42.8%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">691</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">43.9%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAE4AAABmCAQAAADPXG/NAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAAA10lEQVRo3u3YQQrCMBQE0FZ6Rw/hefQOnlJ3mgQqVrQZw5tVSzcPfhIynW9Tbg69AXC/yFK+XKoFeJp7gErCUn86Pp6uPWRNoscKBwcHBwcHB5cRuCFxzTU94XL+zFwWii6NpknpiR5rNK5ac+eXP07277GrvbVNj60SPVY4ODg4ODg4uIzADYnTW7dEbx0et6FU75G6uL9dqvdIe1ZEjxUODg4ODg4OLiNwQ+KU6i1Rqr+RsN46VWsrqre2GzJ6rHBwcHBwcHBwGYEbEvc/vTUt0WOF+zR3OggYFNOnZt4AAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1573 (99.8%)</td>
+<td style="text-align: center;">3 (0.2%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">15</td>
+<td style="text-align: left;">just_educ [numeric]</td>
+<td style="text-align: left;">Está bien que aquellos que puedan pagar más tengan mejor educación</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.3 (0.9)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 2 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.4)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">322</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">20.5%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">630</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">40.1%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">459</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">29.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">159</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">10.1%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEkAAABmCAQAAAAtgHS0AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAAA20lEQVRo3u3aUQ6CMBBFUWvYo4twPboHVom/UxOInSHlxtz3Z4h6yJSkD2jbjZb71QBJuSzxw7u0sJ4t/934x0t/6JH+0bVyNl2Ag5MkSZIkWiRJkiSJFiDpa6N73nY1nxY34oX9fDFRARwckNStpdd1NwjCmjmtx1XSX1TAwUmSJEkSLZIkSZJEC5Bkj9uLPe4PSFOq5djDwwnVcvQqBg5OkiRJkmiRJEmSJFqAJKvlXqyWoxnqcZWXOZOk4x43a+kDBydJkiRJtEiSJEkSLUASvccxAhycpF/yAQEnGBT/kEjkAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1570 (99.6%)</td>
+<td style="text-align: center;">6 (0.4%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">16</td>
+<td style="text-align: left;">just_health [numeric]</td>
+<td style="text-align: left;">Está bien que aquellos que puedan pagar más tengan mejor acceso a salud</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2 (1)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 2 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 2 (0.5)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">545</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">34.7%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">565</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">36.0%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">320</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">20.4%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">139</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">8.9%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEMAAABmCAQAAAA6ouR9AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAAAx0lEQVRo3u3XUQqDMAwG4HZ4xx3C82x38JTba1SEbXU10C9vKpgPkkL/+ioZ6nY1AGNfU3x4dluUuZYSm03rz/cuiGX3JslQMDAwMDAwMDAGYWwugctvf2muGi+mtWvr2DnJUJIwVrvx6Btoww5cklNK2R6GJEPBwMDAwMDAwBiEIafIKckZJ8aluWG1TotLbWcsyVAwMDAwMDAwMAZhiEvi0lF9nFNaUsiXjOOc8u/VTTIUDAwMDAwMDIxBGBlzynWVZCgYsd6YShgUt6BTsQAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1569 (99.6%)</td>
+<td style="text-align: center;">7 (0.4%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">17</td>
+<td style="text-align: left;">just_pension [numeric]</td>
+<td style="text-align: left;">Está bien que en Chile las personas con mayores ingresos puedan tener mejores pensiones que las personas de ingresos más bajos.</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.1 (0.9)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 2 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 2 (0.4)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">438</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">27.9%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">664</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">42.3%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">372</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">23.7%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">96</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">6.1%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEwAAABmCAQAAADLqb/wAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAAA3ElEQVRo3u3ZQQ6CMBRFUWvYo4twPboHV6nTXx3Ywm96tffNCBBO8tuEB+V5YuY8GyAsK1s8uA9YcNfSfm18/FafuiSzHrvvxI5SmDBhtAgTJowWYcKWhb29Wu9/Fc5OiQWgozcMSbRgR4mFVWvsNvtDRlhLg3tlT+qNhx2lMGHCaBEmTBgtwoQtC7NXtsRe+ZewIYW35+dpEyyn8ObsbOwohQkTRoswYcJoESZsWZiFtyUW3iP52iszOuJh2GevnLcZsKMUJkwYLcKECaNFmLBlYb/RK0nBjlJYb140eRgUzBdmKQAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1570 (99.6%)</td>
+<td style="text-align: center;">6 (0.4%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">18</td>
+<td style="text-align: left;">gender [factor]</td>
+<td style="text-align: left;">Género</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. Hombre</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. Mujer</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">3. Otro</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">789</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">50.1%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">720</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">45.7%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">67</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">4.3%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFgAAABOCAQAAAAOExk5AAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAAAtklEQVRo3u3YMQ7CMBAEQBvxR/5A3gN/yCuhdVB8RaSQO2m2c2NNsYnk7Z9WK7erAcDZch8P76SFfvYJuLXH1badrJtTuUoAAwMDAwMDpwowMDBwnJ8n0nrslj+mj+/OfviaczMay1WiHHjT4VeaXWKZtjPlLhF9+uUqAQwMDAwMDJwqwMDAwHHsEmfELgEcJBhSlpSVng4pWf8X5SoBDAwMDAwMnCrAwMDAcWoPKRVSrhLAZ+cLskgRohyWafoAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1576 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">19</td>
+<td style="text-align: left;">age [numeric]</td>
+<td style="text-align: left;">Edad</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 14.3 (1.6)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">12 ≤ 15 ≤ 25</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 3 (0.1)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">12</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">192</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">12.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">13</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">540</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">34.3%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">14</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">40</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">2.5%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">15</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">255</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">16.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">16</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">499</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">31.7%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">17</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">36</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">2.3%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">18</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">12</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">0.8%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">25</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">0.1%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEAAAADECAQAAACFQe+bAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAABKUlEQVR42u3dQQrCMBAFUCve0UN4Hr2Dp6wrIdWq1ZT5Bd/sRCSPTAr5JMVh3GVrHx4fYHdoP1wWLYjT0DtoO8xh+tXx44+vK89AvAUAAAAAAAAAAHHAw5Zs7Q3X5xraDWL3bnNhtWPGWxAHTNbAuSooNr3+Ohf013Shx1sAAAAAAAAAABAHyAXxFsQBL3JB/5nAT4B7LqhcivEWAAAAAAAAAADYlsdbANB5XtCfH7rOC9Z4ZuItAAAAAAAAAACQC+ItACi9RzSXIgrvEc0/YfEWAAAAAAAAAADIBfEWAMzmgrpbRE8zcCx5w+ANoL4AAAAAAAAAAOSCeAu2BTiPZS/+bnQGAAAAAAAAAAAAEiUXbAtQnwq2NgMAAAAAAAAAAACJGvx/wd8Dbuv1LI7UiKZbAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1576 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">20</td>
+<td style="text-align: left;">books [factor]</td>
+<td style="text-align: left;">Libros en el hogar</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. Menos de 25</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. Más de 25</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">957</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">60.9%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">614</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">39.1%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAGgAAAA3CAQAAABKzccIAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAAAn0lEQVRo3u3YsQmAMBBA0UTc0R10Ht3BKbWNgk0Q7nv+36WRPLhYXD1KroboCwj6G2hsD9tHH9RcH0ClTNF362i/nNKNnCB6gugJoieIniB6gugJoieIniB6t53C3vcVULVd9NTuz8TWGtKNXDrQ5Q2tIYvG5dVJD180vv0bSjdygugJoieIniB6gugJoieIniB6gujlXjRmKN3ICaJ3AppiC8fdrh9zAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1571 (99.7%)</td>
+<td style="text-align: center;">5 (0.3%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">21</td>
+<td style="text-align: left;">cohort_level [factor]</td>
+<td style="text-align: left;">Cohorte estudiante</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. Básica</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. Media</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">777</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">49.3%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">799</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">50.7%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFkAAAA3CAQAAADN/C4OAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAAAmElEQVRo3u3YMQqAMBBE0V3JHT2E59E75JRaaLEJ2lgks/B/p4i8YhCMn5atZTYAsmYlXhyCw97czCzCSvvAOlvYVV/uJRwGZMiQIUPWCjJkyJAhawV5RN2/X/33lqF5/Hf12ZrPojLhMBKSmy3vgkcvT2Gz4kcvd+1HIeEwIEOGDBmyVpAhQ4YMWSvII8p+9JKjhMOAPKILnfoMXO9UzBMAAAA9dEVYdGljYzpjb3B5cmlnaHQAQ29weXJpZ2h0IDIwMDcgQXBwbGUgSW5jLiwgYWxsIHJpZ2h0cyByZXNlcnZlZC6eZtwpAAAAI3RFWHRpY2M6ZGVzY3JpcHRpb24AR2VuZXJpYyBSR0IgUHJvZmlsZRqnOI4AAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1576 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">22</td>
+<td style="text-align: left;">mjp [numeric]</td>
+<td style="text-align: left;">Justicia de mercado</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.1 (0.8)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 2 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.4)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle;">12 distinct values</td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJgAAABuCAQAAABxABKuAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAABmElEQVR42u3dW2rCQABAUVPco3to12P30FW2v6kGzAmJie09f4IEvTCPwESH71PE294f4NUUDBUMnccvhtUue52YGj/Wu/yTjb/MefFVHrjcvP7a+1uvpCGJCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGNjuyOccrnoTdNdgrnoRtSKKCoYKhgqGCoV+r5HXyWcDHC/11w2cIj7b1uNlWXO7eMG+h33J7cKytR0MSFQwVDM24Nbqfdo9+v7elGcGONemeTvuunDvffC+zdC1fQ3MYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhgqGCoYKhh6yTOuc2x1cPjPBptz+ntJ1D8cbA4/Ut8chgqG/vmQvDf57OdoXivYjUdPmTQkUcFQwVDBUMFQwVDB0OH2Yc/+0RA1jK/x2b+kT3of7fSHGpnmMFQwVDD0A9rOJ0aFcJPGAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1574 (99.9%)</td>
+<td style="text-align: center;">2 (0.1%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">23</td>
+<td style="text-align: left;">age2 [numeric]</td>
+<td style="text-align: left;">Edad^2</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 207.7 (47.7)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">144 ≤ 225 ≤ 625</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 87 (0.2)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">144</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">192</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">12.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">169</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">540</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">34.3%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">196</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">40</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">2.5%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">225</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">255</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">16.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">256</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">499</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">31.7%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">289</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">36</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">2.3%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">324</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">12</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">0.8%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">625</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">0.1%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEAAAADECAQAAACFQe+bAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAABKUlEQVR42u3dQQrCMBAFUCve0UN4Hr2Dp6wrIdWq1ZT5Bd/sRCSPTAr5JMVh3GVrHx4fYHdoP1wWLYjT0DtoO8xh+tXx44+vK89AvAUAAAAAAAAAAHHAw5Zs7Q3X5xraDWL3bnNhtWPGWxAHTNbAuSooNr3+Ohf013Shx1sAAAAAAAAAABAHyAXxFsQBL3JB/5nAT4B7LqhcivEWAAAAAAAAAADYlsdbANB5XtCfH7rOC9Z4ZuItAAAAAAAAAACQC+ItACi9RzSXIgrvEc0/YfEWAAAAAAAAAADIBfEWAMzmgrpbRE8zcCx5w+ANoL4AAAAAAAAAAOSCeAu2BTiPZS/+bnQGAAAAAAAAAAAAEiUXbAtQnwq2NgMAAAAAAAAAAACJGvx/wd8Dbuv1LI7UiKZbAAAAPXRFWHRpY2M6Y29weXJpZ2h0AENvcHlyaWdodCAyMDA3IEFwcGxlIEluYy4sIGFsbCByaWdodHMgcmVzZXJ2ZWQunmbcKQAAACN0RVh0aWNjOmRlc2NyaXB0aW9uAEdlbmVyaWMgUkdCIFByb2ZpbGUapziOAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1576 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">24</td>
+<td style="text-align: left;">parental_educ [factor]</td>
+<td style="text-align: left;">Nivel educacional parental</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. Primaria o menos</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. Secundaria</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">3. Superior técnica</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">4. Universitaria o Posgrado</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">5. Valor perdido</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table data-quarto-postprocess="true" class="table table-sm table-striped small"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">421</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">26.7%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">675</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">42.8%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">130</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">8.2%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">79</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">5.0%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">271</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">17.2%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAE0AAAB9CAQAAABNeiaWAAAAAmJLR0QA/4ePzL8AAAAHdElNRQfpAQ0PNACC46VNAAAA9ElEQVR42u3aWwrCMBAFUCPdo4twPboHV6m/iVDJk4xw7l+xhQPTlNza9L5EzXU3AG1ujvzgOf3Gu6e283PAUf50mwp7DV0deKBoaGhoaGhoaGixaV+73LF96dykfDfeuJFfkFwTeKBoPSmWwWP/C5Dsdl/aQ1tTPh8CDxQNDQ0NDQ0NDQ2tMypybVTk0VT20Nb/NafTznronsUReKBoaGhoaGhoaGhondFDa6OHjuZnD93RPk9oZQ/dvSQCDxQNDQ0NDQ0NDQ2tM3pobfTQ0Qx/l7uuqw5+l7ty2QQeKBoaGhoaGhoaGlpn/qWHxkrggaL15AMtGB3vBbr3gwAAAD10RVh0aWNjOmNvcHlyaWdodABDb3B5cmlnaHQgMjAwNyBBcHBsZSBJbmMuLCBhbGwgcmlnaHRzIHJlc2VydmVkLp5m3CkAAAAjdEVYdGljYzpkZXNjcmlwdGlvbgBHZW5lcmljIFJHQiBQcm9maWxlGqc4jgAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1576 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+</tbody>
+</table>
+<p>Generated by <a href="https://github.com/dcomtois/summarytools">summarytools</a> 1.0.1 (<a href="https://www.r-project.org/">R</a> version 4.2.2)<br>2025-01-13</p>
+</div>
+</div>
+</div>
+</div>
+</section><section id="save-and-export" class="level1" data-number="8"><h1 data-number="8">
+<span class="header-section-number">8</span> Save and export</h1>
+<div class="cell">
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/save.html">save</a></span><span class="op">(</span><span class="va">db_proc</span>, file <span class="op">=</span> <span class="fu">here</span><span class="op">(</span><span class="st">"output/data/db_proc.RData"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></main><!-- /main column --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
