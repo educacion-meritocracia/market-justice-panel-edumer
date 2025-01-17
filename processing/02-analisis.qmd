@@ -28,360 +28,484 @@ editor_options:
 
 # Presentation
 
-This is the data analysis code for the paper "Changes in Beliefs about Meritocracy and Preferences for Market Justice in the Chilean School Context". The prepared data is `edumer_students_long.RData`.
+This is the data analysis code for the paper "Changes in Beliefs about Meritocracy and Preferences for Market Justice in the Chilean School Context". The prepared data is `db_proc.Rdata`.
 
 ```{r}
-pacman::p_load(dplyr, car, sjmisc, sjPlot, sjlabelled, stargazer, kableExtra, corrplot, texreg, ggplot2, ggpubr, lavaan, haven, lme4)
+#| label: set
+#| echo: false
+#| message: false
+#| warning: false
+
+library(knitr)
+knitr::opts_chunk$set(echo = FALSE, include = TRUE, warning = FALSE, message = FALSE)
+
+table_format <- if(is_html_output()) {
+  "html"
+} else if(is_latex_output()) {
+  "latex"
+}
+table_format2 <- if(is_html_output()) {
+  T
+} else if(is_latex_output()) {
+  F
+}
+
+options(kableExtra.html.bsTable = T)
+options(knitr.kable.NA = "")
 ```
 
-```{r}
-load(here::here("input/data/proc/data.RData"))
-```
+```{r librerías}
+pacman::p_load(tidyverse,
+               sjmisc, 
+               sjPlot,
+               here,
+               lavaan,
+               psych,
+               corrplot,
+               ggdist,
+               patchwork,
+               sjlabelled,
+               semTools,
+               gtools,
+               RColorBrewer,
+               skimr,
+               readxl,
+               dplyr,
+               summarytools,
+               labelled,
+               kableExtra,
+               table1)
 
-# Correlaciones
-
-```{r}
-corr <- data %>% select(redistribucion,
-                        perc_esfuerzo_soc, perc_talento_soc, perc_merit_soc,
-                        perc_padres_ricos, perc_contactos,
-                        pref_esfuerzo_soc, pref_talento_soc,
-                        pref_padres_ricos, pref_contactos,
-                        perc_esfuerzo_esc, perc_talento_esc, perc_merit_esc)
-```
-
-```{r}
-M <- cor(corr, use = "complete.obs") # Usar solo casos con observaciones completas
-diag(M) = NA # Elimina la diagonal (correlaciones absolutas de cada variable consigmo misma)
-rownames(M) <- c("A. Redistribución",
-                 "B. Percepción: esfuerzo",
-                 "C. Percepción: talento",
-                 "D. Percepción: merecimiento",
-                 "E. Percepción: padres ricos",
-                 "F. Percepción: buenos contactos",
-                 "G. Preferencia: esfuerzo",
-                 "H. Preferencia: talento",
-                 "I. Preferencia: padres ricos",
-                 "J. Preferencia: buenos contactos",
-                 "J. Escuela: esfuerzo",
-                 "L. Escuela: talento",
-                 "M. Escuela: merecimiento")
-colnames(M) <-c("(A)", "(B)","(C)", "(D)", "(E)", "(F)", "(G)", "(H)", "(I)", "(J)", "(K)", "(L)", "(M)")
-```
-
-```{r}
-corrplot::corrplot(M,
-  method = "color", # Cambia los círculos por color completo de cada cuadrante
-  addCoef.col = "#000390", # Color de los coeficientes
-  type = "upper", # Deja solo las correlaciones de arriba
-  tl.col = "black", # COlor letras, rojo por defecto
-  na.label = "-")
-```
-
-```{r}
-data$curso_estudiante <- car::recode(data$curso_estudiante, recodes = c("'6a'='Basica';
-                                                                        '6b'='Basica';
-                                                                        '6c'='Basica';
-                                                                        '7a'='Basica';
-                                                                        '7b'='Basica';
-                                                                        '1a'='Media';
-                                                                        '1b'='Media';
-                                                                        '1c'='Media';
-                                                                        '2a'='Media';
-                                                                        '2b'='Media';
-                                                                        '2c'='Media'"))
-
-data <- data  %>% group_by(id_estudiante) %>%
-  mutate(curso_estudiante_rec = ifelse(ola == 2 & is.na(curso_estudiante),
-                                   curso_estudiante[ola == 1],
-                                   curso_estudiante)) %>% ungroup()
-
-table(data$curso_estudiante_rec)
-```
-
-
-# Redistribución
-
-
-```{r results='asis'}
-data<-data %>%
-  mutate(across(where(is.labelled), as.numeric))
-
-reg0 <- lm(redistribucion~ola, data=data)
-reg1.1<- lm(redistribucion~perc_esfuerzo_soc,data=data)
-reg1.2<- lm(redistribucion~perc_talento_soc,data=data)
-reg1.3<- lm(redistribucion~perc_merit_soc,data=data)
-reg1<- lm(redistribucion~perc_esfuerzo_soc+perc_talento_soc+perc_merit_soc,data=data)
-reg2.1<- lm(redistribucion~pref_esfuerzo_soc,data=data)
-reg2.2<- lm(redistribucion~pref_talento_soc,data=data)
-reg2<- lm(redistribucion~pref_esfuerzo_soc+pref_talento_soc, data=data)
-reg3.1<- lm(redistribucion~perc_esfuerzo_esc,data=data)
-reg3.2<- lm(redistribucion~perc_talento_esc,data=data)
-reg3.3<- lm(redistribucion~perc_merit_esc,data=data)
-reg3<- lm(redistribucion~perc_esfuerzo_esc+perc_talento_esc+perc_merit_esc,data=data)
-reg4<- lm(redistribucion~ola+perc_esfuerzo_soc+perc_talento_soc+perc_merit_soc+pref_esfuerzo_soc+pref_talento_soc+perc_esfuerzo_esc+perc_talento_esc+perc_merit_esc,data=data)
-
-labs02 <- c("Intercepto",
-            "Ola",
-            "Percepción: esfuerzo", "Percepción: talento", "Percepción: merecimiento",
-            "Preferencia: esfuerzo", "Preferencia: talento",
-            "Escuela: esfuerzo", "Escuela: talento", "Escuela: merecimiento")
-
-knitreg(list(reg0,reg1.1,reg1.2,reg1.3,reg1,reg2.1,reg2.2,reg2,reg3.1,reg3.2,reg3.3,reg3, reg4),
-        #custom.model.names = c("Modelo 1","Modelo 2","Modelo 3", "Modelo 4"),
-        custom.coef.names = labs02)
-```
-
-## Puntajes factoriales
-
-```{r}
-data_cfa <- data %>% dplyr::select(redistribucion,
-                                   perc_esfuerzo_soc, perc_talento_soc,
-                                   perc_padres_ricos, perc_contactos,
-                                   pref_esfuerzo_soc, pref_talento_soc,
-                                   pref_padres_ricos, pref_contactos) %>% 
-  na.omit()
-# model
-model_cfa <- '
-  perc_merit = ~ perc_esfuerzo_soc + perc_talento_soc
-  perc_nmerit = ~ perc_padres_ricos + perc_contactos
-  pref_merit = ~ pref_esfuerzo_soc + pref_talento_soc
-  pref_nmerit = ~ pref_padres_ricos + pref_contactos
-  '
-
-
-# estimation for each order set
-m1_cfa <- cfa(model = model_cfa, 
-              data = data_cfa,
-              estimator = "MLR", 
-              std.lv = F) # Continuous/ estimator ML Robust
-
-
-summary(m1_cfa, fit.measures = T, standardized = T, rsquare = T, modindices = T) 
-
-# Obtener los puntajes factoriales
-puntajes_factoriales <- lavPredict(m1_cfa)
-head(puntajes_factoriales)
-data_cfa <- cbind(data_cfa, puntajes_factoriales)
-```
-
-```{r}
-data_cfa <- data_cfa %>%
-  na.omit() %>%
-  mutate_all(~as.numeric(as_factor(.)))
-```
-
-```{r results='asis'}
-reg1.1<- lm(redistribucion~perc_merit,data=data_cfa)
-reg1.2<- lm(redistribucion~perc_nmerit,data=data_cfa)
-reg1.3<- lm(redistribucion~pref_merit,data=data_cfa)
-reg1.4<- lm(redistribucion~pref_nmerit,data=data_cfa)
-reg1.5<- lm(redistribucion~perc_merit+perc_nmerit+pref_merit+pref_nmerit,data=data_cfa)
-
-knitreg(list(reg1.1, reg1.2, reg1.3, reg1.4, reg1.5))
-```
-
-# Percepción desigualdad
-
-```{r}
-data %>% dplyr::select(perc_esfuerzo_soc, perc_talento_soc, perc_merit_soc,
-                       perc_padres_ricos, perc_contactos) %>%  
-  sjPlot::plot_stackfrq()+
-  theme(legend.position = "bottom")
-```
-
-```{r}
-data %>% dplyr::select(pref_esfuerzo_soc, pref_talento_soc,
-                       pref_padres_ricos, pref_contactos) %>%  
-  sjPlot::plot_stackfrq()+
-  theme(legend.position = "bottom")
-```
-
-```{r}
-data %>% dplyr::select(perc_esfuerzo_esc, perc_talento_esc, perc_merit_esc) %>%  
-  sjPlot::plot_stackfrq()+
-  theme(legend.position = "bottom")
-```
-
-
-```{r results='asis'}
-reg0 <- lmer(perc_des~ola+curso_estudiante_rec+(1|id_estudiante), data=data)
-reg1.1<- lmer(perc_des~perc_esfuerzo_soc+(1|id_estudiante),data=data)
-reg1.2<- lmer(perc_des~perc_talento_soc+(1|id_estudiante),data=data)
-reg1.3<- lmer(perc_des~perc_merit_soc+(1|id_estudiante),data=data)
-reg1.4<- lmer(perc_des~perc_padres_ricos+(1|id_estudiante),data=data)
-reg1.5<- lmer(perc_des~perc_contactos+(1|id_estudiante),data=data)
-reg1<- lmer(perc_des~perc_esfuerzo_soc+perc_talento_soc+perc_merit_soc+perc_padres_ricos+perc_contactos+(1|id_estudiante),data=data)
-reg2.1<- lmer(perc_des~pref_esfuerzo_soc+(1|id_estudiante),data=data)
-reg2.2<- lmer(perc_des~pref_talento_soc+(1|id_estudiante),data=data)
-reg2.3<- lmer(perc_des~pref_padres_ricos+(1|id_estudiante),data=data)
-reg2.4<- lmer(perc_des~pref_contactos+(1|id_estudiante),data=data)
-reg2<- lmer(perc_des~pref_esfuerzo_soc+pref_talento_soc+pref_padres_ricos+pref_contactos+(1|id_estudiante),data=data)
-reg3.1<- lmer(perc_des~perc_esfuerzo_esc+(1|id_estudiante),data=data)
-reg3.2<- lmer(perc_des~perc_talento_esc+(1|id_estudiante),data=data)
-reg3.3<- lmer(perc_des~perc_merit_esc+(1|id_estudiante),data=data)
-reg3<- lmer(perc_des~perc_esfuerzo_esc+perc_talento_esc+perc_merit_esc+(1|id_estudiante),data=data)
-reg4<- lmer(perc_des~ola+curso_estudiante_rec+perc_esfuerzo_soc+perc_talento_soc+perc_merit_soc+perc_padres_ricos+perc_contactos+pref_esfuerzo_soc+pref_talento_soc+pref_padres_ricos+pref_contactos+perc_esfuerzo_esc+perc_talento_esc+perc_merit_esc+(1|id_estudiante),data=data)
-
-labs02 <- c("Intercepto",
-            "Ola",
-            "Media",
-            "Percepción: esfuerzo", "Percepción: talento", "Percepción: merecimiento", "Percepción: Padres ricos", "Percepción: buenos contactos",
-            "Preferencia: esfuerzo", "Preferencia: talento", "Preferencia: Padres ricos", "Preferencia: buenos contactos",
-            "Escuela: esfuerzo", "Escuela: talento", "Escuela: merecimiento")
-
-knitreg(list(reg0,reg1.1,reg1.2,reg1.3,reg1,reg2.1,reg2.2,reg2,reg3.1,reg3.2,reg3.3,reg3, reg4),
-        #custom.model.names = c("Modelo 1","Modelo 2","Modelo 3", "Modelo 4"),
-        custom.coef.names = labs02)
-```
-
-```{r}
-sjPlot::plot_model(reg4,
-                   show.values = TRUE,#mostrar valor de efectos
-            dot.size = 1.3, #tamaño circulos
-            line.size = 1, #tamaño CI
-            value.size = 3.5, #tamaño valor efectoss
-            value.offset = 0.35,
-            spacing = .7, #espacio entre efectos)
-            axis.labels = rev(c("Ola", "Media",
-            "Percepción: esfuerzo", "Percepción: talento", "Percepción: merecimiento", "Percepción: Padres ricos", "Percepción: buenos contactos",
-            "Preferencia: esfuerzo", "Preferencia: talento", "Preferencia: Padres ricos", "Preferencia: buenos contactos",
-            "Escuela: esfuerzo", "Escuela: talento", "Escuela: merecimiento"))
-)
+options(scipen=999)
+rm(list = ls())
 
 ```
 
-## Puntajes factoriales
-
-```{r}
-data_cfa <- data %>% dplyr::select(perc_des,
-                                   perc_esfuerzo_soc, perc_talento_soc,
-                                   perc_padres_ricos, perc_contactos,
-                                   pref_esfuerzo_soc, pref_talento_soc,
-                                   pref_padres_ricos, pref_contactos,
-                                   perc_esfuerzo_esc, perc_talento_esc, perc_merit_esc) %>% 
-  na.omit()
-# model
-model_cfa <- '
-  perc_merit = ~ perc_esfuerzo_soc + perc_talento_soc
-  perc_nmerit = ~ perc_padres_ricos + perc_contactos
-  pref_merit = ~ pref_esfuerzo_soc + pref_talento_soc
-  pref_nmerit = ~ pref_padres_ricos + pref_contactos
-  school_merit = ~ perc_esfuerzo_esc + perc_talento_esc + perc_merit_esc
-  '
-
-# estimation for each order set
-m1_cfa <- cfa(model = model_cfa, 
-              data = data_cfa,
-              estimator = "MLR", 
-              std.lv = F) # Continuous/ estimator ML Robust
-
-
-summary(m1_cfa, fit.measures = T, standardized = T, rsquare = T, modindices = T) 
-
-# Obtener los puntajes factoriales
-puntajes_factoriales <- lavPredict(m1_cfa)
-head(puntajes_factoriales)
-data_cfa <- cbind(data_cfa, puntajes_factoriales)
-summary(data_cfa$perc_merit)
+```{r cargar base}
+load(file = here("output", "data", "db_proc.RData"))
 ```
 
-```{r}
-data_cfa <- data_cfa %>%
-  na.omit() %>%
-  mutate_all(~as.numeric(as_factor(.)))
+```{r graf curso}
+#curso
+graf1 <-ggplot(data = db_proc %>% filter(!is.na(curse_level)),
+       mapping = aes(x = factor(curse_level))) + 
+  geom_bar(color = "black", fill = "lightblue", na.rm = TRUE) + 
+  scale_y_continuous(limits = c(0, 1000)) + 
+  scale_x_discrete(labels = c("6o Básico", "7o Básico", "1o Medio", "2o Medio")) + 
+  labs(title = "Frecuencia Curso", 
+       x = "Curso", 
+       y = "Frecuencia") +
+  geom_text(aes(label = ..count..), stat = "count", vjust = 1.5, colour = "black") + theme_minimal()
+
+
+graf1
 ```
 
-```{r results='asis'}
-reg1.1<- lm(perc_des~perc_merit,data=data_cfa)
-reg1.2<- lm(perc_des~perc_nmerit,data=data_cfa)
-reg1.3<- lm(perc_des~pref_merit,data=data_cfa)
-reg1.4<- lm(perc_des~pref_nmerit,data=data_cfa)
-reg1.5<- lm(perc_des~school_merit,data=data_cfa)
-reg1.6<- lm(perc_des~perc_merit+perc_nmerit+pref_merit+pref_nmerit+school_merit,data=data_cfa)
+```{r graf perc_effort}
+#perc_effort
+graf2 <-ggplot(data = db_proc %>% filter(!is.na(perc_effort)),
+       mapping = aes(x = factor(perc_effort))) + 
+  geom_bar(color = "black", fill = "lightblue", na.rm = TRUE) + 
+  scale_y_continuous(limits = c(0, 1000)) + 
+  scale_x_discrete(labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo")) + 
+  labs(title = "En Chile, las personas son recompensadas por su esfuerzo", 
+       x = "Grado de acuerdo", 
+       y = "Frecuencia") +
+  geom_text(aes(label = ..count..), stat = "count", vjust = 1.5, colour = "black") + theme_minimal()
+ 
 
-knitreg(list(reg1.1, reg1.2, reg1.3, reg1.4, reg1.5,reg1.6), digits=3)
+graf2
+ 
+
 ```
 
-# Market justice preferences
+```{r graf perc_talent}
+#perc_talent
+graf3 <-ggplot(data = db_proc %>% filter(!is.na(perc_talent)),
+       mapping = aes(x = factor(perc_talent))) + 
+  geom_bar(color = "black", fill = "lightblue", na.rm = TRUE) + 
+  scale_y_continuous(limits = c(0, 1000)) + 
+  scale_x_discrete(labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo")) + 
+  labs(title = "En Chile, las personas son recompensadas por su inteligencia y habilidad", 
+       x = "Grado de acuerdo", 
+       y = "Frecuencia") +
+  geom_text(aes(label = ..count..), stat = "count", vjust = 1.5, colour = "black") + theme_minimal()
 
-```{r results='asis'}
-data <- data %>% rowwise() %>% 
-  mutate(market_justice=mean(c(just_salud, just_educ, just_pensiones), na.rm = TRUE))
-summary(data$market_justice)
 
-reg0 <- lm(market_justice~ola, data=data)
-reg1.1<- lm(market_justice~perc_esfuerzo_soc,data=data)
-reg1.2<- lm(market_justice~perc_talento_soc,data=data)
-reg1.3<- lm(market_justice~perc_merit_soc,data=data)
-reg1<- lm(market_justice~perc_esfuerzo_soc+perc_talento_soc+perc_merit_soc,data=data)
-reg2.1<- lm(market_justice~pref_esfuerzo_soc,data=data)
-reg2.2<- lm(market_justice~pref_talento_soc,data=data)
-reg2<- lm(market_justice~pref_esfuerzo_soc+pref_talento_soc,data=data)
-reg3.1<- lm(market_justice~perc_esfuerzo_esc,data=data)
-reg3.2<- lm(market_justice~perc_talento_esc,data=data)
-reg3.3<- lm(market_justice~perc_merit_esc,data=data)
-reg3<- lm(market_justice~perc_esfuerzo_esc+perc_talento_esc+perc_merit_esc,data=data)
-reg4<- lm(market_justice~ola+perc_esfuerzo_soc+perc_talento_soc+perc_merit_soc+pref_esfuerzo_soc+pref_talento_soc+perc_esfuerzo_esc+perc_talento_esc+perc_merit_esc,data=data)
-
-labs02 <- c("Intercepto",
-            "Ola",
-            "Percepción: esfuerzo", "Percepción: talento", "Percepción: merecimiento",
-            "Preferencia: esfuerzo", "Preferencia: talento",
-            "Escuela: esfuerzo", "Escuela: talento", "Escuela: merecimiento")
-
-knitreg(list(reg0,reg1.1,reg1.2,reg1.3,reg1,reg2.1,reg2.2,reg2,reg3.1,reg3.2,reg3.3,reg3, reg4),
-        #custom.model.names = c("Modelo 1","Modelo 2","Modelo 3", "Modelo 4"),
-        custom.coef.names = labs02)
+graf3
 ```
 
-## Puntajes factoriales
-
-```{r}
-data_cfa <- data %>% dplyr::select(market_justice,
-                                   perc_esfuerzo_soc, perc_talento_soc,
-                                   perc_padres_ricos, perc_contactos,
-                                   pref_esfuerzo_soc, pref_talento_soc,
-                                   pref_padres_ricos, pref_contactos,
-                                   perc_esfuerzo_esc, perc_talento_esc, perc_merit_esc) %>% 
-  na.omit()
-# model
-model_cfa <- '
-  perc_merit = ~ perc_esfuerzo_soc + perc_talento_soc
-  perc_nmerit = ~ perc_padres_ricos + perc_contactos
-  pref_merit = ~ pref_esfuerzo_soc + pref_talento_soc
-  pref_nmerit = ~ pref_padres_ricos + pref_contactos
-  school_merit = ~ perc_esfuerzo_esc + perc_talento_esc + perc_merit_esc
-  '
-
-# estimation for each order set
-m1_cfa <- cfa(model = model_cfa, 
-              data = data_cfa,
-              estimator = "MLR", 
-              std.lv = F) # Continuous/ estimator ML Robust
+```{r graf perc_rich_parents}
+#perc_rich_parents
+graf4 <-ggplot(data = db_proc %>% filter(!is.na(perc_rich_parents)),
+       mapping = aes(x = factor(perc_rich_parents))) + 
+  geom_bar(color = "black", fill = "lightblue", na.rm = TRUE) + 
+  scale_y_continuous(limits = c(0, 1000)) + 
+  scale_x_discrete(labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo")) + 
+  labs(title = "En Chile, a quienes tienen padres ricos les va mucho mejor en la vida", 
+       x = "Grado de acuerdo", 
+       y = "Frecuencia") +
+  geom_text(aes(label = ..count..), stat = "count", vjust = 1.5, colour = "black") + theme_minimal()
 
 
-summary(m1_cfa, fit.measures = T, standardized = T, rsquare = T, modindices = T) 
-
-# Obtener los puntajes factoriales
-puntajes_factoriales <- lavPredict(m1_cfa)
-head(puntajes_factoriales)
-data_cfa <- cbind(data_cfa, puntajes_factoriales)
-summary(data_cfa$perc_merit)
+graf4
 ```
 
-```{r}
-data_cfa <- data_cfa %>%
-  na.omit() %>%
-  mutate_all(~as.numeric(as_factor(.)))
+```{r graf per_contact}
+#perc_contact
+graf5 <-ggplot(data = db_proc %>% filter(!is.na(perc_contact)),
+       mapping = aes(x = factor(perc_contact))) + 
+  geom_bar(color = "black", fill = "lightblue", na.rm = TRUE) + 
+  scale_y_continuous(limits = c(0, 1000)) + 
+  scale_x_discrete(labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo")) + 
+  labs(title = "En Chile, quienes tienen buenos contactos les va mucho mejor en la vida", 
+       x = "GRado de acuerdo", 
+       y = "Frecuencia") +
+  geom_text(aes(label = ..count..), stat = "count", vjust = 1.5, colour = "black") + theme_minimal()
+
+
+graf5
 ```
 
-```{r results='asis'}
-reg1.1<- lm(market_justice~perc_merit,data=data_cfa)
-reg1.2<- lm(market_justice~perc_nmerit,data=data_cfa)
-reg1.3<- lm(market_justice~pref_merit,data=data_cfa)
-reg1.4<- lm(market_justice~pref_nmerit,data=data_cfa)
-reg1.5<- lm(market_justice~school_merit,data=data_cfa)
-reg1.6<- lm(market_justice~perc_merit+perc_nmerit+pref_merit+pref_nmerit+school_merit,data=data_cfa)
+```{r graf pref_effort}
+#pref_effort
+graf6 <-ggplot(data = db_proc %>% filter(!is.na(pref_effort)),
+       mapping = aes(x = factor(pref_effort))) + 
+  geom_bar(color = "black", fill = "lightblue", na.rm = TRUE) + 
+  scale_y_continuous(limits = c(0, 1000)) + 
+  scale_x_discrete(labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo")) + 
+  labs(title = "Quienes más se esfuerzan deberían obtener mayores\n recompensas que quienes se esfuerzan menos", 
+       x = "Grado de acuerdo", 
+       y = "Frecuencia") +
+  geom_text(aes(label = ..count..), stat = "count", vjust = 1.5, colour = "black") + theme_minimal()
 
-knitreg(list(reg1.1, reg1.2, reg1.3, reg1.4, reg1.5,reg1.6), digits=3)
+
+graf6
+```
+
+```{r graf pref_talent}
+#pref_talent
+graf7 <-ggplot(data = db_proc %>% filter(!is.na(pref_talent)),
+       mapping = aes(x = factor(pref_talent))) + 
+  geom_bar(color = "black", fill = "lightblue", na.rm = TRUE) + 
+  scale_y_continuous(limits = c(0, 1000)) + 
+  scale_x_discrete(labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo")) + 
+  labs(title = "Quienes poseen más talento deberían obtener mayores\n recompensas que quienes poseen menos talento", 
+       x = "Grado de acuerdo", 
+       y = "Frecuencia") +
+  geom_text(aes(label = ..count..), stat = "count", vjust = 1.5, colour = "black") + theme_minimal()
+
+
+graf7
+```
+
+```{r graf pref_rich_parents}
+#pref_rich_parents
+graf8 <-ggplot(data = db_proc %>% filter(!is.na(pref_rich_parents)),
+       mapping = aes(x = factor(pref_rich_parents))) + 
+  geom_bar(color = "black", fill = "lightblue", na.rm = TRUE) + 
+  scale_y_continuous(limits = c(0, 1000)) + 
+  scale_x_discrete(labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo")) + 
+  labs(title = "Está bien que quienes tienen padres ricos les vaya bien en la vida", 
+       x = "Grado de acuerdo", 
+       y = "Frecuencia") +
+  geom_text(aes(label = ..count..), stat = "count", vjust = 1.5, colour = "black") + theme_minimal()
+
+
+graf8
+```
+
+```{r graf pref_contact}
+#pref_contact
+graf9 <-ggplot(data = db_proc %>% filter(!is.na(pref_contact)),
+       mapping = aes(x = factor(pref_contact))) + 
+  geom_bar(color = "black", fill = "lightblue", na.rm = TRUE) + 
+  scale_y_continuous(limits = c(0, 1000)) + 
+  scale_x_discrete(labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo")) + 
+  labs(title = "Está bien que quienes tienen buenos contactos les vaya bien en la vida", 
+       x = "Grado de acuerdo", 
+       y = "Frecuencia") +
+  geom_text(aes(label = ..count..), stat = "count", vjust = 1.5, colour = "black")+ theme_minimal()
+ 
+
+graf9
+```
+
+```{r graf school_effort}
+#school_effort
+graf10 <-ggplot(data = db_proc %>% filter(!is.na(school_effort)),
+       mapping = aes(x = factor(school_effort))) + 
+  geom_bar(color = "black", fill = "lightblue", na.rm = TRUE) + 
+  scale_y_continuous(limits = c(0, 1000)) + 
+  scale_x_discrete(labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo")) + 
+  labs(title = "En esta escuela, quienes se esfuerzan obtienen buenas notas", 
+       x = "Grado de acuerdo", 
+       y = "Frecuencia") +
+  geom_text(aes(label = ..count..), stat = "count", vjust = 1.5, colour = "black") + theme_minimal()
+
+
+graf10
+```
+
+```{r graf school_talent}
+#school_talent
+graf11 <-ggplot(data = db_proc %>% filter(!is.na(school_talent)),
+       mapping = aes(x = factor(school_talent))) +
+  geom_bar(color = "black", fill = "lightblue", na.rm = TRUE) +
+  scale_y_continuous(limits = c(0, 1000)) +
+  scale_x_discrete(labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo")) +
+  labs(title = "En esta escuela, quienes son inteligentes obtienen buenas notas",
+       x = "Grado de acuerdo",
+       y = "Frecuencia") +
+  geom_text(aes(label = ..count..), stat = "count", vjust = 1.5, colour = "black")
+ 
+graf11
+```
+
+```{r graf inequality}
+#inequality
+graf12 <-ggplot(data = db_proc %>% filter(!is.na(inequality)),
+       mapping = aes(x = factor(inequality))) +
+  geom_bar(color = "black", fill = "lightblue", na.rm = TRUE) +
+  scale_y_continuous(limits = c(0, 1000)) +
+  scale_x_discrete(labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo")) +
+  labs(title = "Las diferencias económicas entre ricos y pobres en Chile son demasiado grandes",
+       x = "Grado de acuerdo",
+       y = "Frecuencia") +
+  geom_text(aes(label = ..count..), stat = "count", vjust = 1.5, colour = "black")
+
+graf12
+```
+
+```{r graf just_educ}
+#just_educ
+graf13 <-ggplot(data = db_proc %>% filter(!is.na(just_educ)),
+       mapping = aes(x = factor(just_educ))) +
+  geom_bar(color = "black", fill = "lightblue", na.rm = TRUE) +
+  scale_y_continuous(limits = c(0, 1000)) +
+  scale_x_discrete(labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo")) +
+  labs(title = "Está bien que aquellos que puedan pagar más\n tengan mejor educación",
+       x = "Grado de acuerdo",
+       y = "Frecuencia") +
+  geom_text(aes(label = ..count..), stat = "count", vjust = 1.5, colour = "black")
+
+graf13
+```
+
+```{r graf just_health}
+#just_health
+graf14 <-ggplot(data = db_proc %>% filter(!is.na(just_health)),
+       mapping = aes(x = factor(just_health))) +
+  geom_bar(color = "black", fill = "lightblue", na.rm = TRUE) +
+  scale_y_continuous(limits = c(0, 1000)) +
+  scale_x_discrete(labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo")) +
+  labs(title = "Está bien que aquellos que puedan pagar más tengan mejor acceso a salud",
+       x = "Grado de acuerdo",
+       y = "Frecuencia") +
+  geom_text(aes(label = ..count..), stat = "count", vjust = 1.5, colour = "black")
+
+graf14
+```
+
+```{r graf just_pension}
+#just_pension
+graf15 <- ggplot(data = db_proc %>% filter(!is.na(just_pension)),
+                mapping = aes(x = factor(just_pension))) +
+  geom_bar(color = "black", fill = "lightblue", na.rm = TRUE) +
+  scale_y_continuous(limits = c(0, 1000)) +
+  scale_x_discrete(labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo")) +
+  labs(
+    title = "Está bien que en Chile las personas con mayores ingresos\n puedan tener mejores pensiones que las personas de ingresos más bajos",
+    x = "Grado de acuerdo",
+    y = "Frecuencia"
+  ) +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -0.5, colour = "black") +
+  theme_minimal()
+
+graf15
+```
+
+```{r graf_perc}
+colors <- RColorBrewer::brewer.pal(n = 4, name = "Blues")
+a <- db_proc %>%
+dplyr::select(4, 5) %>% 
+  sjPlot::plot_likert(geom.colors = colors,
+                      title = c("a. Percepciones meritocráticas"),
+                      geom.size = 0.8,
+                      axis.labels = c("Esfuerzo", "Talento"),
+                      catcount = 4,
+                      values  =  "sum.outside",
+                      reverse.colors = F,
+                      reverse.scale = T,
+                      show.n = FALSE,
+                      show.prc.sign = T
+                      ) +
+  ggplot2::theme(legend.position = "none")
+
+b <- db_proc %>%
+  dplyr::select(6, 7) %>% 
+  sjPlot::plot_likert(geom.colors = colors,
+                      title = c("b. Percepciones no meritocráticas"),
+                      geom.size = 0.8,
+                     axis.labels = c("Padres ricos", "Contactos"),
+                      catcount = 4,
+                      values  =  "sum.outside",
+                      reverse.colors = F,
+                      reverse.scale = T,
+                      show.n = FALSE,
+                      show.prc.sign = T
+  ) +
+  ggplot2::theme(legend.position = "bottom")
+
+perc<- a / b
+
+perc
+```
+
+```{r graf_pref}
+colors <- RColorBrewer::brewer.pal(n = 4, name = "Blues")
+c <- db_proc %>%
+dplyr::select(8,9) %>% 
+  sjPlot::plot_likert(geom.colors = colors,
+                      title = c("a. Preferencias meritocráticas"),
+                      geom.size = 0.8,
+                      axis.labels = c("Esfuerzo", "Talento"),
+                      catcount = 4,
+                      values  =  "sum.outside",
+                      reverse.colors = F,
+                      reverse.scale = T,
+                      show.n = FALSE,
+                      show.prc.sign = T
+                      ) +
+  ggplot2::theme(legend.position = "none")
+
+d <- db_proc %>%
+  dplyr::select(10, 11) %>% 
+  sjPlot::plot_likert(geom.colors = colors,
+                      title = c("b. Preferencias no meritocráticas"),
+                      geom.size = 0.8,
+                     axis.labels = c("Padres ricos", "Contactos"),
+                      catcount = 4,
+                      values  =  "sum.outside",
+                      reverse.colors = F,
+                      reverse.scale = T,
+                      show.n = FALSE,
+                      show.prc.sign = T
+  ) +
+  ggplot2::theme(legend.position = "bottom")
+
+pref<- c / d
+
+pref
+```
+
+```{r univariados, include=FALSE}
+table(db_proc$perc_effort)
+prop.table(table(db_proc$perc_effort)) * 100
+
+table(db_proc$perc_talent)
+prop.table(table(db_proc$perc_talent)) * 100
+
+table(db_proc$perc_rich_parents)
+prop.table(table(db_proc$perc_rich_parents)) * 100
+
+table(db_proc$perc_contact)
+prop.table(table(db_proc$perc_contact)) * 100
+
+table(db_proc$pref_effort)
+prop.table(table(db_proc$pref_effort)) * 100
+
+table(db_proc$pref_talent)
+prop.table(table(db_proc$pref_talent)) * 100
+
+table(db_proc$pref_rich_parents)
+prop.table(table(db_proc$pref_rich_parents)) * 100
+
+table(db_proc$pref_contact)
+prop.table(table(db_proc$pref_contact)) * 100
+
+table(db_proc$school_effort)  
+prop.table(table(db_proc$school_effort)) * 100  
+
+table(db_proc$school_talent)
+prop.table(table(db_proc$school_talent)) * 100
+
+table(db_proc$inequality)
+prop.table(table(db_proc$inequality)) * 100
+
+table(db_proc$just_educ)
+prop.table(table(db_proc$just_educ)) * 100
+
+table(db_proc$just_health)
+prop.table(table(db_proc$just_health)) * 100
+
+table(db_proc$just_pension)
+prop.table(table(db_proc$just_pension)) * 100
+
+table(db_proc$gender)
+prop.table(table(db_proc$gender)) * 100
+
+table(db_proc$mjp)
+prop.table(table(db_proc$mjp)) * 100
+```
+
+```{r descriptivos age}
+# Resumen estadístico y dispersión para age
+summary(db_proc$age)
+sd(db_proc$age, na.rm = TRUE)  # Desviación estándar
+
+# Histograma para age
+age_histo <- ggplot(db_proc, aes(x = age)) +
+  geom_histogram(binwidth = 5, fill = "blue", color = "black") +
+  labs(
+    title = "Distribución de Edad",
+    x = "Edad",
+    y = "Frecuencia"
+  ) +
+  theme_minimal()
+
+age_histo
+
+```
+
+```{r parental_educ}
+# Resumen estadístico para parental_educ
+summary(db_proc$parental_educ)
+
+#  parental_educ
+graf_parental_educ <- ggplot(db_proc %>% filter(!is.na(parental_educ)), aes(x = as.factor(parental_educ))) +
+  geom_bar(fill = "lightblue", color = "black") +
+  labs(
+    title = "Nivel de educación parental",
+    x = "Años de Educación (categorías)",
+    y = "Frecuencia"
+  ) + geom_text(aes(label = ..count..), stat = "count", vjust = 1.5, colour = "black")  + theme_minimal()
+
+graf_parental_educ
+```
+
+```{r tab_descriptivos , echo=FALSE}
+tab <- dplyr::select(db_proc,
+                          "Percepcion esfuerzo" = perc_effort,
+                          "Percepcion talento" = perc_talent,
+                          "Percepcion padres ricos" = perc_rich_parents,
+                          "Percepcion contactos" = perc_contact,
+                          "Preferencias esfuerzo" = pref_effort,
+                          "Preferencias talento" = pref_talent,
+                          "Preferencias padres ricos" = pref_rich_parents,
+                          "Preferencias contactos" = pref_contact,
+                          "Esfuerzo en la escuela" = school_effort,
+                          "Talento en la escuela" = school_talent,
+                          "Desigualdad" = inequality,
+                          "Justicia de mercado en educación" = just_educ,
+                          "Justicia de mercado en salud" = just_health,
+                          "Justicia de mercado en pensiones" = just_pension,
+                          "Market Justice Prefernces" = mjp)
+
+tab_desc <- psych::describe(tab)
+tab_desc <- tab_desc %>%
+  select(mean, sd, median, min, max, range, se)
+tab_desc %>%
+  kable() %>%
+  kable_styling(full_width = TRUE)
 ```
