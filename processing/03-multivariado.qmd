@@ -437,7 +437,12 @@ db_proc <- db_proc %>%
          pref_merit_score_mean = mean(pref_merit_score, na.rm = T),
          pref_merit_score_cwc = pref_merit_score - pref_merit_score_mean,
          pref_nmerit_score_mean = mean(pref_nmerit_score, na.rm = T),
-         pref_nmerit_score_cwc = pref_nmerit_score - pref_nmerit_score_mean) %>% 
+         pref_nmerit_score_cwc = pref_nmerit_score - pref_nmerit_score_mean,
+         school_talent_mean = mean(school_talent, na.rm = T),
+         school_talent_cwc = school_talent - school_talent_mean,
+         school_effort_mean = mean(school_effort, na.rm = T),
+         school_effort_cwc = school_effort - school_effort_mean
+         ) %>% 
   ungroup()
 
 m1 <- lmer(mjp ~ 1 + inequality_mean + inequality_cwc +
@@ -467,7 +472,8 @@ m7 <- lmer(mjp ~ 1 + perc_merit_score_mean + perc_merit_score_cwc +
              perc_nmerit_score_mean + perc_nmerit_score_cwc +
              pref_merit_score_mean + pref_merit_score_cwc +
              pref_nmerit_score_mean + pref_nmerit_score_cwc +
-             inequality_mean + inequality_cwc +
+             school_effort_mean + school_effort_cwc +
+             school_talent_mean + school_talent_cwc +
              (1 | id_estudiante), 
                 data = db_proc)
 
@@ -475,6 +481,18 @@ m8 <- lmer(mjp ~ 1 + perc_merit_score_mean + perc_merit_score_cwc +
              perc_nmerit_score_mean + perc_nmerit_score_cwc +
              pref_merit_score_mean + pref_merit_score_cwc +
              pref_nmerit_score_mean + pref_nmerit_score_cwc +
+             school_effort_mean + school_effort_cwc +
+             school_talent_mean + school_talent_cwc +
+             inequality_mean + inequality_cwc +
+             (1 | id_estudiante), 
+                data = db_proc)
+
+m9 <- lmer(mjp ~ 1 + perc_merit_score_mean + perc_merit_score_cwc + 
+             perc_nmerit_score_mean + perc_nmerit_score_cwc +
+             pref_merit_score_mean + pref_merit_score_cwc +
+             pref_nmerit_score_mean + pref_nmerit_score_cwc +
+             school_effort_mean + school_effort_cwc +
+             school_talent_mean + school_talent_cwc +
              inequality_mean + inequality_cwc + 
              gender + age + books + parental_educ + cohort_level + 
              (1 | id_estudiante), 
@@ -484,7 +502,7 @@ m8 <- lmer(mjp ~ 1 + perc_merit_score_mean + perc_merit_score_cwc +
 
 
 ```{r}
-screenreg(list(m1, m2, m3, m4, m5, m6, m7, m8))
+screenreg(list(m1, m2, m3, m4, m5, m6, m7, m8, m9))
 
 ```
 
