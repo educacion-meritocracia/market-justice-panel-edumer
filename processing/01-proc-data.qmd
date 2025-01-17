@@ -327,6 +327,8 @@ miss_var_summary(db_proc)
 
 vis_miss(db_proc) + theme(axis.text.x = element_text(angle=80))
 
+db_proc <- na.omit(db_proc)
+
 ```
 
 

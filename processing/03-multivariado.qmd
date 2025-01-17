@@ -1,0 +1,490 @@
+---
+title: "Multivariate analysis"
+subtitle: "Changes in Beliefs about Meritocracy and Preferences for Market Justice in the Chilean School Context"
+author: EDUMER Team
+date: today
+lang: en
+fontsize: 12pt
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+    toc: true
+    toc-location: right
+    toc-depth: 2
+    toc-expand: 2
+    toc-title: Contents
+    number-sections: true
+    number-depth: 3
+    theme:
+      - cosmo
+      - "edumer.scss"
+    code-link: true
+    title-block-banner: true
+  pdf:
+    number-sections: true
+    number-depth: 3
+editor_options: 
+  chunk_output_type: console
+---
+
+# Presentation
+
+This is the multivariate analysis code for the paper "Changes in Beliefs about Meritocracy and Preferences for Market Justice in the Chilean School Context". The prepared data is `edumer_students_long.RData`.
+
+```{r}
+#| label: set
+#| echo: false
+#| message: false
+#| warning: false
+
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE, include = TRUE, warning = FALSE, message = FALSE)
+
+table_format <- if(is_html_output()) {
+  "html"
+} else if(is_latex_output()) {
+  "latex"
+}
+table_format2 <- if(is_html_output()) {
+  T
+} else if(is_latex_output()) {
+  F
+}
+
+options(kableExtra.html.bsTable = T)
+options(knitr.kable.NA = "")
+```
+
+# Libraries
+
+```{r}
+#| label: libraries
+
+if (! require("pacman")) install.packages("pacman")
+
+pacman::p_load(tidyverse, 
+               sjmisc, 
+               lavaan,
+               corrplot,
+               ggdist,
+               patchwork,
+               semTools,
+               gtools,
+               lme4, 
+               MLMusingR, 
+               influence.ME, 
+               here,
+               marginaleffects,
+               texreg, 
+               misty,
+               kableExtra)
+
+
+options(scipen=999)
+rm(list = ls())
+
+```
+
+# Data
+
+```{r}
+#| label: data
+
+load(file = here("output/data/db_proc.RData"))
+
+glimpse(db_proc)
+```
+
+
+# Analysis
+
+
+## Descriptives
+
+```{r}
+print(summarytools::dfSummary(db_proc), method="render")
+```
+
+
+## Measurement model
+
+```{r}
+
+
+M1 <- psych::polychoric(db_proc[db_proc$ola==1,][c(4:11,22)])
+
+P1 <- cor(db_proc[db_proc$ola==1,][c(4:11,22)], method = "pearson", use = "complete.obs")
+
+diag(M1$rho) <- NA
+
+diag(P1) <- NA
+
+M1$rho[9,] <- P1[9,]
+
+M2 <- psych::polychoric(db_proc[db_proc$ola==2,][c(4:11,22)])
+
+P2 <- cor(db_proc[db_proc$ola==2,][c(4:11,22)], method = "pearson", use = "complete.obs")
+
+diag(M2$rho) <- NA
+
+diag(P2) <- NA
+
+M2$rho[9,] <- P2[9,]
+
+rownames(M1$rho) <- c("A. Percepción Esfuerzo",
+                     "B. Percepción Talento",
+                     "C. Percepción Padres Ricos",
+                     "D. Percepción Contactos",
+                     "E. Preferencias Esfuerzo",
+                     "F. Preferencias Talento",
+                     "G. Preferencias Padres Ricos",
+                     "H. Preferencias Contactos",
+                     "I. Market Justice Preferences")
+
+#set Column names of the matrix
+colnames(M1$rho) <-c("(A)", "(B)","(C)","(D)","(E)","(F)","(G)",
+                       "(H)","(I)")
+
+rownames(P1) <- c("A. Percepción Esfuerzo",
+                     "B. Percepción Talento",
+                     "C. Percepción Padres Ricos",
+                     "D. Percepción Contactos",
+                     "E. Preferencias Esfuerzo",
+                     "F. Preferencias Talento",
+                     "G. Preferencias Padres Ricos",
+                     "H. Preferencias Contactos",
+                     "I. Market Justice Preferences")
+
+#set Column names of the matrix
+colnames(P1) <-c("(A)", "(B)","(C)","(D)","(E)","(F)","(G)",
+                    "(H)","(I)")
+
+
+
+rownames(M2$rho) <- c("A. Percepción Esfuerzo",
+                     "B. Percepción Talento",
+                     "C. Percepción Padres Ricos",
+                     "D. Percepción Contactos",
+                     "E. Preferencias Esfuerzo",
+                     "F. Preferencias Talento",
+                     "G. Preferencias Padres Ricos",
+                     "H. Preferencias Contactos",
+                     "I. Market Justice Preferences")
+
+#set Column names of the matrix
+colnames(M2$rho) <-c("(A)", "(B)","(C)","(D)","(E)","(F)","(G)",
+                       "(H)","(I)")
+
+rownames(P2) <- c("A. Percepción Esfuerzo",
+                     "B. Percepción Talento",
+                     "C. Percepción Padres Ricos",
+                     "D. Percepción Contactos",
+                     "E. Preferencias Esfuerzo",
+                     "F. Preferencias Talento",
+                     "G. Preferencias Padres Ricos",
+                     "H. Preferencias Contactos",
+                     "I. Market Justice Preferences")
+
+#set Column names of the matrix
+colnames(P2) <-c("(A)", "(B)","(C)","(D)","(E)","(F)","(G)",
+                    "(H)","(I)")
+
+```
+
+
+```{r}
+#| label: fig-matriz1
+#| fig-cap: Matriz de correlaciones para Ola 1
+#| fig-cap-location: top
+#| out-width: '80%'
+
+
+corrplot::corrplot(
+    M1$rho,
+    method = "color",
+    type = "upper",
+    col = colorRampPalette(c("#E16462", "white", "#0D0887"))(12),
+    tl.pos = "lt",
+    tl.col = "black",
+    addrect = 2,
+    rect.col = "black",
+    addCoef.col = "black",
+    cl.cex = 0.8,
+    cl.align.text = 'l',
+    number.cex = 1.1,
+    na.label = "-",
+    bg = "white"
+  )
+
+```
+
+
+
+```{r}
+#| label: fig-matriz2
+#| fig-cap: Matriz de correlaciones para Ola 2
+#| fig-cap-location: top
+#| out-width: '80%'
+
+
+corrplot::corrplot(
+    M2$rho,
+    method = "color",
+    type = "upper",
+    col = colorRampPalette(c("#E16462", "white", "#0D0887"))(12),
+    tl.pos = "lt",
+    tl.col = "black",
+    addrect = 2,
+    rect.col = "black",
+    addCoef.col = "black",
+    cl.cex = 0.8,
+    cl.align.text = 'l',
+    number.cex = 1.1,
+    na.label = "-",
+    bg = "white"
+  )
+```
+
+
+```{r}
+db_1 <- subset(db_proc, ola == 1)
+db_2 <- subset(db_proc, ola == 2)
+
+model_cfa <- '
+  perc_merit = ~ perc_effort + perc_talent
+  perc_nmerit = ~ perc_rich_parents + perc_contact
+  pref_merit = ~ pref_effort + pref_talent
+  pref_nmerit = ~ pref_rich_parents + pref_contact
+  '
+
+
+m1_cfa <- cfa(model = model_cfa, 
+              data = db_1,
+              estimator = "DWLS",
+              ordered = T,
+              std.lv = F) 
+
+m2_cfa <- cfa(model = model_cfa, 
+              data = db_2, 
+              estimator = "DWLS",
+              ordered = T,
+              std.lv = F)
+
+
+```
+
+
+```{r}
+#| label: tbl-cargas
+#| tbl-cap: "Cargas factoriales en ambas Olas"
+#| tbl-cap-location: top
+
+left_join(
+standardizedsolution(m1_cfa) %>% 
+  filter(op=="=~") %>%
+  select(lhs,rhs,loadings_w01=est.std,pvalue_w01=pvalue),
+standardizedsolution(m2_cfa) %>% 
+  filter(op=="=~") %>%
+  select(lhs,rhs,loadings_w02=est.std,pvalue_w02=pvalue)
+) %>% 
+  mutate(
+    across(
+      .cols = c(pvalue_w01, pvalue_w02),
+      .fns = ~ case_when(
+        . < 0.05 & . > 0.01 ~ "*",
+        . <= 0.01 ~ "**",
+        TRUE ~ "")
+    ),
+    loadings_w01 = paste(round(loadings_w01, 3), pvalue_w01, sep = " "),
+    loadings_w02 = paste(round(loadings_w02, 3), pvalue_w02, sep = " "),
+    lhs = case_when(
+      lhs == "perc_merit" ~ "Percepción meritocrática",
+      lhs == "perc_nmerit" ~ "Percepción no meritocrática",
+      lhs == "pref_merit" ~ "Preferencia meritocrática",
+      lhs == "pref_nmerit" ~ "Preferencia no meritocrática"),
+    rhs = case_when(
+      rhs == "perc_effort" ~ "Percepción esfuerzo",
+      rhs == "perc_talent" ~ "Percepción talento",
+      rhs == "perc_rich_parents" ~ "Percepción padres ricos",
+      rhs == "perc_contact" ~ "Percepción contactos",
+      rhs == "pref_effort" ~ "Preferencia esfuerzo",
+      rhs == "pref_talent" ~ "Preferencia talento",
+      rhs == "pref_rich_parents" ~ "Preferencia padres ricos",
+      rhs == "pref_contact" ~ "Preferencia contactos"),
+    simbol = "=~"
+  ) %>% 
+  select(lhs, simbol, rhs, loadings_w01, loadings_w02) %>% 
+  kableExtra::kable(format = "markdown",
+                    booktabs= T, 
+                    escape = F, 
+                    align = 'c',
+                    col.names = c("Factor", "", "Indicador", "Cargas Ola 1", "Cargas Ola 2"),
+                    caption = NULL) %>% 
+  kableExtra::add_footnote(label = "** p<0.01, * p<0.5", notation = "none")
+
+```
+
+
+```{r}
+#| label: tbl-fit1
+#| tbl-cap: "Indicadores de ajuste"
+#| tbl-cap-location: top
+
+cfa_tab_fit <- function(models, 
+                        names = NULL, 
+                        colnames_fit  = c("","$N$","Estimator","$\\chi^2$ (df)","CFI","TLI","RMSEA 90% CI [Lower-Upper]", "SRMR")) {
+  
+  
+  get_fit_df <- function(model) {
+    sum_fit <- fitmeasures(model, output = "matrix")[c("chisq","pvalue","df","cfi","tli",
+                                                       "rmsea","rmsea.ci.lower","rmsea.ci.upper",
+                                                       "srmr"),]
+    sum_fit$nobs <- nobs(model)
+    sum_fit$est  <- summary(model)$optim$estimator
+    sum_fit <- data.frame(sum_fit) %>%
+      dplyr::mutate(
+        dplyr::across(
+          .cols = c(cfi, tli, rmsea, rmsea.ci.lower, rmsea.ci.upper, srmr),
+          .fns  = ~ round(., 3)
+        ),
+        stars   = gtools::stars.pval(pvalue),
+        chisq   = paste0(round(chisq,3), " (", df, ") ", stars),
+        rmsea.ci= paste0(rmsea, " [", rmsea.ci.lower, "-", rmsea.ci.upper, "]")
+      ) %>%
+      dplyr::select(nobs, est, chisq, cfi, tli, rmsea.ci, srmr)
+    
+    return(sum_fit)
+  }
+  
+  fit_list <- purrr::map(models, get_fit_df)
+  
+  for (i in seq_along(fit_list)) {
+    fit_list[[i]]$names <- names[i]
+  }
+  
+  sum_fit <- dplyr::bind_rows(fit_list)
+  
+  fit_table <- sum_fit %>%
+    dplyr::select(names, dplyr::everything()) %>%
+    kableExtra::kable(
+      format     = "markdown", 
+      digits     = 3,
+      booktabs   = TRUE,
+      col.names  = colnames_fit,
+      caption    = NULL
+    ) %>%
+    kableExtra::kable_styling(
+      full_width        = TRUE,
+      font_size         = 11,
+      latex_options     = "HOLD_position",
+      bootstrap_options = c("striped", "bordered")
+    )
+  
+  return(
+    list(
+      fit_table = fit_table,
+      sum_fit = sum_fit)
+  )
+}
+
+
+cfa_tab_fit(
+  models = list(m1_cfa, m2_cfa),
+  names = c("Ola 1", "Ola 2")
+)$fit_table
+
+```
+
+
+```{r}
+scores_1 <- lavPredict(m1_cfa)
+
+db_1$perc_merit_score  <- scores_1[, "perc_merit"]
+db_1$perc_nmerit_score <- scores_1[, "perc_nmerit"]
+db_1$pref_merit_score  <- scores_1[, "pref_merit"]
+db_1$pref_nmerit_score <- scores_1[, "pref_nmerit"]
+
+scores_2 <- lavPredict(m2_cfa)
+
+db_2$perc_merit_score  <- scores_2[, "perc_merit"]
+db_2$perc_nmerit_score <- scores_2[, "perc_nmerit"]
+db_2$pref_merit_score  <- scores_2[, "pref_merit"]
+db_2$pref_nmerit_score <- scores_2[, "pref_nmerit"]
+
+db_proc <- rbind(db_1, db_2)
+```
+
+
+
+## Longitudinal multilevel models
+
+```{r}
+
+m0 <- lmer(mjp ~ 1 + (1 | id_estudiante), 
+                data = db_proc)
+
+performance::icc(m0, by_group = T)
+
+db_proc <- db_proc %>% 
+  group_by(id_estudiante) %>% 
+  mutate(inequality_mean = mean(inequality, na.rm = T),
+         inequality_cwc = inequality - inequality_mean,
+         perc_merit_score_mean = mean(perc_merit_score, na.rm = T),
+         perc_merit_score_cwc = perc_merit_score - perc_merit_score_mean,
+         perc_nmerit_score_mean = mean(perc_nmerit_score, na.rm = T),
+         perc_nmerit_score_cwc = perc_nmerit_score - perc_nmerit_score_mean,
+         pref_merit_score_mean = mean(pref_merit_score, na.rm = T),
+         pref_merit_score_cwc = pref_merit_score - pref_merit_score_mean,
+         pref_nmerit_score_mean = mean(pref_nmerit_score, na.rm = T),
+         pref_nmerit_score_cwc = pref_nmerit_score - pref_nmerit_score_mean) %>% 
+  ungroup()
+
+m1 <- lmer(mjp ~ 1 + inequality_mean + inequality_cwc +
+             (1 | id_estudiante), 
+                data = db_proc)
+
+m2 <- lmer(mjp ~ 1 + perc_merit_score_mean + perc_merit_score_cwc + (1 | id_estudiante), 
+                data = db_proc)
+
+m3 <- lmer(mjp ~ 1 + perc_nmerit_score_mean + perc_nmerit_score_cwc + (1 | id_estudiante), 
+                data = db_proc)
+
+m4 <- lmer(mjp ~ 1 + pref_merit_score_mean + pref_merit_score_cwc + (1 | id_estudiante), 
+                data = db_proc)
+
+m5 <- lmer(mjp ~ 1 + pref_nmerit_score_mean + pref_nmerit_score_cwc + (1 | id_estudiante), 
+                data = db_proc)
+
+m6 <- lmer(mjp ~ 1 + perc_merit_score_mean + perc_merit_score_cwc + 
+             perc_nmerit_score_mean + perc_nmerit_score_cwc +
+             pref_merit_score_mean + pref_merit_score_cwc +
+             pref_nmerit_score_mean + pref_nmerit_score_cwc +
+             (1 | id_estudiante), 
+                data = db_proc)
+
+m7 <- lmer(mjp ~ 1 + perc_merit_score_mean + perc_merit_score_cwc + 
+             perc_nmerit_score_mean + perc_nmerit_score_cwc +
+             pref_merit_score_mean + pref_merit_score_cwc +
+             pref_nmerit_score_mean + pref_nmerit_score_cwc +
+             inequality_mean + inequality_cwc +
+             (1 | id_estudiante), 
+                data = db_proc)
+
+m8 <- lmer(mjp ~ 1 + perc_merit_score_mean + perc_merit_score_cwc + 
+             perc_nmerit_score_mean + perc_nmerit_score_cwc +
+             pref_merit_score_mean + pref_merit_score_cwc +
+             pref_nmerit_score_mean + pref_nmerit_score_cwc +
+             inequality_mean + inequality_cwc + 
+             gender + age + books + parental_educ + cohort_level + 
+             (1 | id_estudiante), 
+                data = db_proc)
+
+```
+
+
+```{r}
+screenreg(list(m1, m2, m3, m4, m5, m6, m7, m8))
+
+```
+
