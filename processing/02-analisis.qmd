@@ -284,7 +284,7 @@ graf13 <-ggplot(data = db_proc %>% filter(!is.na(just_educ)),
   geom_bar(color = "black", fill = "lightblue", na.rm = TRUE) +
   scale_y_continuous(limits = c(0, 1000)) +
   scale_x_discrete(labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo")) +
-  labs(title = "Está bien que aquellos que puedan pagar más tengan mejor educación",
+  labs(title = "Está bien que aquellos que puedan pagar más\n tengan mejor educación",
        x = "Grado de acuerdo",
        y = "Frecuencia") +
   geom_text(aes(label = ..count..), stat = "count", vjust = 1.5, colour = "black")
@@ -312,9 +312,10 @@ graf14
 graf15 <- ggplot(data = db_proc %>% filter(!is.na(just_pension)),
                 mapping = aes(x = factor(just_pension))) +
   geom_bar(color = "black", fill = "lightblue", na.rm = TRUE) +
+  scale_y_continuous(limits = c(0, 1000)) +
   scale_x_discrete(labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo")) +
   labs(
-    title = "Está bien que en Chile las personas con mayores ingresos puedan tener mejores pensiones que las personas de ingresos más bajos",
+    title = "Está bien que en Chile las personas con mayores ingresos\n puedan tener mejores pensiones que las personas de ingresos más bajos",
     x = "Grado de acuerdo",
     y = "Frecuencia"
   ) +
