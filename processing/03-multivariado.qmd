@@ -445,26 +445,31 @@ db_proc <- db_proc %>%
          ) %>% 
   ungroup()
 
-m1 <- lmer(mjp ~ 1 + inequality_mean + inequality_cwc +
+m1 <- lmer(mjp ~ 1 + perc_merit_score_mean + perc_merit_score_cwc + (1 | id_estudiante), 
+                data = db_proc)
+
+m2 <- lmer(mjp ~ 1 + perc_nmerit_score_mean + perc_nmerit_score_cwc + (1 | id_estudiante), 
+                data = db_proc)
+
+m3 <- lmer(mjp ~ 1 + pref_merit_score_mean + pref_merit_score_cwc + (1 | id_estudiante), 
+                data = db_proc)
+
+m4 <- lmer(mjp ~ 1 + pref_nmerit_score_mean + pref_nmerit_score_cwc + (1 | id_estudiante), 
+                data = db_proc)
+
+m5 <- lmer(mjp ~ 1 + perc_merit_score_mean + perc_merit_score_cwc + 
+             perc_nmerit_score_mean + perc_nmerit_score_cwc +
+             pref_merit_score_mean + pref_merit_score_cwc +
+             pref_nmerit_score_mean + pref_nmerit_score_cwc +
              (1 | id_estudiante), 
-                data = db_proc)
-
-m2 <- lmer(mjp ~ 1 + perc_merit_score_mean + perc_merit_score_cwc + (1 | id_estudiante), 
-                data = db_proc)
-
-m3 <- lmer(mjp ~ 1 + perc_nmerit_score_mean + perc_nmerit_score_cwc + (1 | id_estudiante), 
-                data = db_proc)
-
-m4 <- lmer(mjp ~ 1 + pref_merit_score_mean + pref_merit_score_cwc + (1 | id_estudiante), 
-                data = db_proc)
-
-m5 <- lmer(mjp ~ 1 + pref_nmerit_score_mean + pref_nmerit_score_cwc + (1 | id_estudiante), 
                 data = db_proc)
 
 m6 <- lmer(mjp ~ 1 + perc_merit_score_mean + perc_merit_score_cwc + 
              perc_nmerit_score_mean + perc_nmerit_score_cwc +
              pref_merit_score_mean + pref_merit_score_cwc +
              pref_nmerit_score_mean + pref_nmerit_score_cwc +
+             school_effort_mean + school_effort_cwc +
+             school_talent_mean + school_talent_cwc +
              (1 | id_estudiante), 
                 data = db_proc)
 
@@ -474,35 +479,58 @@ m7 <- lmer(mjp ~ 1 + perc_merit_score_mean + perc_merit_score_cwc +
              pref_nmerit_score_mean + pref_nmerit_score_cwc +
              school_effort_mean + school_effort_cwc +
              school_talent_mean + school_talent_cwc +
-             (1 | id_estudiante), 
-                data = db_proc)
-
-m8 <- lmer(mjp ~ 1 + perc_merit_score_mean + perc_merit_score_cwc + 
-             perc_nmerit_score_mean + perc_nmerit_score_cwc +
-             pref_merit_score_mean + pref_merit_score_cwc +
-             pref_nmerit_score_mean + pref_nmerit_score_cwc +
-             school_effort_mean + school_effort_cwc +
-             school_talent_mean + school_talent_cwc +
-             inequality_mean + inequality_cwc +
-             (1 | id_estudiante), 
-                data = db_proc)
-
-m9 <- lmer(mjp ~ 1 + perc_merit_score_mean + perc_merit_score_cwc + 
-             perc_nmerit_score_mean + perc_nmerit_score_cwc +
-             pref_merit_score_mean + pref_merit_score_cwc +
-             pref_nmerit_score_mean + pref_nmerit_score_cwc +
-             school_effort_mean + school_effort_cwc +
-             school_talent_mean + school_talent_cwc +
-             inequality_mean + inequality_cwc + 
-             gender + age + books + parental_educ + cohort_level + 
+             gender + age + books + parental_educ + cohort_level + ola +
              (1 | id_estudiante), 
                 data = db_proc)
 
 ```
 
 
+
 ```{r}
-screenreg(list(m1, m2, m3, m4, m5, m6, m7, m8, m9))
+#| label: tbl-modelos
+#| results: asis
+#| tbl-cap: "Modelos multinivel longitudinal para preferencias por justicia de mercado"
+#| tbl-cap-location: top
+
+ccoef <- list(
+  "(Intercept)" = "Intercepto",
+  perc_merit_score_mean = "Percepción meritocrática (BE)",
+  perc_merit_score_cwc = "Percepción meritocrática (WE)",
+  perc_nmerit_score_mean = "Percepción no meritocrática (BE)",
+  perc_nmerit_score_cwc = "Percepción no meritocrática (WE)",
+  pref_merit_score_mean = "Preferencia meritocrática (BE)",
+  pref_merit_score_cwc = "Preferencia meritocrática (WE)",
+  pref_nmerit_score_mean = "Preferencia no meritocrática (BE)",
+  pref_nmerit_score_cwc = "Preferencia no meritocrática (WE)",
+  school_effort_mean = "Esfuerzo escuela (BE)",
+  school_effort_cwc = "Esfuerzo escuela (WE)",
+  school_talent_mean = "Talento escuela (BE)",
+  school_talent_cwc = "Talento escuela (WE)",
+  genderMujer = "Mujer (Ref.= Hombre)",
+  age = "Edad",
+  "booksMás de 25" = "Más de 25 libros (Ref.= Menos de 25)",
+  "parental_educSecundaria" = "Secundaria",
+  "parental_educSuperior técnica" = "Superior técnica",
+  "parental_educUniversitaria o Posgrado" = "Universitaria o posgrado",
+  "parental_educValor perdido" = "Valor perdido",
+  cohort_levelMedia = "Media (Ref.= Básica)",
+  ola2 = "Ola 2 (Ref.= Ola 1)"
+  )
+
+texreg::htmlreg(list(m1, m2, m3, m4, m5, m6, m7),
+               custom.model.names = c(paste0("Modelo ", seq(1:7))),
+               caption = NULL,
+               stars = c(0.05, 0.01, 0.001),
+               custom.coef.map = ccoef,
+               groups = list("Educación parental (Ref.= Primaria o menos)" = 17:20),
+               custom.note = "\\item Nota: Celdas contienen coeficientes de regresión con errores estándares entre paréntesis. %stars. \\\\ \\item Fuente: elaboración propia con datos agrupados de EDUMER 2022-2023 (n = 914)",
+               threeparttable = T,
+               leading.zero = T,
+               float.pos = "h!",
+               use.packages = F,
+               booktabs = T,
+               scalebox = 1)
 
 ```
 
