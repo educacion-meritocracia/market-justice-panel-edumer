@@ -1,0 +1,70 @@
+---
+title: "The Socialization of Meritocracy and Market Justice Preferences at School"
+subtitle: "Cover Letter [Revised Version]"
+format:
+  hikmah-pdf: 
+    indent: false
+    keep-tex: true
+  hikmah-manuscript-pdf: 
+    indent: false
+    keep-tex: true
+bibliography: "input/bib/just-ineq-merit.bib"
+csl: "input/bib/multidisciplinary-digital-publishing-institute.csl"
+link-citations: true
+linestretch: 1.15       
+mainfont: Times New Roman
+fontsize: 12pt          
+geometry: "left=2.54cm,right=2.54cm,top=2.54cm,bottom=2.54cm"
+papersize: letter
+colorlinks: true
+fig-height: 4
+fig-width: 7.5
+header-includes:
+  - \usepackage{threeparttable}
+---
+
+Previous research has shown that schools often justify student performance differences using meritocratic ideals. One potential consequence of such ideals is the legitimization of outcome inequalities across various spheres, including those traditionally associated with equality and redistribution. In this study, we argue that the promotion of meritocratic values during school-age can shape students' beliefs about meritocracy and influence their views on market-based access to health, pensions, and education. Using data from the 2017 National Study of Civic Education in Chile, which includes 5,047 8th-grade students from 231 schools, we estimated a series of multilevel models (lme4 library, R version 4.1.3) to test our hypotheses. Our findings show that a significant proportion of Chilean students agree with market justice principles—more so than adults. Most students endorse meritocratic views, particularly the notion that effort should be rewarded, which strongly correlates with market justice preferences: students who believe in meritocracy are more likely to justify inequalities based on financial capacity. At the school level, market justice preferences are higher in high-status schools but lower in schools with higher academic achievement. Furthermore, the conditional influence of meritocratic beliefs diminishes in schools with higher socioeconomic status and performance levels. These results suggest that the association between meritocratic beliefs and market justice preferences is already established at school age and is shaped by the school environment.
+
+## Authors Identification
+
+Juan Carlos Castillo, Department of Sociology, Universidad de Chile, Santiago de Chile[^*].  
+ORCID: 0000-0003-1265-7854
+
+Mauricio Salgado, School of Sociology, Universidad Andrés Bello and Centro de Estudios Públicos (CEP).
+ORCID: 0000-0002-8108-6154
+
+Kevin Carrasco, Center for Social Conflict and Cohesion Studies.  
+ORCID: 0000-0002-9348-8361
+
+Andreas Laffert, Institute of Sociology, Pontificia Universidad Católica de Chile.  
+ORCID: 0000-0002-9008-2454
+
+
+## Exclusive Submission Statement
+
+The authors confirm that this article has been submitted exclusively to this journal.
+
+## Acknowledgments
+
+The authors acknowledge the support of ANID/FONDECYT grant 1210847 and the Center for Conflict and Social Cohesion Studies (COES) grant ANID/FONDAP 1513009.
+
+## Authors' Contributions
+
+Author roles were classified using the Contributor Role Taxonomy [CRediT](https://credit.niso.org/) as follows: Juan Carlos Castillo: Conceptualization, Supervision, Methodology, Writing - review and editing; Mauricio Salgado: Conceptualization, Methodology, Writing - review and editing; Kevin Carrasco: Methodology, formal analysis, software, visualization, Writing - review and editing; Andreas Laffert: Methodology, formal analysis, software, visualization, Writing - review and editing.
+
+## Conflict of Interest
+
+The authors declare no conflict of interest.
+
+## Funding
+
+This research received funding from ANID/FONDECYT grant 1210847 and the Center for Conflict and Social Cohesion Studies (COES) through ANID/FONDAP grant 1513009.
+
+## Data Avaibility Statement
+
+The original data presented in the study are openly available in <https://www.agenciaeducacion.cl/orientar/estudios/estudios-nacionales/>
+
+Access to the data, code, and analysis presented in the study are openly available in <https://github.com/educacion-meritocracia/market-justice-preferences-school>.
+
+
+[^*]: Corresponding author (juancastillov@uchile.cl - [jc-castillo.com](https://juancarloscastillo.github.io/jc-castillo/) - Ignacio Carrera Pinto 1045 Ñuñoa, Santiago de Chile). 

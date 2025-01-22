@@ -1,0 +1,119 @@
+---
+author: "Equipo EDUMER"
+bibliography: "input/bib/just-ineq-merit.bib"
+csl: "input/bib/apa6.csl"
+---
+
+# Data, Variables and Methods
+
+## Data
+
+The First Study of Civic Education in Chile, conducted by the Agency for Quality Education of the Ministry of Education in 2017, is the primary data source. This database comprises a civic knowledge test score and a series of items that measure different aspects of citizenship. The target population includes 8th-grade students in 242 schools nationwide. Initially, the database contains 8,589 student observations.To ensure higher data quality and considering the survey's unit of analysis, we removed 171 student cases that exhibited repetitive and careless response patterns [@gottfried_autocorrelation_2022]. Additionally, we utilized data from the System for Measuring the Quality of Education (SIMCE) conducted by the Ministry of Education in 2017, which provides school-level information such as administrative dependence, socioeconomic classification, and results obtained in standardized mathematics and language tests. After processing the variables and removing missing cases, the final database for this study includes a two-level stratified sample composed of 5,047 students (level 1) nested within 231 schools (level 2).
+
+## Variables
+
+***Individual level***
+
+**Market Justice Preferences**: The dependent variables in this study are market justice preferences. This construct is measured through three variables that address the degree of justification regarding whether access to social services in pensions, education, and health should be conditional on income. The Justification of inequality in health is measured by the following item: "Is it fair in Chile that people with higher incomes can access better healthcare than those with lower incomes?" The same question is asked for education and pensions. In all cases, respondents indicate their preferences on a Likert scale ranging from "completely disagree" (1) to "completely agree" (4). Additionally, we include a summarized indicator of "market justice preferences", measured by an average index across these items (α = 0.86), with values ranging from 1 to 4, where higher values represent stronger preferences for market justice (see @tbl-desc-dependientes). We analyzed these items independently and by the average index.
+
+```{r echo=FALSE}
+pacman::p_load(summarytools, dplyr, sjlabelled)
+load("input/data/dependientes.RData")
+dependientes$bienestar <- set_label(dependientes$bienestar, "Market Justice Preferences")
+```
+
+```{r, results='asis', echo=FALSE}
+#| tbl-cap: "Dependent variables"
+#| label: tbl-desc-dependientes
+
+
+
+df<-dfSummary(dependientes,
+               plain.ascii = FALSE,
+               style = "multiline",
+               tmp.img.dir = "/tmp",
+               graph.magnif = 0.75,
+               headings = F,  # encabezado
+               varnumbers = F, # num variable
+               labels.col = T, # etiquetas
+               na.col = F,    # missing
+               graph.col = F, # plot
+               valid.col = T, # n valido
+               col.widths = c(30,10,10,10))
+
+df$Variable <- NULL # delete variable column
+
+print(df)
+```
+
+**Perception of Meritocracy**: The main independent variable refers to the perception of meritocracy, operationalized through five items addressing the perception of rewards based on talent and intelligence at both the school and societal levels. At the school level, students respond to whether "Intelligence is important for getting good grades" and "Effort is important for getting good grades". At the societal level, students respond to the following questions: "In Chile, people are rewarded for their effort", "In Chile, people get what they deserve" and "In Chile, people are rewarded for their intelligence and skills". Each item was answered on a four-point Likert scale ranging from "completely disagree" (1) to "completely agree" (4).
+
+**Family Socioeconomic Status**: The socioeconomic status of students' families is measured using two indicators. First, the highest educational level attained by the parents, with categories: "8th grade or less," "Secondary education," "Technical higher education," "University or postgraduate," and "No response." The inclusion of the "No response" category is due to its high frequency in the data; omitting it could obscure relevant associations. Second, the number of books in the household is used, categorized as "Less than 25" and "More than 25."
+
+@tbl-desc-independent shows the individual level variables used, their response categories and their frequencies.
+
+```{r echo=FALSE}
+load("input/data/independientes.RData")
+```
+
+```{r, results='asis', echo=FALSE}
+#| tbl-cap: "Individual level variables"
+#| label: tbl-desc-independent
+
+df<-dfSummary(independientes[,-8],
+               plain.ascii = FALSE,
+               style = "multiline",
+               tmp.img.dir = "/tmp",
+               graph.magnif = 0.75,
+               headings = F,  # encabezado
+               varnumbers = F, # num variable
+               labels.col = T, # etiquetas
+               na.col = F,    # missing
+               graph.col = F, # plot
+               valid.col = T, # n valido
+               col.widths = c(30,10,10,10))
+
+df$Variable <- NULL # delete variable column
+
+print(df)
+```
+
+***Contextual level***
+
+This study focuses on two school-level characteristics: socioeconomic status and academic performance. Socioeconomic status is assessed using the Ministry of Education's classification, measured as an ordinal item with five categories ranging from "low" (1) to "high" (5). Academic performance is measured using the school's results in the SIMCE (System of Measurement of Educational Quality) standardized tests, administered yearly at different educational levels in language and mathematics. These results are categorized as "low," "medium," and "high." The contextual level items used, response categories, and their frequencies are detailed in @tbl-desc-school.
+
+```{r echo=FALSE}
+load("input/data/school.RData")
+```
+
+```{r, results='asis', echo=FALSE}
+#| tbl-cap: "School context variables"
+#| label: tbl-desc-school
+
+df<-dfSummary(school[,c(4,2)],
+               plain.ascii = FALSE,
+               style = "multiline",
+               tmp.img.dir = "/tmp",
+               graph.magnif = 0.75,
+               headings = F,  # encabezado
+               varnumbers = F, # num variable
+               labels.col = T, # etiquetas
+               na.col = F,    # missing
+               graph.col = F, # plot
+               valid.col = T, # n valido
+               col.widths = c(30,10,10,10))
+
+df$Variable <- NULL # delete variable column
+
+print(df)
+```
+
+***Controls***
+
+A series of control variables are included. At the individual level, an index of access to technology is constructed based on the number of computers, tablets, and cell phones in the household, as well as internet connectivity. At the contextual level, we use the administrative dependence of schools, classified as "Public," "Subsidized Private," or "Private," and the proportion of parents with university or postgraduate education at each school.
+
+## Methods
+
+Given the hierarchical structure of the data, with students nested within schools, model estimation is performed within a multilevel framework. These models are appropriate for capturing both individual and contextual effects in a single analysis, allowing for the estimation of fixed effects between groups and random effects that vary from one group to another [@bell_fixed_2019; @hox_multilevel_2010]. Cumulative link mixed models were employed for the ordinal dependent variables, while linear mixed-effects models were applied for the average market justice preference index.
+
+The hypotheses of this research were pre-registered in the Open Science Framework platform of the Center for Open Science (OSF), and access to the document is available at this [link](https://doi.org/10.17605/OSF.IO/UFSDV). The statistical analysis for this research was conducted using the *lme4* package in R version 4.1.3.
