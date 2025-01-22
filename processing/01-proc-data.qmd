@@ -128,7 +128,8 @@ db_long <- db_long %>%
 ```{r}
 #| label: filter
 
-db_long <- db_long %>% filter(consent == 1) %>% select(-consent)
+db_long <- db_long %>% 
+  filter(consent == 1) %>% select(-consent)
 ```
 
 # Recode and transform
@@ -141,9 +142,9 @@ frq(db_long$curse_level)
 
 db_long <- db_long %>% 
   mutate(
-    cohort_level = if_else(curse_level %in% c("6to", "7mo"), "Básica", "Media"),
+    cohort_level = if_else(curse_level %in% c("6to", "7mo"), "Primary", "Secondary"),
     cohort_level = factor(cohort_level, 
-                          labels = c("Básica", "Media")),
+                          labels = c("Primary", "Secondary")),
     curse_level = factor(curse_level, 
                          levels = c("6to", "7mo", "1ro", "2do"))
   )
@@ -159,12 +160,12 @@ frq(db_long$pref_rich_parents)
 frq(db_long$pref_contact)
 
 
-labels1 <- c("Muy en desacuerdo" = 1, 
-             "En desacuerdo" = 2, 
-             "De acuerdo" = 3, 
-             "Muy de acuerdo" = 4, 
-             "No sabe" = 88, 
-             "No responde" = 99)
+labels1 <- c("Strongly desagree" = 1, 
+             "Disagree" = 2, 
+             "Agree" = 3, 
+             "Strongly agree" = 4, 
+             "Dont know" = 88, 
+             "No response" = 99)
 
 db_long <- db_long %>% 
   mutate_at(.vars = (4:11),.funs = ~ sjlabelled::set_labels(., labels = labels1))
@@ -210,8 +211,10 @@ summary(db_long$mjp)
 frq(db_long$gender)
 
 db_long$gender <- car::recode(db_long$gender, 
-                               recodes = c("'H'= 'Hombre'; 'M' = 'Mujer'; 'O' = 'Otro'"),
-                               as.factor = T)
+                               recodes = c("'H'= 'Male'; 'M' = 'Female'; 'O' = 'Other'"))
+
+db_long$gender <- factor(db_long$gender, 
+                               levels = c("Male", "Female", "Other"))
 
 # age
 frq(db_long$age)
@@ -224,10 +227,10 @@ db_long$age2 <- db_long$age^2
 frq(db_long$books)
 
 db_long <- db_long %>% 
-  mutate(books = case_when(books <= 2 ~ "Menos de 25",
-                           books >= 3 & books <= 6 ~ "Más de 25",
+  mutate(books = case_when(books <= 2 ~ "Less than 25",
+                           books >= 3 & books <= 6 ~ "More than 25",
                            TRUE ~ NA_character_),
-         books = factor(books, levels = c("Menos de 25", "Más de 25")))
+         books = factor(books, levels = c("Less than 25", "More than 25")))
 
 
 db_long <- left_join(
@@ -274,20 +277,20 @@ frq(db_long$parental_educ)
 
 db_long <- db_long %>% 
   rowwise() %>% 
-  mutate(parental_educ = case_when(parental_educ == 1 ~ "Primaria o menos",
-                              parental_educ == 2 ~ "Primaria o menos",
-                              parental_educ == 3 ~ "Primaria o menos",
-                              parental_educ == 4 ~ "Secundaria",
-                              parental_educ == 5 ~ "Secundaria",
-                              parental_educ == 6 ~ "Superior técnica",
-                              parental_educ == 7 ~ "Superior técnica",
-                              parental_educ == 8 ~ "Universitaria o Posgrado",
-                              parental_educ == 9 ~ "Universitaria o Posgrado",
-                              parental_educ == 10 ~ "Universitaria o Posgrado",
-                              is.na(parental_educ) ~ "Valor perdido")) %>% 
+  mutate(parental_educ = case_when(parental_educ == 1 ~ "8th grade or less",
+                              parental_educ == 2 ~ "8th grade or less",
+                              parental_educ == 3 ~ "8th grade or less",
+                              parental_educ == 4 ~ "Secondary education",
+                              parental_educ == 5 ~ "Secondary education",
+                              parental_educ == 6 ~ "Technical higher education",
+                              parental_educ == 7 ~ "Technical higher education",
+                              parental_educ == 8 ~ "Universitary or posgraduate",
+                              parental_educ == 9 ~ "Universitary or posgraduate",
+                              parental_educ == 10 ~ "Universitary or posgraduate",
+                              is.na(parental_educ) ~ "Missing")) %>% 
   ungroup()
 
-db_long$parental_educ <- factor(db_long$parental_educ, levels = c("Primaria o menos", "Secundaria", "Superior técnica", "Universitaria o Posgrado", "Valor perdido"))
+db_long$parental_educ <- factor(db_long$parental_educ, levels = c("8th grade or less", "Secondary education", "Technical higher education", "Universitary or posgraduate", "Missing"))
 
 
 ```
@@ -296,18 +299,38 @@ db_long$parental_educ <- factor(db_long$parental_educ, levels = c("Primaria o me
 ```{r}
 #| label: etiquetas
 
-db_long$curse_level <- set_label(db_long$curse_level,label = "Curso estudiante")
-db_long$cohort_level <- set_label(db_long$cohort_level,label = "Cohorte estudiante")
-db_long$gender <- set_label(db_long$gender,label = "Género")
-db_long$age <- set_label(db_long$age,label = "Edad")
-db_long$age2 <- set_label(db_long$age2,label = "Edad^2")
-db_long$books <- set_label(db_long$books,label = "Libros en el hogar")
-db_long$mjp <- set_label(db_long$mjp,label = "Justicia de mercado")
-db_long$parental_educ <- set_label(db_long$parental_educ,label = "Nivel educacional parental")
+db_long$curse_level <- set_label(db_long$curse_level,label = "Student level")
+db_long$cohort_level <- set_label(db_long$cohort_level,label = "Student cohort")
+db_long$gender <- set_label(db_long$gender,label = "Gender")
+db_long$age <- set_label(db_long$age,label = "Age")
+db_long$age2 <- set_label(db_long$age2,label = "Age^2")
+db_long$books <- set_label(db_long$books,label = "Books at home")
+db_long$mjp <- set_label(db_long$mjp,label = "Market Justice Preferences")
+db_long$parental_educ <- set_label(db_long$parental_educ,label = "Parental educational level")
+db_long$id_estudiante <- set_label(db_long$id_estudiante,label = "Unique student identifier")
+db_long$ola <- set_label(db_long$ola,label = "Wave")
+db_long$perc_effort <- set_label(db_long$perc_effort,label = "In Chile, people are rewarded for their efforts")
+db_long$perc_talent <- set_label(db_long$perc_talent,label = "In Chile, people are rewarded for their intelligence and ability")
+db_long$perc_rich_parents <- set_label(db_long$perc_rich_parents,label = "In Chile, those with wealthy parents fare much better in life")
+db_long$perc_contact <- set_label(db_long$perc_contact,label = "In Chile, those with good contacts do better in life")
 
+db_long$pref_effort <- set_label(db_long$pref_effort,label = "Those who put in more effort should receive greater rewards than those who put in less effort")
+db_long$pref_talent <- set_label(db_long$pref_talent,label = "Those who have more talent should receive greater rewards than those who have less talent")
+db_long$pref_rich_parents <- set_label(db_long$pref_rich_parents,label = "It’s fine that those whose parents are wealthy do well in life")
+db_long$pref_contact <- set_label(db_long$pref_contact,label = "It’s fine that those who have good connections do well in life")
+
+db_long$school_effort <- set_label(db_long$school_effort,label = "In this school, those who put in effort get good grades")
+db_long$school_talent <- set_label(db_long$school_talent,label = "In this school, those who are intelligent get good grades")
+
+db_long$just_educ <- set_label(db_long$just_educ,label = "It’s good that those who can pay more receive a better education")
+db_long$just_health <- set_label(db_long$just_health,label = "It’s good that those who can pay more have better access to healthcare")
+db_long$just_pension <- set_label(db_long$just_pension,label = "It’s good that in Chile, people with higher incomes can have better pensions than those with lower incomes")
+  
 
 db_proc <- db_long %>% 
-  select(-c(educ_m, educ_p, aux1, p12_1_apoderado, id_apoderado))
+  select(-c(educ_m, educ_p, aux1, p12_1_apoderado, id_apoderado, inequality)) %>% 
+  rename(id_student = id_estudiante,
+         wave = ola)
 
 ```
 
@@ -329,6 +352,10 @@ vis_miss(db_proc) + theme(axis.text.x = element_text(angle=80))
 
 db_proc <- na.omit(db_proc)
 
+db_proc <- db_proc %>%
+  group_by(id_student) %>%
+  filter(n() > 1) %>%
+  ungroup()
 ```
 
 
