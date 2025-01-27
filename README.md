@@ -64,9 +64,9 @@ In the web page it is possible to see/download the paper in html and pdf formats
 ## Files:
 
 
-- [Descriptive analysis](https://educacion-meritocracia.github.io/special-issue-inequality/processing/02-analisis.html)
+- [Descriptive analysis](https://educacion-meritocracia.github.io/market-justice-panel-edumer/processing/02-analisis.html)
 
-- [Multivariate analysis](https://educacion-meritocracia.github.io/special-issue-inequality/processing/03-multivariado.html)
+- [Multivariate analysis](https://educacion-meritocracia.github.io/market-justice-panel-edumer/processing/03-multivariado.html)
 
-- [Abstract COES](https://educacion-meritocracia.github.io/special-issue-inequality/conferencias/coes-conf-2024/abstract.html)
+- [Abstract COES](https://educacion-meritocracia.github.io/market-justice-panel-edumer/conferencias/coes-conf-2024/abstract.html)
 

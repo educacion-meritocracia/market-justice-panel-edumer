@@ -425,6 +425,14 @@ db_proc <- rbind(db_1, db_2)
 #| tbl-cap: "OLS models for preferences for market justice by wave" 
 #| tbl-cap-location: top
 
+db_proc <- db_proc %>% 
+  mutate(parental_educ = if_else(parental_educ %in% c("8th grade or less",
+                                                      "Secondary education",
+                                                      "Technical higher education"), "Non-university", parental_educ),
+         parental_educ = factor(parental_educ, levels = c("Non-university",
+                                                          "Universitary or posgraduate",
+                                                          "Missing")))
+
 ccoef <- list(
   "(Intercept)" = "Intercept",
   perc_merit_score = "Perception meritocratic",
@@ -437,8 +445,6 @@ ccoef <- list(
   genderOther = "Other",
   age = "Age",
   "booksMore than 25" = "More than 25 books (Ref.= Less than 25)",
-  "parental_educSecondary education" = "Secondary education",
-  "parental_educTechnical higher education" = "Technical higher education",
   "parental_educUniversitary or posgraduate" = "Universitary or posgraduate",
   "parental_educMissing" = "Missing",
   cohort_levelSecondary = "Secondary (Ref.= Primary)"
@@ -459,7 +465,7 @@ list(
                caption = NULL,
                stars = c(0.05, 0.01, 0.001),
                custom.coef.map = ccoef,
-               groups = list("Gender (Ref. = Male)" = 8:9,"Parental education (Ref.= 8th grade or less)" = 12:15),
+               groups = list("Gender (Ref. = Male)" = 8:9,"Parental education (Ref.= 8th grade or less)" = 12:13),
                custom.note = "\\item Note: Cells contain regression coefficients with standard errors in parentheses. %stars. \\\\ \\item Source: own elaboration with pooled data from EDUMER 2022-2023 (n = 517).",
                threeparttable = T,
                leading.zero = T,
@@ -556,8 +562,6 @@ ccoef <- list(
   genderOther = "Other",
   age = "Age",
   "booksMore than 25" = "More than 25 books (Ref.= Less than 25)",
-  "parental_educSecondary education" = "Secondary education",
-  "parental_educTechnical higher education" = "Technical higher education",
   "parental_educUniversitary or posgraduate" = "Universitary or posgraduate",
   "parental_educMissing" = "Missing",
   cohort_levelSecondary = "Secondary (Ref.= Primary)",
@@ -569,7 +573,7 @@ texreg::htmlreg(list(m1, m2, m3, m4, m5),
                caption = NULL,
                stars = c(0.05, 0.01, 0.001),
                custom.coef.map = ccoef,
-               groups = list("Gender (Ref. = Male)" = 14:15,"Parental education (Ref.= 8th grade or less)" = 18:21),
+               groups = list("Gender (Ref. = Male)" = 14:15,"Parental education (Ref.= 8th grade or less)" = 18:19),
                custom.note = "\\item Note: Cells contain regression coefficients with standard errors in parentheses. %stars. \\\\ \\item Source: own elaboration with pooled data from EDUMER 2022-2023 (n = 517).",
                threeparttable = T,
                leading.zero = T,
