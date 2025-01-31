@@ -67,6 +67,8 @@ pacman::p_load(tidyverse,
                sjlabelled,
                semTools,
                gtools,
+               shadowtext,
+               ggalluvial,
                RColorBrewer,
                skimr,
                readxl,
@@ -262,21 +264,6 @@ graf11 <-ggplot(data = db_proc %>% filter(!is.na(school_talent)),
 graf11
 ```
 
-```{r graf inequality}
-#inequality
-graf12 <-ggplot(data = db_proc %>% filter(!is.na(inequality)),
-       mapping = aes(x = factor(inequality))) +
-  geom_bar(color = "black", fill = "lightblue", na.rm = TRUE) +
-  scale_y_continuous(limits = c(0, 1000)) +
-  scale_x_discrete(labels = c("Muy en desacuerdo", "En desacuerdo", "De acuerdo", "Muy de acuerdo")) +
-  labs(title = "Las diferencias económicas entre ricos y pobres en Chile son demasiado grandes",
-       x = "Grado de acuerdo",
-       y = "Frecuencia") +
-  geom_text(aes(label = ..count..), stat = "count", vjust = 1.5, colour = "black")
-
-graf12
-```
-
 ```{r graf just_educ}
 #just_educ
 graf13 <-ggplot(data = db_proc %>% filter(!is.na(just_educ)),
@@ -430,9 +417,6 @@ prop.table(table(db_proc$school_effort)) * 100
 table(db_proc$school_talent)
 prop.table(table(db_proc$school_talent)) * 100
 
-table(db_proc$inequality)
-prop.table(table(db_proc$inequality)) * 100
-
 table(db_proc$just_educ)
 prop.table(table(db_proc$just_educ)) * 100
 
@@ -496,7 +480,6 @@ tab <- dplyr::select(db_proc,
                           "Preferencias contactos" = pref_contact,
                           "Esfuerzo en la escuela" = school_effort,
                           "Talento en la escuela" = school_talent,
-                          "Desigualdad" = inequality,
                           "Justicia de mercado en educación" = just_educ,
                           "Justicia de mercado en salud" = just_health,
                           "Justicia de mercado en pensiones" = just_pension,
@@ -509,3 +492,974 @@ tab_desc %>%
   kable() %>%
   kable_styling(full_width = TRUE)
 ```
+
+```{r data, echo=FALSE}
+
+load(file = here("output", "data", "db_proc.RData"))
+
+```
+
+```{r functions, echo=FALSE}
+
+odds_fun <- function(modelos) {
+   or <- texreg::extract(modelos)
+   or@coef <- exp(or@coef)
+   return(or)
+}
+
+miles <- function(x) {
+  format(round(as.numeric(x),0), big.mark = ".")
+}
+
+decimales <- function(x) {
+  format(round(as.numeric(x), 2), decimal.mark = ",")
+}
+
+# set theme
+
+
+theme_set(theme_bw())
+
+```
+
+```{r, alluvial-justed, echo=FALSE}
+#Data without labels
+
+db_proc_2 <- db_proc
+
+# Data preparation
+db_proc <- db_proc %>% filter(!is.na(just_educ) & !is.na(wave))
+db_proc$just_educ <- factor(db_proc$just_educ, labels= c("Strongly disagree", "Disagree", "Agree", "Strongly agree"))
+
+# Frequencies
+
+jed <- db_proc %>% group_by(id_student, wave) %>% 
+  count(just_educ) %>% 
+  group_by(wave) %>% 
+  mutate(porcentaje=n/sum(n)) %>% 
+  ungroup() %>% 
+  na.omit() 
+
+# Labels
+etiquetas.jed <- db_proc %>%
+  group_by(wave, just_educ) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(wave) %>%
+  mutate(porcentaje = count / sum(count)) %>% 
+  na.omit() %>% 
+  mutate(id_student = 1)
+
+# Factors
+jed$just_educ <- factor(jed$just_educ)
+etiquetas.jed$just_educ <- factor(etiquetas.jed$just_educ)
+
+# Colors
+colors <- c("#f1eef6ff","#bdc9e1ff","#74a9cfff","#0570b0ff")
+
+# Graph
+plot_jed <- jed %>% 
+  ggplot(aes(x = wave, fill = just_educ, stratum = just_educ,
+             alluvium = id_student, y = porcentaje)) +
+  ggalluvial::geom_flow(alpha = .66) + 
+  ggalluvial::geom_stratum(linetype = 0) +
+  scale_y_continuous(labels = scales::percent) + 
+  scale_fill_manual(values = colors) +
+  geom_shadowtext(data = etiquetas.jed,
+                  aes(label = ifelse(porcentaje > 0, scales::percent(porcentaje, accuracy = .1), "")),
+                  position = position_stack(vjust = .5),
+                  show.legend = FALSE,
+                  size = 4,
+                  color = 'white',
+                  bg.colour = 'grey30') +
+   labs(y = "Percentage",
+       x = "Wave",
+       fill = "Responses",
+    caption = "Source: EDUMER",
+    title = "Figure 1.1: It's good that those who can pay more receive a better education") +
+   theme_blank() +
+  theme(legend.position = "right",
+         plot.title = element_text(size = 12, face = "italic", color = "black"))
+
+plot_jed
+```
+
+```{r, alluvial-justh, echo=FALSE}
+# Data preparation
+db_proc <- db_proc %>% filter(!is.na(just_health) & !is.na(wave))
+db_proc$just_health <- factor(db_proc$just_health, labels= c("Strongly disagree", "Disagree", "Agree", "Strongly agree"))
+
+# Frequencies
+
+jh <- db_proc %>% group_by(id_student, wave) %>% 
+  count(just_health) %>% 
+  group_by(wave) %>% 
+  mutate(porcentaje=n/sum(n)) %>% 
+  ungroup() %>% 
+  na.omit() 
+
+# Labels
+etiquetas.jh <- db_proc %>%
+  group_by(wave, just_health) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(wave) %>%
+  mutate(porcentaje = count / sum(count)) %>% 
+  na.omit() %>% 
+  mutate(id_student = 1)
+
+# Factors
+jh$just_health <- factor(jh$just_health)
+etiquetas.jh$just_health <- factor(etiquetas.jh$just_health)
+
+# Colors
+colors <- c("#f1eef6ff","#bdc9e1ff","#74a9cfff","#0570b0ff")
+
+# Graph
+plot_jh <- jh %>% 
+  ggplot(aes(x = wave, fill = just_health, stratum = just_health,
+             alluvium = id_student, y = porcentaje)) +
+  ggalluvial::geom_flow(alpha = .66) + 
+  ggalluvial::geom_stratum(linetype = 0) +
+  scale_y_continuous(labels = scales::percent) + 
+  scale_fill_manual(values = colors) +
+  geom_shadowtext(data = etiquetas.jh,
+                  aes(label = ifelse(porcentaje > 0, scales::percent(porcentaje, accuracy = .1), "")),
+                  position = position_stack(vjust = .5),
+                  show.legend = FALSE,
+                  size = 4,
+                  color = 'white',
+                  bg.colour = 'grey30') +
+   labs(y = "Percentage",
+       x = "Wave",
+       fill = "Responses",
+    caption = "Source: EDUMER",
+    title = "Figure 1.2: It's good that those who can pay more have better access to healthcare") +
+   theme_blank() +
+  theme(legend.position = "right",
+         plot.title = element_text(size = 12, face = "italic", color = "black"))
+
+plot_jh
+```
+
+```{r, alluvial-justp, echo=FALSE}
+# Data preparation
+db_proc <- db_proc %>% filter(!is.na(just_pension) & !is.na(wave))
+db_proc$just_pension <- factor(db_proc$just_pension, labels= c("Strongly disagree", "Disagree", "Agree", "Strongly agree"))
+
+# Frequencies
+
+jp <- db_proc %>% group_by(id_student, wave) %>% 
+  count(just_pension) %>% 
+  group_by(wave) %>% 
+  mutate(porcentaje=n/sum(n)) %>% 
+  ungroup() %>% 
+  na.omit() 
+
+# Labels
+etiquetas.jp <- db_proc %>%
+  group_by(wave, just_pension) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(wave) %>%
+  mutate(porcentaje = count / sum(count)) %>% 
+  na.omit() %>% 
+  mutate(id_student = 1)
+
+# Factors
+jp$just_pension <- factor(jp$just_pension)
+etiquetas.jp$just_pension <- factor(etiquetas.jp$just_pension)
+
+# Colors
+colors <- c("#f1eef6ff","#bdc9e1ff","#74a9cfff","#0570b0ff")
+
+# Graph
+plot_jp <- jp %>% 
+  ggplot(aes(x = wave, fill = just_pension, stratum = just_pension,
+             alluvium = id_student, y = porcentaje)) +
+  ggalluvial::geom_flow(alpha = .66) + 
+  ggalluvial::geom_stratum(linetype = 0) +
+  scale_y_continuous(labels = scales::percent) + 
+  scale_fill_manual(values = colors) +
+  geom_shadowtext(data = etiquetas.jp,
+                  aes(label = ifelse(porcentaje > 0, scales::percent(porcentaje, accuracy = .1), "")),
+                  position = position_stack(vjust = .5),
+                  show.legend = FALSE,
+                  size = 4,
+                  color = 'white',
+                  bg.colour = 'grey30') +
+   labs(y = "Percentage",
+       x = "Wave",
+       fill = "Responses",
+    caption = "Source: EDUMER",
+    title = "Figure 1.3: It's good that in Chile, people with higher incomes\n can have better pensions than those with lower incomes") +
+   theme_blank() +
+  theme(legend.position = "right",
+         plot.title = element_text(size = 12, face = "italic", color = "black"))
+
+plot_jp
+```
+
+```{r, alluvial-perc-eff, echo=FALSE}
+# Data preparation
+db_proc <- db_proc %>% filter(!is.na(perc_effort) & !is.na(wave))
+db_proc$perc_effort <- factor(db_proc$perc_effort, labels= c("Strongly disagree", "Disagree", "Agree", "Strongly agree"))
+
+# Frequencies
+
+pe <- db_proc %>% group_by(id_student, wave) %>% 
+  count(perc_effort) %>% 
+  group_by(wave) %>% 
+  mutate(porcentaje=n/sum(n)) %>% 
+  ungroup() %>% 
+  na.omit() 
+
+# Labels
+etiquetas.pe <- db_proc %>%
+  group_by(wave, perc_effort) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(wave) %>%
+  mutate(porcentaje = count / sum(count)) %>% 
+  na.omit() %>% 
+  mutate(id_student = 1)
+
+# Factors
+pe$perc_effort <- factor(pe$perc_effort)
+etiquetas.pe$perc_effort <- factor(etiquetas.pe$perc_effort)
+
+# Colors
+colors <- c("#f1eef6ff","#bdc9e1ff","#74a9cfff","#0570b0ff")
+
+# Graph
+plot_pe <- pe %>% 
+  ggplot(aes(x = wave, fill = perc_effort, stratum = perc_effort,
+             alluvium = id_student, y = porcentaje)) +
+  ggalluvial::geom_flow(alpha = .66) + 
+  ggalluvial::geom_stratum(linetype = 0) +
+  scale_y_continuous(labels = scales::percent) + 
+  scale_fill_manual(values = colors) +
+  geom_shadowtext(data = etiquetas.pe,
+                  aes(label = ifelse(porcentaje > 0, scales::percent(porcentaje, accuracy = .1), "")),
+                  position = position_stack(vjust = .5),
+                  show.legend = FALSE,
+                  size = 4,
+                  color = 'white',
+                  bg.colour = 'grey30') +
+   labs(y = "Percentage",
+       x = "Wave",
+       fill = "Responses",
+    caption = "Source: EDUMER",
+    title = "Figure 1.4: In Chile, people are rewarded for their efforts") +
+   theme_blank() +
+  theme(legend.position = "right",
+         plot.title = element_text(size = 12, face = "italic", color = "black"))
+
+plot_pe
+```
+
+```{r, alluvial-perc-tal, echo=FALSE}
+# Data preparation
+db_proc <- db_proc %>% filter(!is.na(perc_talent) & !is.na(wave))
+db_proc$perc_talent <- factor(db_proc$perc_talent, labels= c("Strongly disagree", "Disagree", "Agree", "Strongly agree"))
+
+# Frequencies
+
+pt <- db_proc %>% group_by(id_student, wave) %>% 
+  count(perc_talent) %>% 
+  group_by(wave) %>% 
+  mutate(porcentaje=n/sum(n)) %>% 
+  ungroup() %>% 
+  na.omit() 
+
+# Labels
+etiquetas.pt <- db_proc %>%
+  group_by(wave, perc_talent) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(wave) %>%
+  mutate(porcentaje = count / sum(count)) %>% 
+  na.omit() %>% 
+  mutate(id_student = 1)
+
+# Factors
+pt$perc_talent <- factor(pt$perc_talent)
+etiquetas.pt$perc_talent <- factor(etiquetas.pt$perc_talent)
+
+# Colors
+colors <- c("#f1eef6ff","#bdc9e1ff","#74a9cfff","#0570b0ff")
+
+# Graph
+plot_pt <- pt %>% 
+  ggplot(aes(x = wave, fill = perc_talent, stratum = perc_talent,
+             alluvium = id_student, y = porcentaje)) +
+  ggalluvial::geom_flow(alpha = .66) + 
+  ggalluvial::geom_stratum(linetype = 0) +
+  scale_y_continuous(labels = scales::percent) + 
+  scale_fill_manual(values = colors) +
+  geom_shadowtext(data = etiquetas.pt,
+                  aes(label = ifelse(porcentaje > 0, scales::percent(porcentaje, accuracy = .1), "")),
+                  position = position_stack(vjust = .5),
+                  show.legend = FALSE,
+                  size = 4,
+                  color = 'white',
+                  bg.colour = 'grey30') +
+   labs(y = "Percentage",
+       x = "Wave",
+       fill = "Responses",
+    caption = "Source: EDUMER",
+    title = "Figure 1.5: In Chile, people are rewarded for their inteligence and ability") +
+   theme_blank() +
+  theme(legend.position = "right",
+         plot.title = element_text(size = 12, face = "italic", color = "black"))
+
+plot_pt
+```
+
+```{r, alluvial-perc-rich-par, echo=FALSE}
+# Data preparation
+db_proc <- db_proc %>% filter(!is.na(perc_rich_parents) & !is.na(wave))
+db_proc$perc_rich_parents <- factor(db_proc$perc_rich_parents, labels= c("Strongly disagree", "Disagree", "Agree", "Strongly agree"))
+
+# Frequencies
+
+prp <- db_proc %>% group_by(id_student, wave) %>% 
+  count(perc_rich_parents) %>% 
+  group_by(wave) %>% 
+  mutate(porcentaje=n/sum(n)) %>% 
+  ungroup() %>% 
+  na.omit() 
+
+# Labels
+etiquetas.prp <- db_proc %>%
+  group_by(wave, perc_rich_parents) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(wave) %>%
+  mutate(porcentaje = count / sum(count)) %>% 
+  na.omit() %>% 
+  mutate(id_student = 1)
+
+# Factors
+prp$perc_rich_parents <- factor(prp$perc_rich_parents)
+etiquetas.prp$perc_rich_parents <- factor(etiquetas.prp$perc_rich_parents)
+
+# Colors
+colors <- c("#f1eef6ff","#bdc9e1ff","#74a9cfff","#0570b0ff")
+
+# Graph
+plot_prp <- prp %>% 
+  ggplot(aes(x = wave, fill = perc_rich_parents, stratum = perc_rich_parents,
+             alluvium = id_student, y = porcentaje)) +
+  ggalluvial::geom_flow(alpha = .66) + 
+  ggalluvial::geom_stratum(linetype = 0) +
+  scale_y_continuous(labels = scales::percent) + 
+  scale_fill_manual(values = colors) +
+  geom_shadowtext(data = etiquetas.prp,
+                  aes(label = ifelse(porcentaje > 0, scales::percent(porcentaje, accuracy = .1), "")),
+                  position = position_stack(vjust = .5),
+                  show.legend = FALSE,
+                  size = 4,
+                  color = 'white',
+                  bg.colour = 'grey30') +
+   labs(y = "Percentage",
+       x = "Wave",
+       fill = "Responses",
+    caption = "Source: EDUMER",
+    title = "Figure 1.6: In Chile, those with wealthy parents fare much better life") +
+   theme_blank() +
+  theme(legend.position = "right",
+         plot.title = element_text(size = 12, face = "italic", color = "black"))
+
+plot_prp
+```
+
+```{r, alluvial-perc-ctct, echo=FALSE}
+# Data preparation
+db_proc <- db_proc %>% filter(!is.na(perc_contact) & !is.na(wave))
+db_proc$perc_contact <- factor(db_proc$perc_contact, labels= c("Strongly disagree", "Disagree", "Agree", "Strongly agree"))
+
+# Frequencies
+
+pct <- db_proc %>% group_by(id_student, wave) %>% 
+  count(perc_contact) %>% 
+  group_by(wave) %>% 
+  mutate(porcentaje=n/sum(n)) %>% 
+  ungroup() %>% 
+  na.omit() 
+
+# Labels
+etiquetas.pct <- db_proc %>%
+  group_by(wave, perc_contact) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(wave) %>%
+  mutate(porcentaje = count / sum(count)) %>% 
+  na.omit() %>% 
+  mutate(id_student = 1)
+
+# Factors
+pct$perc_contact <- factor(pct$perc_contact)
+etiquetas.pct$perc_contact <- factor(etiquetas.pct$perc_contact)
+
+# Colors
+colors <- c("#f1eef6ff","#bdc9e1ff","#74a9cfff","#0570b0ff")
+
+# Graph
+plot_pct <- pct %>% 
+  ggplot(aes(x = wave, fill = perc_contact, stratum = perc_contact,
+             alluvium = id_student, y = porcentaje)) +
+  ggalluvial::geom_flow(alpha = .66) + 
+  ggalluvial::geom_stratum(linetype = 0) +
+  scale_y_continuous(labels = scales::percent) + 
+  scale_fill_manual(values = colors) +
+  geom_shadowtext(data = etiquetas.pct,
+                  aes(label = ifelse(porcentaje > 0, scales::percent(porcentaje, accuracy = .1), "")),
+                  position = position_stack(vjust = .5),
+                  show.legend = FALSE,
+                  size = 4,
+                  color = 'white',
+                  bg.colour = 'grey30') +
+   labs(y = "Percentage",
+       x = "Wave",
+       fill = "Responses",
+    caption = "Source: EDUMER",
+    title = "Figure 1.7: In Chile, those with good contacts do better in life") +
+   theme_blank() +
+  theme(legend.position = "right",
+         plot.title = element_text(size = 12, face = "italic", color = "black"))
+
+plot_pct
+```
+
+```{r, alluvial-pref-eff, echo=FALSE}
+# Data preparation
+db_proc <- db_proc %>% filter(!is.na(pref_effort) & !is.na(wave))
+db_proc$pref_effort <- factor(db_proc$pref_effort, labels= c("Strongly disagree", "Disagree", "Agree", "Strongly agree"))
+
+# Frequencies
+
+pre <- db_proc %>% group_by(id_student, wave) %>% 
+  count(pref_effort) %>% 
+  group_by(wave) %>% 
+  mutate(porcentaje=n/sum(n)) %>% 
+  ungroup() %>% 
+  na.omit() 
+
+# Labels
+etiquetas.pre <- db_proc %>%
+  group_by(wave, pref_effort) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(wave) %>%
+  mutate(porcentaje = count / sum(count)) %>% 
+  na.omit() %>% 
+  mutate(id_student = 1)
+
+# Factors
+pre$pref_effort <- factor(pre$pref_effort)
+etiquetas.pre$pref_effort <- factor(etiquetas.pre$pref_effort)
+
+# Colors
+colors <- c("#f1eef6ff","#bdc9e1ff","#74a9cfff","#0570b0ff")
+
+# Graph
+plot_pre <- pre %>% 
+  ggplot(aes(x = wave, fill = pref_effort, stratum = pref_effort,
+             alluvium = id_student, y = porcentaje)) +
+  ggalluvial::geom_flow(alpha = .66) + 
+  ggalluvial::geom_stratum(linetype = 0) +
+  scale_y_continuous(labels = scales::percent) + 
+  scale_fill_manual(values = colors) +
+  geom_shadowtext(data = etiquetas.pre,
+                  aes(label = ifelse(porcentaje > 0, scales::percent(porcentaje, accuracy = .1), "")),
+                  position = position_stack(vjust = .5),
+                  show.legend = FALSE,
+                  size = 4,
+                  color = 'white',
+                  bg.colour = 'grey30') +
+   labs(y = "Percentage",
+       x = "Wave",
+       fill = "Responses",
+    caption = "Source: EDUMER",
+    title = "Figure 1.8: Those who put in more effort should receive \ngreater rewards than those who put in less effort") +
+   theme_blank() +
+  theme(legend.position = "right",
+         plot.title = element_text(size = 12, face = "italic", color = "black"))
+
+plot_pre
+```
+
+```{r, alluvial-pref-talent, echo=FALSE}
+# Data preparation
+db_proc <- db_proc %>% filter(!is.na(pref_talent) & !is.na(wave))
+db_proc$pref_talent <- factor(db_proc$pref_talent, labels= c("Strongly disagree", "Disagree", "Agree", "Strongly agree"))
+
+# Frequencies
+
+prt <- db_proc %>% group_by(id_student, wave) %>% 
+  count(pref_talent) %>% 
+  group_by(wave) %>% 
+  mutate(porcentaje=n/sum(n)) %>% 
+  ungroup() %>% 
+  na.omit() 
+
+# Labels
+etiquetas.prt <- db_proc %>%
+  group_by(wave, pref_talent) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(wave) %>%
+  mutate(porcentaje = count / sum(count)) %>% 
+  na.omit() %>% 
+  mutate(id_student = 1)
+
+# Factors
+prt$pref_talent <- factor(prt$pref_talent)
+etiquetas.prt$pref_talent <- factor(etiquetas.prt$pref_talent)
+
+# Colors
+colors <- c("#f1eef6ff","#bdc9e1ff","#74a9cfff","#0570b0ff")
+
+# Graph
+plot_prt <- prt %>% 
+  ggplot(aes(x = wave, fill = pref_talent, stratum = pref_talent,
+             alluvium = id_student, y = porcentaje)) +
+  ggalluvial::geom_flow(alpha = .66) + 
+  ggalluvial::geom_stratum(linetype = 0) +
+  scale_y_continuous(labels = scales::percent) + 
+  scale_fill_manual(values = colors) +
+  geom_shadowtext(data = etiquetas.prt,
+                  aes(label = ifelse(porcentaje > 0, scales::percent(porcentaje, accuracy = .1), "")),
+                  position = position_stack(vjust = .5),
+                  show.legend = FALSE,
+                  size = 4,
+                  color = 'white',
+                  bg.colour = 'grey30') +
+   labs(y = "Percentage",
+       x = "Wave",
+       fill = "Responses",
+    caption = "Source: EDUMER",
+    title = "Figure 1.9: Those who have more talent should receive \ngreater rewards than those who have less talent") +
+   theme_blank() +
+  theme(legend.position = "right",
+         plot.title = element_text(size = 12, face = "italic", color = "black"))
+
+plot_prt
+```
+
+```{r, alluvial-pref-rp, echo=FALSE}
+# Data preparation
+db_proc <- db_proc %>% filter(!is.na(pref_rich_parents) & !is.na(wave))
+db_proc$pref_rich_parents <- factor(db_proc$pref_rich_parents, labels= c("Strongly disagree", "Disagree", "Agree", "Strongly agree"))
+
+# Frequencies
+
+prrp <- db_proc %>% group_by(id_student, wave) %>% 
+  count(pref_rich_parents) %>% 
+  group_by(wave) %>% 
+  mutate(porcentaje=n/sum(n)) %>% 
+  ungroup() %>% 
+  na.omit() 
+
+# Labels
+etiquetas.prrp <- db_proc %>%
+  group_by(wave, pref_rich_parents) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(wave) %>%
+  mutate(porcentaje = count / sum(count)) %>% 
+  na.omit() %>% 
+  mutate(id_student = 1)
+
+# Factors
+prrp$pref_rich_parents <- factor(prrp$pref_rich_parents)
+etiquetas.prrp$pref_rich_parents <- factor(etiquetas.prrp$pref_rich_parents)
+
+# Colors
+colors <- c("#f1eef6ff","#bdc9e1ff","#74a9cfff","#0570b0ff")
+
+# Graph
+plot_prrp <- prrp %>% 
+  ggplot(aes(x = wave, fill = pref_rich_parents, stratum = pref_rich_parents,
+             alluvium = id_student, y = porcentaje)) +
+  ggalluvial::geom_flow(alpha = .66) + 
+  ggalluvial::geom_stratum(linetype = 0) +
+  scale_y_continuous(labels = scales::percent) + 
+  scale_fill_manual(values = colors) +
+  geom_shadowtext(data = etiquetas.prrp,
+                  aes(label = ifelse(porcentaje > 0, scales::percent(porcentaje, accuracy = .1), "")),
+                  position = position_stack(vjust = .5),
+                  show.legend = FALSE,
+                  size = 4,
+                  color = 'white',
+                  bg.colour = 'grey30') +
+   labs(y = "Percentage",
+       x = "Wave",
+       fill = "Responses",
+    caption = "Source: EDUMER",
+    title = "Figure 1.10: It's fine that those whose parents are wealthy do well in life") +
+   theme_blank() +
+  theme(legend.position = "right",
+         plot.title = element_text(size = 12, face = "italic", color = "black"))
+
+plot_prrp
+```
+
+```{r, alluvial-pref-ct, echo=FALSE}
+# Data preparation
+db_proc <- db_proc %>% filter(!is.na(pref_contact) & !is.na(wave))
+db_proc$pref_contact <- factor(db_proc$pref_contact, labels= c("Strongly disagree", "Disagree", "Agree", "Strongly agree"))
+
+# Frequencies
+
+prct <- db_proc %>% group_by(id_student, wave) %>% 
+  count(pref_contact) %>% 
+  group_by(wave) %>% 
+  mutate(porcentaje=n/sum(n)) %>% 
+  ungroup() %>% 
+  na.omit() 
+
+# Labels
+etiquetas.prct <- db_proc %>%
+  group_by(wave, pref_contact) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(wave) %>%
+  mutate(porcentaje = count / sum(count)) %>% 
+  na.omit() %>% 
+  mutate(id_student = 1)
+
+# Factors
+prct$pref_contact <- factor(prct$pref_contact)
+etiquetas.prct$pref_contact <- factor(etiquetas.prct$pref_contact)
+
+# Colors
+colors <- c("#f1eef6ff","#bdc9e1ff","#74a9cfff","#0570b0ff")
+
+# Graph
+plot_prct <- prct %>% 
+  ggplot(aes(x = wave, fill = pref_contact, stratum = pref_contact,
+             alluvium = id_student, y = porcentaje)) +
+  ggalluvial::geom_flow(alpha = .66) + 
+  ggalluvial::geom_stratum(linetype = 0) +
+  scale_y_continuous(labels = scales::percent) + 
+  scale_fill_manual(values = colors) +
+  geom_shadowtext(data = etiquetas.prct,
+                  aes(label = ifelse(porcentaje > 0, scales::percent(porcentaje, accuracy = .1), "")),
+                  position = position_stack(vjust = .5),
+                  show.legend = FALSE,
+                  size = 4,
+                  color = 'white',
+                  bg.colour = 'grey30') +
+   labs(y = "Percentage",
+       x = "Wave",
+       fill = "Responses",
+    caption = "Source: EDUMER",
+    title = "Figure 1.11: It's fine that those who have good connections do well in life") +
+   theme_blank() +
+  theme(legend.position = "right",
+         plot.title = element_text(size = 12, face = "italic", color = "black"))
+
+plot_prct
+```
+
+```{r, alluvial-school-eff, echo=FALSE}
+# Data preparation
+db_proc <- db_proc %>% filter(!is.na(school_effort) & !is.na(wave))
+db_proc$school_effort <- factor(db_proc$school_effort, labels= c("Strongly disagree", "Disagree", "Agree", "Strongly agree"))
+
+# Frequencies
+
+scef <- db_proc %>% group_by(id_student, wave) %>% 
+  count(school_effort) %>% 
+  group_by(wave) %>% 
+  mutate(porcentaje=n/sum(n)) %>% 
+  ungroup() %>% 
+  na.omit() 
+
+# Labels
+etiquetas.scef <- db_proc %>%
+  group_by(wave, school_effort) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(wave) %>%
+  mutate(porcentaje = count / sum(count)) %>% 
+  na.omit() %>% 
+  mutate(id_student = 1)
+
+# Factors
+scef$school_effort <- factor(scef$school_effort)
+etiquetas.scef$school_effort <- factor(etiquetas.scef$school_effort)
+
+# Colors
+colors <- c("#f1eef6ff","#bdc9e1ff","#74a9cfff","#0570b0ff")
+
+# Graph
+plot_scef <- scef %>% 
+  ggplot(aes(x = wave, fill = school_effort, stratum = school_effort,
+             alluvium = id_student, y = porcentaje)) +
+  ggalluvial::geom_flow(alpha = .66) + 
+  ggalluvial::geom_stratum(linetype = 0) +
+  scale_y_continuous(labels = scales::percent) + 
+  scale_fill_manual(values = colors) +
+  geom_shadowtext(data = etiquetas.scef,
+                  aes(label = ifelse(porcentaje > 0, scales::percent(porcentaje, accuracy = .1), "")),
+                  position = position_stack(vjust = .5),
+                  show.legend = FALSE,
+                  size = 4,
+                  color = 'white',
+                  bg.colour = 'grey30') +
+   labs(y = "Percentage",
+       x = "Wave",
+       fill = "Responses",
+    caption = "Source: EDUMER",
+    title = "Figure 1.12: In this school, those who put in effort get good grades") +
+   theme_blank() +
+  theme(legend.position = "right",
+         plot.title = element_text(size = 12, face = "italic", color = "black"))
+
+plot_scef
+```
+
+```{r, alluvial-school-talent, echo=FALSE}
+# Data preparation
+db_proc <- db_proc %>% filter(!is.na(school_talent) & !is.na(wave))
+db_proc$school_talent <- factor(db_proc$school_talent, labels= c("Strongly disagree", "Disagree", "Agree", "Strongly agree"))
+
+# Frequencies
+
+sctl <- db_proc %>% group_by(id_student, wave) %>% 
+  count(school_talent) %>% 
+  group_by(wave) %>% 
+  mutate(porcentaje=n/sum(n)) %>% 
+  ungroup() %>% 
+  na.omit() 
+
+# Labels
+etiquetas.sctl <- db_proc %>%
+  group_by(wave, school_talent) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(wave) %>%
+  mutate(porcentaje = count / sum(count)) %>% 
+  na.omit() %>% 
+  mutate(id_student = 1)
+
+# Factors
+sctl$school_talent <- factor(sctl$school_talent)
+etiquetas.sctl$school_talent <- factor(etiquetas.sctl$school_talent)
+
+# Colors
+colors <- c("#f1eef6ff","#bdc9e1ff","#74a9cfff","#0570b0ff")
+
+# Graph
+plot_sctl <- sctl %>% 
+  ggplot(aes(x = wave, fill = school_talent, stratum = school_talent,
+             alluvium = id_student, y = porcentaje)) +
+  ggalluvial::geom_flow(alpha = .66) + 
+  ggalluvial::geom_stratum(linetype = 0) +
+  scale_y_continuous(labels = scales::percent) + 
+  scale_fill_manual(values = colors) +
+  geom_shadowtext(data = etiquetas.sctl,
+                  aes(label = ifelse(porcentaje > 0, scales::percent(porcentaje, accuracy = .1), "")),
+                  position = position_stack(vjust = .5),
+                  show.legend = FALSE,
+                  size = 4,
+                  color = 'white',
+                  bg.colour = 'grey30') +
+   labs(y = "Percentage",
+       x = "Wave",
+       fill = "Responses",
+    caption = "Source: EDUMER",
+    title = "Figure 1.13: In this school, those who are intelligent get good grades") +
+   theme_blank() +
+  theme(legend.position = "right",
+         plot.title = element_text(size = 12, face = "italic", color = "black"))
+
+plot_sctl
+```
+
+```{r, perc-eff-plot, echo=FALSE}
+
+db_proc_long <- db_proc_2 %>%
+  pivot_longer(cols = c(just_educ, just_pension, just_health), 
+               names_to = "Variable", values_to = "Valor")
+
+# Graph perc_effort
+plot_perc_effort <- ggplot(db_proc_long, aes(x = perc_effort, y = Valor, shape = Variable, color = Variable)) +
+  stat_summary(fun = mean, geom = "point", size = 3, alpha = 0.8) +
+  scale_x_continuous(breaks = 1:4, 
+                     labels = c("Strongly\n disagree", "Disagree", "Agree", "Strongly\n agree")) +
+  scale_y_continuous(limits = c(min(db_proc_long$Valor), max(db_proc_long$Valor))) +
+  scale_color_brewer(palette = "Paired") +
+  labs(x = "Effort Perception", 
+       y = "Market Justice Preference",
+       shape = "Component",
+       color = "Component") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        text = element_text(size = 11))
+
+plot_perc_effort
+```
+
+```{r, perc-talent-plot, echo=FALSE}
+# Graph perc_talent
+plot_perc_talent <- ggplot(db_proc_long, aes(x = perc_talent, y = Valor, shape = Variable, color = Variable)) +
+  stat_summary(fun = mean, geom = "point", size = 3, alpha = 0.8) +
+  scale_x_continuous(breaks = 1:4, 
+                     labels = c("Strongly\n disagree", "Disagree", "Agree", "Strongly\n agree")) +
+  scale_y_continuous(limits = c(min(db_proc_long$Valor), max(db_proc_long$Valor))) +
+  scale_color_brewer(palette = "Paired") +
+  labs(x = "Talent Perception", 
+       y = "Market Justice Preference",
+       shape = "Component",
+       color = "Component") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        text = element_text(size = 11))
+
+plot_perc_talent
+```
+
+```{r, perc-rich-parents-plot, echo=FALSE}
+# Graph perc_rich_parents
+plot_perc_rich_parents <- ggplot(db_proc_long, aes(x = perc_rich_parents, y = Valor, shape = Variable, color = Variable)) +
+  stat_summary(fun = mean, geom = "point", size = 3, alpha = 0.8) +
+  scale_x_continuous(breaks = 1:4, 
+                     labels = c("Strongly\n disagree", "Disagree", "Agree", "Strongly\n agree")) +
+  scale_y_continuous(limits = c(min(db_proc_long$Valor), max(db_proc_long$Valor))) +
+  scale_color_brewer(palette = "Paired") +
+  labs(x = "Rich Parents Perception", 
+       y = "Market Justice Preference",
+       shape = "Component",
+       color = "Component") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        text = element_text(size = 11))
+
+plot_perc_rich_parents
+```
+
+```{r, perc-cont-plot, echo=FALSE}
+# Graph perc_contacts
+plot_perc_contacts <- ggplot(db_proc_long, aes(x = perc_contact, y = Valor, shape = Variable, color = Variable)) +
+  stat_summary(fun = mean, geom = "point", size = 3, alpha = 0.8) +
+  scale_x_continuous(breaks = 1:4, 
+                     labels = c("Strongly\n disagree", "Disagree", "Agree", "Strongly\n agree")) +
+  scale_y_continuous(limits = c(min(db_proc_long$Valor), max(db_proc_long$Valor))) +
+  scale_color_brewer(palette = "Paired") +
+  labs(x = "Contacts Perception", 
+       y = "Market Justice Preference",
+       shape = "Component",
+       color = "Component") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        text = element_text(size = 11))
+
+plot_perc_contacts
+```
+
+```{r, per-eff-plot, echo=FALSE}
+# Graph pref_effort
+plot_pref_effort <- ggplot(db_proc_long, aes(x = pref_effort, y = Valor, shape = Variable, color = Variable)) +
+  stat_summary(fun = mean, geom = "point", size = 3, alpha = 0.8) +
+  scale_x_continuous(breaks = 1:4, 
+                     labels = c("Strongly\n disagree", "Disagree", "Agree", "Strongly\n agree")) +
+  scale_y_continuous(limits = c(min(db_proc_long$Valor), max(db_proc_long$Valor))) +
+  scale_color_brewer(palette = "Paired") +
+  labs(x = "Effort Preferences", 
+       y = "Market Justice Preference",
+       shape = "Component",
+       color = "Component") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        text = element_text(size = 11))
+
+plot_pref_effort
+```
+
+```{r, pref-talent-plot, echo=FALSE}
+# Graph pref_talent
+plot_pref_talent <- ggplot(db_proc_long, aes(x = pref_talent, y = Valor, shape = Variable, color = Variable)) +
+  stat_summary(fun = mean, geom = "point", size = 3, alpha = 0.8) +
+  scale_x_continuous(breaks = 1:4,
+                     labels = c("Strongly\n disagree", "Disagree", "Agree", "Strongly\n agree")) +
+  scale_y_continuous(limits = c(min(db_proc_long$Valor), max(db_proc_long$Valor))) +
+  scale_color_brewer(palette = "Paired") +
+  labs(x = "Talent Preference",
+       y = "Market Justice Preference",
+       shape = "Component",
+       color = "Component") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        text = element_text(size = 11))
+
+plot_pref_talent
+```
+
+```{r, pref-rich-parents, echo=FALSE}
+#Graph pref_rich_parents
+plot_pref_rich_parents <- ggplot(db_proc_long, aes(x = pref_rich_parents, y = Valor, shape = Variable, color = Variable)) +
+  stat_summary(fun = mean, geom = "point", size = 3, alpha = 0.8) +
+  scale_x_continuous(breaks = 1:4,
+                     labels = c("Strongly\n disagree", "Disagree", "Agree", "Strongly\n agree")) +
+  scale_y_continuous(limits = c(min(db_proc_long$Valor), max(db_proc_long$Valor))) +
+  scale_color_brewer(palette = "Paired") +
+  labs(x = "Rich Parents Preference",
+       y = "Market Justice Preference",
+       shape = "Component",
+       color = "Component") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        text = element_text(size = 11))
+
+plot_pref_rich_parents
+
+```
+
+```{r, pref-contact-plot, echo=FALSE}
+#Graph pref_contact
+plot_pref_contact <- ggplot(db_proc_long, aes(x = pref_contact, y = Valor, shape = Variable, color = Variable)) +
+  stat_summary(fun = mean, geom = "point", size = 3, alpha = 0.8) +
+  scale_x_continuous(breaks = 1:4,
+                     labels = c("Strongly\n disagree", "Disagree", "Agree", "Strongly\n agree")) +
+  scale_y_continuous(limits = c(min(db_proc_long$Valor), max(db_proc_long$Valor))) +
+  scale_color_brewer(palette = "Paired") +
+  labs(x = "Contact Preference",
+       y = "Market Justice Preference",
+       shape = "Component",
+       color = "Component") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        text = element_text(size = 11))
+
+plot_pref_contact
+```
+
+```{r, school-eff-plot, echo=FALSE}
+#Graph school_effort
+plot_school_effort <- ggplot(db_proc_long, aes(x = school_effort, y = Valor, shape = Variable, color = Variable)) +
+  stat_summary(fun = mean, geom = "point", size = 3, alpha = 0.8) +
+  scale_x_continuous(breaks = 1:4,
+                     labels = c("Strongly\n disagree", "Disagree", "Agree", "Strongly\n agree")) +
+  scale_y_continuous(limits = c(min(db_proc_long$Valor), max(db_proc_long$Valor))) +
+  scale_color_brewer(palette = "Paired") +
+  labs(x = "School Effort",
+       y = "Market Justice Preference",
+       shape = "Component",
+       color = "Component") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        text = element_text(size = 11))
+
+plot_school_effort
+```
+
+```{r, school-talent-plot, echo=FALSE}
+#Graph school_talent
+plot_school_talent <- ggplot(db_proc_long, aes(x = school_talent, y = Valor, shape = Variable, color = Variable)) +
+  stat_summary(fun = mean, geom = "point", size = 3, alpha = 0.8) +
+  scale_x_continuous(breaks = 1:4,
+                     labels = c("Strongly\n disagree", "Disagree", "Agree", "Strongly\n agree")) +
+  scale_y_continuous(limits = c(min(db_proc_long$Valor), max(db_proc_long$Valor))) +
+  scale_color_brewer(palette = "Paired") +
+  labs(x = "School Talent",
+       y = "Market Justice Preference",
+       shape = "Component",
+       color = "Component") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        text = element_text(size = 11))
+
+plot_school_talent
+```
+
