@@ -62,6 +62,25 @@ citeproc: true
 
 # Cambio en las creencias sobre meritocracia y justicia de mercado en el contexto escolar
 
+Juan Carlos Castillo [^1]
+
+[^1]: Universidad de Chile, Centro de Estudios de Conflicto y Cohesión Social (COES), Núcleo Milenio de Desigualdades y Oportunidades Digitales (NUDOS)
+
+Kevin Carrasco [^3]
+
+[^3]: Centro de Estudios de Conflicto y Cohesión Social (COES)
+
+Andreas Laffert[^4]
+
+[^4]:Pontificia Universidad Católica de Chile
+
+María Fernanda Núñez [^2]
+
+[^2]:Universidad de Chile 
+
+Isidora Yañez [^2]
+
+[^2]:Universidad de Chile 
 
 ## Abstract
 
@@ -75,22 +94,12 @@ H2: Estudiantes que presentan mayor percepción de meritocracia en la sociedad t
 
 H3: Estudiantes que presentan mayor preferencia por la meritocracia en la sociedad tendrán mayor preferencia por la justicia de mercado.
 
-El interés de centrarse en la edad escolar parte del reconocimiento de que las escuelas juegan un papel importante en la socialización, ya que son una institución clave para transmitir normas, valores y expectativas culturales a los jóvenes. Las escuelas también pueden reproducir y reforzar los desequilibrios de poder y los sesgos existentes, ya que el currículo y otras prácticas escolares pueden estar moldeados por la cultura dominante o las preferencias de aquellos en posiciones de poder. Investigaciones han demostrado que los niños más pequeños muestran una preferencia por la igualdad, mientras que los niños mayores comienzan a aceptar la desigualdad si esta se justifica por el mérito [@almas_fairness_2010; @baumard_preschoolers_2012]. Por lo tanto, es de esperar que existan diferencias en las preferencias por la redistribución tanto por el nivel escolar (básica o media) como también un cambio a través del tiempo (2023-2024). Por lo tanto, se plantean dos hipótesis adicionales:
+El interés de centrarse en la edad escolar parte del reconocimiento de que las escuelas juegan un papel importante en la socialización, ya que son una institución clave para transmitir normas, valores y expectativas culturales a los jóvenes. Las escuelas también pueden reproducir y reforzar los desequilibrios de poder y los sesgos existentes, ya que el currículo y otras prácticas escolares pueden estar moldeados por la cultura dominante o las preferencias de aquellos en posiciones de poder. Investigaciones han demostrado que los niños más pequeños muestran una preferencia por la igualdad, mientras que los niños mayores comienzan a aceptar la desigualdad si esta se justifica por el mérito [@almas_fairness_2010; @baumard_preschoolers_2012]. Por lo tanto, es de esperar que existan diferencias en las preferencias por la justicia de mercado tanto por el nivel escolar (básica o media) como también un cambio a través del tiempo (2023-2024). Por lo tanto, se plantean dos hipótesis adicionales:
 
-H4: Estudiantes de educación media tendrán menor preferencia por la redistribución que estudiantes de educación básica
+H4: Estudiantes de educación media tendrán menor preferencia por la justicia de mercado que estudiantes de educación básica
 
-H5: A medida que los/as estudiantes avanzan en su escolarización, se espera que las preferencias por la redistribución disminuyan.
+H5: A medida que los/as estudiantes avanzan en su escolarización, se espera que las preferencias por la justicia de mercado disminuyan.
 
-La base de datos a utilizar corresponde a la encuesta panel "Educación y Meritocracia" (EDUMER), realizada en Chile durante el 2023 y 2024. En este estudio se evaluaron estudiantes de sexto básico y primero medio provenientes de 9 escuelas de la región metropolitana (N=902). Los resultados muestran que estudiantes con mayor percepción y preferencias por la meritocracia en la sociedad y en la escuela manifiestan una mayor preferencia por la justicia de mercado. Asimismo, los estudiantes de educación media tienen menor preferencia por la justicia de mercado que los estudiantes de educación básica. Se discuten las implicancias de estos resultados para la socialización política de estudiantes por parte de la familia de origen y la escuela. 
+La base de datos a utilizar corresponde a la encuesta panel "Educación y Meritocracia" (EDUMER), realizada en Chile durante el 2023 y 2024. En este estudio se evaluaron estudiantes de sexto básico (6° grado) y primero medio (9° grado) provenientes de 9 escuelas de la región metropolitana (N=902). Los resultados muestran que estudiantes con mayor percepción y preferencias por la meritocracia en la sociedad y en la escuela manifiestan una mayor preferencia por la justicia de mercado. Asimismo, los estudiantes de educación media tienen menor preferencia por la justicia de mercado que los estudiantes de educación básica. Se discuten las implicancias de estos resultados para la socialización política de estudiantes por parte de la familia de origen y la escuela. 
 
 
-```{r}
-#| echo: false
-#| label: wordstats
-#| warning: false
-#| message: false
-wordcount <- wordcountaddin::text_stats('abstract.qmd')
-words <- substr(wordcount[3], start=19, stop=29)
-```
-
-**Word count**: `r words`

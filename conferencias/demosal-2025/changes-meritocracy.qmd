@@ -1,0 +1,425 @@
+---
+pagetitle: "EDUMER Template"
+Author: Equipo EDUMER
+bibliography: "input/bib/merit-redis-school.bib"
+csl: "input/bib/apa6.csl"
+lang: es
+
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: "#>"
+    R.options:
+      knitr.graphics.auto_pdf: true
+      
+format:
+  revealjs:
+    #logo: images/edumer.png
+    slide-number: true
+    theme: "libs/edumer.scss"
+    auto-stretch: false
+    title-slide-attributes:
+      visibility: false
+    transition: fade
+    transition-speed: slow
+# data-background-image: images/cover.jpg
+# data-background-size: cover
+    auto-play-media: true
+  pdf:
+    format: beamer 
+    keep-tex: true  # Debug LaTeX output if needed
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(knitr)
+knitr::opts_chunk$set(echo = F,
+                      warning = F,
+                      error = F, 
+                      message = F) 
+```
+
+```{r}
+#| label: packages
+#| include: false
+
+if (! require("pacman")) install.packages("pacman")
+
+pacman::p_load(dplyr, car, sjmisc, sjPlot, sjlabelled, stargazer, kableExtra, corrplot, texreg, ggplot2, ggpubr, lavaan, haven, lme4, shadowtext)
+
+options(scipen=999)
+rm(list = ls())
+
+load(here::here("../../input/data/proc/data.RData"))
+
+data <- data %>%
+  mutate(curso_estudiante = case_when(
+    grepl("^(2|1)", curso_estudiante, ignore.case = TRUE) ~ 'Media',
+    grepl("^(7|6)", curso_estudiante, ignore.case = TRUE) ~ 'Basica',
+    TRUE ~ curso_estudiante  # mantener el valor original si no coincide con ninguna condición
+  ))
+
+data <- data  %>% group_by(id_estudiante) %>%
+  mutate(curso_estudiante_rec = ifelse(ola == 2 & is.na(curso_estudiante),
+                                   curso_estudiante[ola == 1],
+                                   curso_estudiante)) %>% ungroup()
+
+data <- data %>%
+  group_by(id_estudiante) %>%
+  mutate(atricion = ifelse(all(c(1, 2) %in% ola), 1, 0)) %>%
+  ungroup()
+
+data <- data %>% filter(atricion==1)
+
+data <- data %>% mutate(mjp = rowMeans(select(., just_educ, just_salud, just_pensiones), na.rm = TRUE))
+reg.null <- lmer(mjp ~ (1|id_estudiante), data=data)
+performance::icc(reg.null)
+reg <- lmer(mjp ~ ola + genero_ES + perc_esfuerzo_soc + perc_talento_soc + perc_merit_soc + perc_padres_ricos + perc_contactos + pref_esfuerzo_soc + pref_talento_soc + pref_padres_ricos + pref_contactos + perc_esfuerzo_esc + perc_talento_esc + perc_merit_esc + (1|id_estudiante), data=data)
+```
+
+::: columns
+::: {.column width="15%"}
+
+![](images/coes.png)
+
+
+
+![](images/edumer.png)
+
+![](images/qr.png)
+
+:::
+
+::: {.column .column-right width="85%"}
+<br>
+
+## **Cambios en las Creencias sobre meritocracia y justicia de mercado en el contexto escolar chileno**
+
+------------------------------------------------------------------------
+
+Juan Carlos Castillo, Kevin Carrasco, Andreas Laffert & María Fernanda Núñez
+
+
+::: {.red2 .medium}
+
+**FONDECYT No. 1210847 "Meritocracia en la escuela: fundamentos morales del mercado educativo y sus implicancias para la formación ciudadana en Chile"**
+
+:::
+
+VIII Seminario Internacional Desigualdad y Movilidad Social en América Latina
+
+:::
+:::
+
+## Contexto y motivación
+
+::: {.columns}
+
+::: {.column width="20%"}
+
+![](images/edumer.png)
+
+:::
+
+::: {.column width="80%"}
+::: {.incremental .highlight-last style="font-size: 100%;"}
+- ANID/FONDECYT N°1210847 2021-2024 - Meritocracia en la escuela: Fundamentos morales del mercado educativo y sus implicancias para la formación ciudadana en Chile.
+
+- Primera etapa:
+  * Estudio cualitativo
+  * Análisis de datos secundarios
+ 
+- Segunda etapa:
+  * Encuesta panel: dos olas estudiantes y apoderados
+  * Experimentos de encuestas
+  
+- Más información: [jc-castillo.com/project/fondecyt-edumer/](jc-castillo.com/project/fondecyt-edumer/)
+
+:::
+:::
+:::
+
+## Antecedentes: **Justificación de desigualdad y Justicia de mercado** 
+
+::: {.incremental .highlight-last style="font-size: 100%;"}
+
+- La justificación de la desigualdad social basada en criterios de mercado ha sido conceptualizada como la adhesión de los individuos a la asignación de bienes y servicios sociales (tales como salud, educación y pensiones) basados en la capacidad de los individuos para pagar [@lane_market_1986]
+
+- ¿Quién merece qué y por qué?
+
+- A pesar de alta desigualdad de ingresos y limitada movilidad social en Chile, existe una creencia de que los individuos son los únicos responsables de sus resultados económicos [@torche_intergenerational_2014; @salgado_inequality_2023]
+
+:::
+
+## Antecedentes: **Meritocracia** 
+
+::: {.incremental .highlight-last style="font-size: 100%;"}
+
+- La meritocracia se concibe como un sistema donde las recompensas se distribuyen según el esfuerzo y el talento individual [@young_rise_1958]
+
+- **Mérito** = esfuerzo + talento [@young_rise_1958]
+
+- Asociado a justificación de desigualdad al legitimar diferencias muchas veces asociadas a oportunidades [@mijs_unfulfillable_2016]
+
+- Hasta ahora la mayor parte de las investigaciones sobre meritocracia se han efectuado en población adulta, dejando de lado el estudio de los factores asociados a estas creencias en edades más tempranas, así como también su formación.
+
+
+:::
+
+## Antecedentes: **Meritocracia**
+
+- propuesta escala de meritocracia de @castillo_multidimensional_2023 
+
+![](images/modelo_con.png)
+
+## Antecedentes: **Meritocracia**
+
+::: {.incremental .highlight-last style="font-size: 100%;"}
+
+- Medición de **meritocracia en la sociedad**: 
+ 1) La *percepción de meritocracia*: en qué medida se percibe que los esfuerzos y habilidades son recompensados en el país [@andersen_we_2021; @castillo_meritocracia_2019; @mijs_paradox_2019].
+ 2) Las *preferencias por la meritocracia*: en qué medida la meritocracia es deseada en la sociedad [@castillo_multidimensional_2023].
+
+- La **percepción de meritocracia escolar**, asociada a que la inteligencia y el esfuerzo son relevantes para obtener buenas calificaciones en la escuela [@resh_sense_2010].
+
+:::
+
+# Datos, variables y métodos {.xlarge}
+
+## Datos
+
+::: {.incremental .highlight-last style="font-size: 100%;"}
+-   La base de datos a utilizar corresponde a la encuesta panel “Educación y Meritocracia” (EDUMER), realizada en Chile durante el 2023 y 2024. 
+- En este estudio se evaluaron estudiantes de sexto básico y primero medio provenientes de 9 escuelas de la región metropolitana. El N total de respuestas completas es de 902 estudiantes en la ola 1 y 632 en la ola 2. 
+- Las variables sobre meritocracia fueron medidas a partir de escalas likert de 4 categorías desde “Muy en desacuerdo” a “Muy de acuerdo”.
+:::
+
+# Variables
+
+##
+
+¿es justo que las personas con mayores ingresos puedan pagar una mejor educación para sus hijos que las personas de bajos ingreso?
+
+
+![](https://educacion-meritocracia.github.io/market-justice-panel-edumer/processing/02-analisis_files/figure-html/alluvial-justed-1.png)
+
+##
+
+¿es justo que las personas con mayores ingresos puedan acceder a un mejor servicio de salud que las personas de bajos ingreso?
+
+
+![](https://educacion-meritocracia.github.io/market-justice-panel-edumer/processing/02-analisis_files/figure-html/alluvial-justh-1.png)
+
+##
+
+¿es justo que las personas con mayores ingresos puedan tener mejores pensiones que las personas de bajos ingreso?
+
+
+![](https://educacion-meritocracia.github.io/market-justice-panel-edumer/processing/02-analisis_files/figure-html/alluvial-justp-1.png)
+
+## 
+
+#### Percepción de meritocracia en la sociedad
+
+```{r}
+meritsoc_1<-data %>% filter(ola==1) %>% 
+      dplyr::select(perc_merit_soc, perc_talento_soc, perc_esfuerzo_soc) %>%  
+  sjPlot::plot_stackfrq(axis.label=rev(c("Percepción: esfuerzo","Percepción: talento","Percepción: merecimiento")))+
+  theme(legend.position = "bottom")+
+  labs(title="Ola 1")
+
+meritsoc_2<-data %>% filter(ola==2) %>% 
+      dplyr::select(perc_merit_soc, perc_talento_soc, perc_esfuerzo_soc) %>%  
+  sjPlot::plot_stackfrq(axis.label=rev(c("Percepción: esfuerzo","Percepción: talento","Percepción: merecimiento")))+
+  theme(legend.position = "bottom")+
+  labs(title="Ola 2")
+```
+
+```{r}
+#| fig-width: 8
+#| fig-height: 5
+#| out-width: '95%'
+
+ggarrange(meritsoc_1, meritsoc_2, common.legend = TRUE, nrow=2, legend = c("bottom", "right"))
+
+```
+
+##
+#### Percepción de no meritocracia en la sociedad
+
+```{r}
+nomeritsoc_1<-data %>% filter(ola==1) %>% 
+      dplyr::select(perc_contactos, perc_padres_ricos) %>%  
+  sjPlot::plot_stackfrq(axis.label=rev(c("Percepción: padres ricos","Percepción: buenos contactos")))+
+  theme(legend.position = "bottom")+
+  labs(title="Ola 1")
+
+nomeritsoc_2<-data %>% filter(ola==2) %>% 
+      dplyr::select(perc_contactos, perc_padres_ricos) %>%  
+  sjPlot::plot_stackfrq(axis.label=rev(c("Percepción: padres ricos","Percepción: buenos contactos")))+
+  theme(legend.position = "bottom")+
+  labs(title="Ola 2")
+```
+
+```{r}
+#| fig-width: 8
+#| fig-height: 5
+#| out-width: '95%'
+
+ggarrange(nomeritsoc_1, nomeritsoc_2, common.legend = TRUE, nrow=2, legend = c("bottom", "right"))
+
+```
+    
+
+## 
+#### Preferencias por la meritocracia en la sociedad
+
+```{r}
+prefmeritsoc_1<-data %>% filter(ola==1) %>% 
+      dplyr::select(pref_talento_soc, pref_esfuerzo_soc) %>%  
+  sjPlot::plot_stackfrq(axis.label=rev(c("Preferencia: esfuerzo","Preferencia: talento")))+
+  theme(legend.position = "bottom")+
+  labs(title="Ola 1")
+
+prefmeritsoc_2<-data %>% filter(ola==2) %>% 
+      dplyr::select(pref_talento_soc, pref_esfuerzo_soc) %>%  
+  sjPlot::plot_stackfrq(axis.label=rev(c("Preferencia: esfuerzo","Preferencia: talento")))+
+  theme(legend.position = "bottom")+
+  labs(title="Ola 2")
+```
+
+```{r}
+#| fig-width: 8
+#| fig-height: 5
+#| out-width: '95%'
+
+ggarrange(prefmeritsoc_1, prefmeritsoc_2, common.legend = TRUE, nrow=2, legend = c("bottom", "right"))
+
+```
+
+
+##
+#### Preferencia de no meritocracia en la sociedad
+
+```{r}
+nomeritsoc_1<-data %>% filter(ola==1) %>% 
+      dplyr::select(pref_contactos, pref_padres_ricos) %>%  
+  sjPlot::plot_stackfrq(axis.label=rev(c("Preferencia: padres ricos","Preferencia: buenos contactos")))+
+  theme(legend.position = "bottom")+
+  labs(title="Ola 1")
+
+nomeritsoc_2<-data %>% filter(ola==2) %>% 
+      dplyr::select(pref_contactos, pref_padres_ricos) %>%  
+  sjPlot::plot_stackfrq(axis.label=rev(c("Preferencia: padres ricos","Preferencia: buenos contactos")))+
+  theme(legend.position = "bottom")+
+  labs(title="Ola 2")
+```
+
+```{r}
+#| fig-width: 8
+#| fig-height: 5
+#| out-width: '95%'
+
+ggarrange(nomeritsoc_1, nomeritsoc_2, common.legend = TRUE, nrow=2, legend = c("bottom", "right"))
+
+```
+
+
+## 
+#### Percepción de meritocracia en la **escuela**
+
+```{r}
+meritesc_1<-data %>% filter(ola==1) %>% 
+      dplyr::select(perc_merit_esc, perc_talento_esc, perc_esfuerzo_esc) %>%  
+  sjPlot::plot_stackfrq(axis.label=rev(c("Percepción: esfuerzo","Percepción: talento","Percepción: merecimiento")))+
+  theme(legend.position = "bottom")+
+  labs(title="Ola 1")
+
+meritesc_2<-data %>% filter(ola==2) %>% 
+      dplyr::select(perc_merit_esc, perc_talento_esc, perc_esfuerzo_esc) %>%  
+  sjPlot::plot_stackfrq(axis.label=rev(c("Percepción: esfuerzo","Percepción: talento","Percepción: merecimiento")))+
+  theme(legend.position = "bottom")+
+  labs(title="Ola 2")
+```
+
+```{r}
+#| fig-width: 8
+#| fig-height: 5
+#| out-width: '95%'
+
+ggarrange(meritesc_1, meritesc_2, common.legend = TRUE, nrow=2, legend = c("bottom", "right"))
+
+```
+
+# Resultados {.xlarge }
+
+##
+
+- Modelo múltinivel anidado en estudiantes (627 estudiantes)
+
+- ICC: 0.454
+
+```{r}
+sjPlot::plot_model(reg,
+                  title = "", #quitar titulo
+                  show.values = TRUE, #mostrar valor de efectos
+                  dot.size = 1.3, #tamaño circulos
+                  line.size = 1, #tamaño CI
+                  value.size = 3.5, #tamaño valor efectoss
+                  spacing = .7, #espacio entre efectos
+                  vline.color = "red", # linea roja en punto neutro (1)
+                  axis.labels = rev(c("Ola 2 (ref: ola 1)",
+                                      "Mujer (ref: Hombre)",
+                                      "Percepción: esfuerzo", 
+                                      "Percepción: talento", 
+                                      "Percepción: merito",
+                                      "Percepción: padres ricos", 
+                                      "Percepción: contactos",
+                                      "Preferencia: esfuerzo",
+                                      "Preferencia: talento",
+                                      "Preferencia: padres ricos",
+                                      "Preferencia: contactos",
+                                      "Percepción: esfuerzo 
+(escuela)",
+                                      "Percepción: talento 
+(escuela)",
+                                      "Percepción: merito 
+(escuela)"))
+                    )+
+theme_bw(base_size=14)
+```
+
+
+
+# Discusión y conclusiones {data-background-color="#5f5758"}
+
+
+## Discusión y conclusiones {data-background-color="#5f5758"}
+
+::: { .incremental .highlight-last2 style="font-size: 100%;"}
+
+- Solo la percepción de merecimiento en la sociedad influye positivamente en las preferencias por justicia de mercado
+
+- Solo la percepción de talento en la escuela influye positivamente en las preferencias por justicia de mercado
+
+- Preferencia por asignar recompensas por talento, por tener padres ricos y tener buenos contactos se asocia positivamente con las preferencias por justicia de mercado, sin embargo, la preferencia por asignar recompensas según esfuerzo se asocia negativamente.
+
+:::
+
+## Discusión y conclusiones {data-background-color="#5f5758"}
+
+::: { .incremental .highlight-last2 style="font-size: 100%;"}
+
+- ¿Por qué las preferencias no meritocráticas (padres ricos y buenos contactos) influyen en el mismo sentido que la preferencia por talento?
+
+- ¿Por qué la preferencia por esfuerzo influye negativamente a diferencia de la preferencia por talento?
+
+:::
+
+
+# Gracias por su atención! 
+
+-   **Github del proyecto:** <https://github.com/educacion-meritocracia>
+
+## Referencias
