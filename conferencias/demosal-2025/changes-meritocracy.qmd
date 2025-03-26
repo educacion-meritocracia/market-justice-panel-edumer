@@ -178,33 +178,6 @@ VIII Seminario Internacional Desigualdad y Movilidad Social en América Latina
 :::
 :::
 
-## Contexto y motivación
-
-::: {.columns}
-
-::: {.column width="20%"}
-
-![](images/edumer.png)
-
-:::
-
-::: {.column width="80%"}
-::: {.incremental .highlight-last style="font-size: 100%;"}
-- ANID/FONDECYT N°1210847 2021-2024 - Meritocracia en la escuela: Fundamentos morales del mercado educativo y sus implicancias para la formación ciudadana en Chile.
-
-- Primera etapa:
-  * Estudio cualitativo
-  * Análisis de datos secundarios
- 
-- Segunda etapa:
-  * Encuesta panel: dos olas estudiantes y apoderados
-  * Experimentos de encuestas
-  
-- Más información: [jc-castillo.com/project/fondecyt-edumer/](jc-castillo.com/project/fondecyt-edumer/)
-
-:::
-:::
-:::
 
 ## Antecedentes: **Justificación de desigualdad y Justicia de mercado** 
 
@@ -473,10 +446,9 @@ plot_jp
 
 ```{r}
 meritsoc_1<-data %>% filter(ola==1) %>% 
-      dplyr::select(perc_merit_soc, perc_talento_soc, perc_esfuerzo_soc) %>%  
-  sjPlot::plot_stackfrq(axis.label=rev(c("Percepción: esfuerzo","Percepción: talento","Percepción: merecimiento")))+
-  theme(legend.position = "bottom")+
-  labs(title="Ola 1")
+      dplyr::select(perc_talento_soc, perc_esfuerzo_soc) %>%  
+  sjPlot::plot_stackfrq(axis.label=rev(c("Percepción: esfuerzo","Percepción: talento")))+
+  theme(legend.position = "bottom")
 ```
 
 ```{r}
@@ -496,8 +468,7 @@ meritsoc_1
 nomeritsoc_1<-data %>% filter(ola==1) %>% 
       dplyr::select(perc_contactos, perc_padres_ricos) %>%  
   sjPlot::plot_stackfrq(axis.label=rev(c("Percepción: padres ricos","Percepción: buenos contactos")))+
-  theme(legend.position = "bottom")+
-  labs(title="Ola 1")
+  theme(legend.position = "bottom")
 
 ```
 
@@ -519,8 +490,7 @@ nomeritsoc_1
 prefmeritsoc_1<-data %>% filter(ola==1) %>% 
       dplyr::select(pref_talento_soc, pref_esfuerzo_soc) %>%  
   sjPlot::plot_stackfrq(axis.label=rev(c("Preferencia: esfuerzo","Preferencia: talento")))+
-  theme(legend.position = "bottom")+
-  labs(title="Ola 1")
+  theme(legend.position = "bottom")
 ```
 
 ```{r}
@@ -541,8 +511,7 @@ prefmeritsoc_1
 nomeritsoc_1<-data %>% filter(ola==1) %>% 
       dplyr::select(pref_contactos, pref_padres_ricos) %>%  
   sjPlot::plot_stackfrq(axis.label=rev(c("Preferencia: padres ricos","Preferencia: buenos contactos")))+
-  theme(legend.position = "bottom")+
-  labs(title="Ola 1")
+  theme(legend.position = "bottom")
 ```
 
 ```{r}
@@ -562,8 +531,7 @@ nomeritsoc_1
 meritesc_1<-data %>% filter(ola==1) %>% 
       dplyr::select(perc_talento_esc, perc_esfuerzo_esc) %>%  
   sjPlot::plot_stackfrq(axis.label=rev(c("Percepción: esfuerzo","Percepción: talento")))+
-  theme(legend.position = "bottom")+
-  labs(title="Ola 1")
+  theme(legend.position = "bottom")
 ```
 
 ```{r}
