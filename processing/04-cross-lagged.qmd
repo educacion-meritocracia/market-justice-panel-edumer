@@ -1,0 +1,494 @@
+---
+title: "Cross-lagged analysis"
+subtitle: "Changes in Beliefs about Meritocracy and Preferences for Market Justice in the Chilean School Context"
+author: EDUMER Team
+date: today
+lang: en
+fontsize: 12pt
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+    toc: true
+    toc-location: right
+    toc-depth: 2
+    toc-expand: 2
+    toc-title: Contents
+    number-sections: true
+    number-depth: 3
+    theme:
+      - cosmo
+      - "edumer.scss"
+    code-link: true
+    title-block-banner: true
+  pdf:
+    number-sections: true
+    number-depth: 3
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r cargar-paquetes-2,echo=FALSE,warning=FALSE,message=FALSE}
+rm(list=ls())
+options(scipen = 999)
+library(pacman)
+p_load(tidyverse,
+       knitr,
+       bookdown,
+       car,
+       sjmisc,
+       sjPlot,
+       sjlabelled,
+       psych,
+       kableExtra,
+       gridExtra,
+       lubridate,
+       viridis,
+       statar,
+       readxl,
+       tinytex,
+       ggrepel,
+       ggalluvial,
+       survey, 
+       httr,
+       # devtools,
+       readr, 
+       ggplot2, 
+       labelled,
+       shadowtext,
+       lme4,
+       lavaan,
+       data.table,
+       here,
+       remotes)
+
+# devtools::install_github("DiogoFerrari/occupar",dependencies=F)
+```
+
+# Data
+
+```{r}
+#| label: data
+
+load(file = here("output/data/db_proc.RData"))
+
+glimpse(db_proc)
+```
+
+# Analysis
+
+
+## Descriptives
+
+```{r}
+print(summarytools::dfSummary(db_proc), method="render")
+```
+
+```{r}
+db_1 <- subset(db_proc, wave == 1)
+db_2 <- subset(db_proc, wave == 2)
+
+model_cfa <- '
+  perc_merit = ~ perc_effort + perc_talent
+  perc_nmerit = ~ perc_rich_parents + perc_contact
+  pref_merit = ~ pref_effort + pref_talent
+  pref_nmerit = ~ pref_rich_parents + pref_contact
+  '
+
+
+m1_cfa <- cfa(model = model_cfa, 
+              data = db_1,
+              estimator = "DWLS",
+              ordered = T,
+              std.lv = F) 
+
+m2_cfa <- cfa(model = model_cfa, 
+              data = db_2, 
+              estimator = "DWLS",
+              ordered = T,
+              std.lv = F)
+
+
+```
+
+```{r}
+scores_1 <- lavPredict(m1_cfa)
+
+db_1$perc_merit_score  <- scores_1[, "perc_merit"]
+db_1$perc_nmerit_score <- scores_1[, "perc_nmerit"]
+db_1$pref_merit_score  <- scores_1[, "pref_merit"]
+db_1$pref_nmerit_score <- scores_1[, "pref_nmerit"]
+
+scores_2 <- lavPredict(m2_cfa)
+
+db_2$perc_merit_score  <- scores_2[, "perc_merit"]
+db_2$perc_nmerit_score <- scores_2[, "perc_nmerit"]
+db_2$pref_merit_score  <- scores_2[, "pref_merit"]
+db_2$pref_nmerit_score <- scores_2[, "pref_nmerit"]
+
+db_proc <- rbind(db_1, db_2)
+```
+
+## Long to wide
+
+```{r}
+data <- db_proc %>%
+  tidyr::pivot_wider(
+    id_cols = id_student,
+    names_from = wave,
+    values_from = c(mjp, perc_merit_score, perc_nmerit_score, pref_merit_score, pref_nmerit_score),
+    names_glue = "{.value}_wave{wave}"
+  )
+```
+
+```{r}
+data <- as.data.frame(data)
+```
+
+# Descriptivos
+```{r}
+summarytools::descr(data[-1], order = "p", stats="common",
+                    transpose = T, style = "rmarkdown", headings=FALSE)
+```
+# MJP y Percepción de meritocracia
+
+```{r}
+clpm_model <- '
+  # Variables latentes
+  x1 =~ 1*perc_merit_score_wave1
+  x2 =~ 1*perc_merit_score_wave2
+  y1 =~ 1*mjp_wave1
+  y2 =~ 1*mjp_wave2
+
+  # Fijar las varianzas residuales de los indicadores en 0 (necesario si se usan variables latentes con una sola variable)
+  perc_merit_score_wave1 ~~ 0*perc_merit_score_wave1
+  perc_merit_score_wave2 ~~ 0*perc_merit_score_wave2
+  mjp_wave1 ~~ 0*mjp_wave1
+  mjp_wave2 ~~ 0*mjp_wave2
+
+  # Efectos autorregresivos
+  x2 ~ x1
+  y2 ~ y1
+
+  # Efectos cross-lagged
+  x2 ~ y1
+  y2 ~ x1
+
+  # Covarianzas entre variables exógenas en t1
+  x1 ~~ y1
+
+  # Covarianzas entre residuos en t2
+  x2 ~~ y2
+'
+
+```
+
+
+# Estimación
+
+- Estimator = "MLR" es: estimación de maximum likelihood con errores estándar robustos (Huber-White) y estadísticos de prueba escalados (equivalentes a los estadísticos de prueba de Yuan-Betler) --> En el fondo replica lo que hace Mplus
+
+- Missing = "FIML" es: Si los datos son MCAR (missing completely at random) o MAR (missing at random), podemos estimar caso a caso usando **full information maximum likelihood** para lidiar con los casos perdidos
+
+```{r}
+fit_clpm <- lavaan(clpm_model,
+                   data = data,
+                   estimator = "MLR", missing = "FIML",
+                   meanstructure = TRUE, int.ov.free = TRUE,
+                   std.lv = TRUE)
+```
+
+
+```{r}
+summary(fit_clpm, fit.measures = TRUE, ci = TRUE, standardized = TRUE)
+
+```
+
+
+
+| Medida              | Valor                 | Interpretación                                                   |
+| ------------------- | --------------------- | ---------------------------------------------------------------- |
+| **CFI / TLI**       | 0.000 / -2.437        | Valores pésimos (deberían ser > .90 o .95).                      |
+| **RMSEA (robusto)** | 0.433 \[0.399–0.467]  | Extremadamente alto. Valores aceptables son < .08 (ideal < .05). |
+| **SRMR**            | 0.626                 | Muy alto. Debería ser < .08.                                     |
+
+- x2 ~ x1 (predicción de meritocracia futura)
+
+- y2 ~ y1 (predicción de mjp futura):
+
+x1 → x2: β = 0.224, p < .001 ✅
+
+↪ Efecto significativo y positivo: mayor percepción meritocrática en t1 se asocia a mayor percepción en t2.
+
+y1 → y2: β = 0.437, p < .001 ✅
+
+↪ Efecto autoregresivo fuerte: quienes apoyaban mjp en t1 tienden a mantener esa posición en t2.
+
+y1 → x2: β = 0.129, p < .001 ✅
+↪ mjp en t1 influye en percepción meritocracia en t2.
+
+x1 → y2: β = 0.036, ns ❌
+
+↪ No hay efecto cruzado desde meritocracia a mjp
+
+
+Conclusión: Efecto significativo autoregresivo dentro de cada dimensión. Efecto significativo de mjp sobre meritocracia, pero no al revés.
+
+
+
+# MJP y Percepción de no meritocracia
+
+```{r}
+clpm_model <- '
+  # Variables latentes
+  x1 =~ 1*perc_nmerit_score_wave1
+  x2 =~ 1*perc_nmerit_score_wave2
+  y1 =~ 1*mjp_wave1
+  y2 =~ 1*mjp_wave2
+
+  # Fijar las varianzas residuales de los indicadores en 0 (necesario si se usan variables latentes con una sola variable)
+  perc_nmerit_score_wave1 ~~ 0*perc_nmerit_score_wave1
+  perc_nmerit_score_wave2 ~~ 0*perc_nmerit_score_wave2
+  mjp_wave1 ~~ 0*mjp_wave1
+  mjp_wave2 ~~ 0*mjp_wave2
+
+  # Efectos autorregresivos
+  x2 ~ x1
+  y2 ~ y1
+
+  # Efectos cross-lagged
+  x2 ~ y1
+  y2 ~ x1
+
+  # Covarianzas entre variables exógenas en t1
+  x1 ~~ y1
+
+  # Covarianzas entre residuos en t2
+  x2 ~~ y2
+'
+
+```
+
+
+# Estimación
+
+- Estimator = "MLR" es: estimación de maximum likelihood con errores estándar robustos (Huber-White) y estadísticos de prueba escalados (equivalentes a los estadísticos de prueba de Yuan-Betler) --> En el fondo replica lo que hace Mplus
+
+- Missing = "FIML" es: Si los datos son MCAR (missing completely at random) o MAR (missing at random), podemos estimar caso a caso usando **full information maximum likelihood** para lidiar con los casos perdidos
+
+```{r}
+fit_clpm <- lavaan(clpm_model,
+                   data = data,
+                   estimator = "MLR", missing = "FIML",
+                   meanstructure = TRUE, int.ov.free = TRUE,
+                   std.lv = TRUE)
+```
+
+
+```{r}
+summary(fit_clpm, fit.measures = TRUE, ci = TRUE, standardized = TRUE)
+
+```
+
+
+
+| Medida              | Valor                 | Interpretación                                                   |
+| ------------------- | --------------------- | ---------------------------------------------------------------- |
+| **CFI / TLI**       | 0.000 / -3.104        | Valores pésimos (deberían ser > .90 o .95).                      |
+| **RMSEA (robusto)** | 0.552 \[0.518–0.587]  | Extremadamente alto. Valores aceptables son < .08 (ideal < .05). |
+| **SRMR**            | 0.968                 | Muy alto. Debería ser < .08.                                     |
+
+- x2 ~ x1 (predicción de meritocracia futura)
+
+- y2 ~ y1 (predicción de mjp futura):
+
+x1 → x2: β = 0.563, p < .001 ✅
+
+↪ Efecto significativo y positivo: mayor percepción no meritocrática en t1 se asocia a mayor percepción en t2.
+
+y1 → y2: β = 0.445, p < .001 ✅
+
+↪ Efecto autoregresivo fuerte: quienes apoyaban mjp en t1 tienden a mantener esa posición en t2.
+
+y1 → x2: β = -0.108, p < .001 ✅
+↪ mjp en t1 influye negativamente en percepción no meritocracia en t2.
+
+x1 → y2: β = -0.115, p < .001 ✅
+
+↪ Percepción no meritocrática en T1 influye negativamente en mjp en t2
+
+
+Conclusión: Efecto significativo autoregresivo dentro de cada dimensión. Efecto significativo cruzado.
+
+
+# MJP y Percepción de meritocracia
+
+```{r}
+clpm_model <- '
+  # Variables latentes
+  x1 =~ 1*pref_merit_score_wave1
+  x2 =~ 1*pref_merit_score_wave2
+  y1 =~ 1*mjp_wave1
+  y2 =~ 1*mjp_wave2
+
+  # Fijar las varianzas residuales de los indicadores en 0 (necesario si se usan variables latentes con una sola variable)
+  pref_merit_score_wave1 ~~ 0*pref_merit_score_wave1
+  pref_merit_score_wave2 ~~ 0*pref_merit_score_wave2
+  mjp_wave1 ~~ 0*mjp_wave1
+  mjp_wave2 ~~ 0*mjp_wave2
+
+  # Efectos autorregresivos
+  x2 ~ x1
+  y2 ~ y1
+
+  # Efectos cross-lagged
+  x2 ~ y1
+  y2 ~ x1
+
+  # Covarianzas entre variables exógenas en t1
+  x1 ~~ y1
+
+  # Covarianzas entre residuos en t2
+  x2 ~~ y2
+'
+
+```
+
+
+# Estimación
+
+- Estimator = "MLR" es: estimación de maximum likelihood con errores estándar robustos (Huber-White) y estadísticos de prueba escalados (equivalentes a los estadísticos de prueba de Yuan-Betler) --> En el fondo replica lo que hace Mplus
+
+- Missing = "FIML" es: Si los datos son MCAR (missing completely at random) o MAR (missing at random), podemos estimar caso a caso usando **full information maximum likelihood** para lidiar con los casos perdidos
+
+```{r}
+fit_clpm <- lavaan(clpm_model,
+                   data = data,
+                   estimator = "MLR", missing = "FIML",
+                   meanstructure = TRUE, int.ov.free = TRUE,
+                   std.lv = TRUE)
+```
+
+
+```{r}
+summary(fit_clpm, fit.measures = TRUE, ci = TRUE, standardized = TRUE)
+
+```
+
+
+
+| Medida              | Valor                 | Interpretación                                                   |
+| ------------------- | --------------------- | ---------------------------------------------------------------- |
+| **CFI / TLI**       | 0.000 / -6.573        | Valores pésimos (deberían ser > .90 o .95).                      |
+| **RMSEA (robusto)** | 0.649 \[0.615–0.683]  | Extremadamente alto. Valores aceptables son < .08 (ideal < .05). |
+| **SRMR**            | 1.628                 | Muy alto. Debería ser < .08.                                     |
+
+- x2 ~ x1 (predicción de preferencia meritocracia futura)
+
+- y2 ~ y1 (predicción de mjp futura):
+
+x1 → x2: β = 0.413, p < .001 ✅
+
+↪ Efecto significativo y positivo: mayor preferencia meritocrática en t1 se asocia a mayor preferencia en t2.
+
+y1 → y2: β = 0.451, p < .001 ✅
+
+↪ Efecto autoregresivo fuerte: quienes apoyaban mjp en t1 tienden a mantener esa posición en t2.
+
+y1 → x2: β = -0.020, ns ❌
+↪ mjp en t1 no influye en preferencia meritocracia en t2.
+
+x1 → y2: β = -0.118, ns ❌  (si significativo como p<0.1 (0.076))
+
+↪ No hay efecto cruzado desde meritocracia a mjp
+
+
+Conclusión: Efecto significativo autoregresivo dentro de cada dimensión. No hay efecto significativo cruzado.
+
+
+
+# MJP y Percepción de no meritocracia
+
+```{r}
+clpm_model <- '
+  # Variables latentes
+  x1 =~ 1*pref_nmerit_score_wave1
+  x2 =~ 1*pref_nmerit_score_wave2
+  y1 =~ 1*mjp_wave1
+  y2 =~ 1*mjp_wave2
+
+  # Fijar las varianzas residuales de los indicadores en 0 (necesario si se usan variables latentes con una sola variable)
+  pref_nmerit_score_wave1 ~~ 0*pref_nmerit_score_wave1
+  pref_nmerit_score_wave2 ~~ 0*pref_nmerit_score_wave2
+  mjp_wave1 ~~ 0*mjp_wave1
+  mjp_wave2 ~~ 0*mjp_wave2
+
+  # Efectos autorregresivos
+  x2 ~ x1
+  y2 ~ y1
+
+  # Efectos cross-lagged
+  x2 ~ y1
+  y2 ~ x1
+
+  # Covarianzas entre variables exógenas en t1
+  x1 ~~ y1
+
+  # Covarianzas entre residuos en t2
+  x2 ~~ y2
+'
+
+```
+
+
+# Estimación
+
+- Estimator = "MLR" es: estimación de maximum likelihood con errores estándar robustos (Huber-White) y estadísticos de prueba escalados (equivalentes a los estadísticos de prueba de Yuan-Betler) --> En el fondo replica lo que hace Mplus
+
+- Missing = "FIML" es: Si los datos son MCAR (missing completely at random) o MAR (missing at random), podemos estimar caso a caso usando **full information maximum likelihood** para lidiar con los casos perdidos
+
+```{r}
+fit_clpm <- lavaan(clpm_model,
+                   data = data,
+                   estimator = "MLR", missing = "FIML",
+                   meanstructure = TRUE, int.ov.free = TRUE,
+                   std.lv = TRUE)
+```
+
+
+```{r}
+summary(fit_clpm, fit.measures = TRUE, ci = TRUE, standardized = TRUE)
+
+```
+
+
+
+| Medida              | Valor                 | Interpretación                                                   |
+| ------------------- | --------------------- | ---------------------------------------------------------------- |
+| **CFI / TLI**       | 0.000 / -1.829        | Valores pésimos (deberían ser > .90 o .95).                      |
+| **RMSEA (robusto)** | 0.499 \[0.465–0.534]  | Extremadamente alto. Valores aceptables son < .08 (ideal < .05). |
+| **SRMR**            | 0.996                 | Muy alto. Debería ser < .08.                                     |
+
+- x2 ~ x1 (predicción de preferencia meritocracia futura)
+
+- y2 ~ y1 (predicción de mjp futura):
+
+x1 → x2: β = 0.286, p < .001 ✅
+
+↪ Efecto significativo y positivo: mayor preferencia no meritocrática en t1 se asocia a mayor preferencia en t2.
+
+y1 → y2: β = 0.442, p < .001 ✅
+
+↪ Efecto autoregresivo fuerte: quienes apoyaban mjp en t1 tienden a mantener esa posición en t2.
+
+y1 → x2: β = 0.101, p < .001 ✅
+↪ mjp en t1 influye en preferencia no meritocracia en t2.
+
+x1 → y2: β = 0.005, ns ❌ 
+
+↪ Preferencia no meritocrática en T1 no influye negativamente en mjp en t2
+
+
+Conclusión: Efecto significativo autoregresivo dentro de cada dimensión. Efecto significativo cruzado.
+
+

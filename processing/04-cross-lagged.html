@@ -1,0 +1,2962 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="EDUMER Team">
+<meta name="dcterms.date" content="2025-06-18">
+<title>Cross-lagged analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="04-cross-lagged_files/libs/clipboard/clipboard.min.js"></script>
+<script src="04-cross-lagged_files/libs/quarto-html/quarto.js"></script>
+<script src="04-cross-lagged_files/libs/quarto-html/popper.min.js"></script>
+<script src="04-cross-lagged_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="04-cross-lagged_files/libs/quarto-html/anchor.min.js"></script>
+<link href="04-cross-lagged_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="04-cross-lagged_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="04-cross-lagged_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="04-cross-lagged_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="04-cross-lagged_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+</head>
+<body>
+
+<header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Cross-lagged analysis</h1>
+            <p class="subtitle lead">Changes in Beliefs about Meritocracy and Preferences for Market Justice in the Chilean School Context</p>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>EDUMER Team </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">June 18, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2"><h2 id="toc-title">Contents</h2>
+   
+  <ul class="collapse">
+<li><a href="#data" id="toc-data" class="nav-link active" data-scroll-target="#data"><span class="header-section-number">1</span> Data</a></li>
+  <li>
+<a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis"><span class="header-section-number">2</span> Analysis</a>
+  <ul class="collapse">
+<li><a href="#descriptives" id="toc-descriptives" class="nav-link" data-scroll-target="#descriptives"><span class="header-section-number">2.1</span> Descriptives</a></li>
+  <li><a href="#long-to-wide" id="toc-long-to-wide" class="nav-link" data-scroll-target="#long-to-wide"><span class="header-section-number">2.2</span> Long to wide</a></li>
+  </ul>
+</li>
+  <li><a href="#descriptivos" id="toc-descriptivos" class="nav-link" data-scroll-target="#descriptivos"><span class="header-section-number">3</span> Descriptivos</a></li>
+  <li><a href="#mjp-y-percepci%C3%B3n-de-meritocracia" id="toc-mjp-y-percepción-de-meritocracia" class="nav-link" data-scroll-target="#mjp-y-percepci%C3%B3n-de-meritocracia"><span class="header-section-number">4</span> MJP y Percepción de meritocracia</a></li>
+  <li><a href="#estimaci%C3%B3n" id="toc-estimación" class="nav-link" data-scroll-target="#estimaci%C3%B3n"><span class="header-section-number">5</span> Estimación</a></li>
+  <li><a href="#mjp-y-percepci%C3%B3n-de-no-meritocracia" id="toc-mjp-y-percepción-de-no-meritocracia" class="nav-link" data-scroll-target="#mjp-y-percepci%C3%B3n-de-no-meritocracia"><span class="header-section-number">6</span> MJP y Percepción de no meritocracia</a></li>
+  <li><a href="#estimaci%C3%B3n-1" id="toc-estimación-1" class="nav-link" data-scroll-target="#estimaci%C3%B3n-1"><span class="header-section-number">7</span> Estimación</a></li>
+  <li><a href="#mjp-y-percepci%C3%B3n-de-meritocracia-1" id="toc-mjp-y-percepción-de-meritocracia-1" class="nav-link" data-scroll-target="#mjp-y-percepci%C3%B3n-de-meritocracia-1"><span class="header-section-number">8</span> MJP y Percepción de meritocracia</a></li>
+  <li><a href="#estimaci%C3%B3n-2" id="toc-estimación-2" class="nav-link" data-scroll-target="#estimaci%C3%B3n-2"><span class="header-section-number">9</span> Estimación</a></li>
+  <li><a href="#mjp-y-percepci%C3%B3n-de-no-meritocracia-1" id="toc-mjp-y-percepción-de-no-meritocracia-1" class="nav-link" data-scroll-target="#mjp-y-percepci%C3%B3n-de-no-meritocracia-1"><span class="header-section-number">10</span> MJP y Percepción de no meritocracia</a></li>
+  <li><a href="#estimaci%C3%B3n-3" id="toc-estimación-3" class="nav-link" data-scroll-target="#estimaci%C3%B3n-3"><span class="header-section-number">11</span> Estimación</a></li>
+  </ul><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="04-cross-lagged.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</div>
+<main class="content quarto-banner-title-block" id="quarto-document-content"><section id="data" class="level1" data-number="1"><h1 data-number="1">
+<span class="header-section-number">1</span> Data</h1>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span>file <span class="op">=</span> <span class="fu">here</span><span class="op">(</span><span class="st">"output/data/db_proc.RData"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">glimpse</span><span class="op">(</span><span class="va">db_proc</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>Rows: 1,156
+Columns: 23
+$ id_student        &lt;dbl&gt; 191617388, 191617388, 191617613, 191617613, 19164733…
+$ wave              &lt;fct&gt; 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2…
+$ curse_level       &lt;fct&gt; 6to, 7mo, 1ro, 2do, 6to, 7mo, 6to, 7mo, 6to, 7mo, 6t…
+$ perc_effort       &lt;dbl&gt; 3, 2, 3, 3, 4, 2, 3, 3, 2, 2, 3, 3, 3, 4, 4, 2, 3, 2…
+$ perc_talent       &lt;dbl&gt; 3, 3, 3, 3, 4, 2, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3…
+$ perc_rich_parents &lt;dbl&gt; 2, 4, 4, 3, 2, 4, 4, 4, 4, 3, 4, 4, 4, 3, 2, 2, 2, 4…
+$ perc_contact      &lt;dbl&gt; 3, 4, 4, 3, 3, 4, 4, 4, 3, 2, 4, 3, 3, 3, 3, 2, 4, 3…
+$ pref_effort       &lt;dbl&gt; 4, 3, 4, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 4, 3…
+$ pref_talent       &lt;dbl&gt; 3, 2, 3, 3, 2, 2, 2, 4, 3, 3, 4, 3, 3, 4, 2, 2, 2, 2…
+$ pref_rich_parents &lt;dbl&gt; 2, 2, 4, 2, 2, 2, 2, 2, 3, 4, 2, 2, 3, 2, 2, 2, 2, 2…
+$ pref_contact      &lt;dbl&gt; 3, 2, 4, 2, 2, 2, 3, 3, 3, 3, 2, 2, 3, 2, 3, 3, 3, 4…
+$ school_effort     &lt;dbl&gt; 4, 3, 3, 3, 4, 3, 3, 3, 4, 4, 3, 3, 3, 4, 3, 3, 3, 4…
+$ school_talent     &lt;dbl&gt; 4, 3, 3, 3, 4, 3, 3, 3, 4, 3, 4, 4, 3, 3, 2, 2, 4, 4…
+$ just_educ         &lt;dbl&gt; 3, 2, 3, 3, 2, 1, 1, 2, 4, 1, 2, 3, 3, 4, 2, 2, 3, 2…
+$ just_health       &lt;dbl&gt; 3, 2, 2, 2, 2, 1, 1, 1, 4, 1, 2, 3, 2, 1, 1, 1, 1, 1…
+$ just_pension      &lt;dbl&gt; 2, 2, 2, 2, 4, 1, 1, 1, 4, 1, 1, 2, 3, 1, 3, 2, 1, 1…
+$ gender            &lt;fct&gt; Male, Male, Female, Female, Male, Other, Female, Fem…
+$ age               &lt;dbl&gt; 13, 13, 17, 17, 13, 13, 12, 12, 13, 13, 13, 13, 13, …
+$ books             &lt;fct&gt; Less than 25, Less than 25, Less than 25, Less than …
+$ cohort_level      &lt;fct&gt; Primary, Primary, Secondary, Secondary, Primary, Pri…
+$ mjp               &lt;dbl&gt; 2.666667, 2.000000, 2.333333, 2.333333, 2.666667, 1.…
+$ age2              &lt;dbl&gt; 169, 169, 289, 289, 169, 169, 144, 144, 169, 169, 16…
+$ parental_educ     &lt;fct&gt; Technical higher education, Technical higher educati…</code></pre>
+</div>
+</div>
+</section><section id="analysis" class="level1" data-number="2"><h1 data-number="2">
+<span class="header-section-number">2</span> Analysis</h1>
+<section id="descriptives" class="level2" data-number="2.1"><h2 data-number="2.1" class="anchored" data-anchor-id="descriptives">
+<span class="header-section-number">2.1</span> Descriptives</h2>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu">summarytools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/summarytools/man/dfSummary.html">dfSummary</a></span><span class="op">(</span><span class="va">db_proc</span><span class="op">)</span>, method<span class="op">=</span><span class="st">"render"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output-display">
+<div class="container st-container">
+<h3 class="anchored">Data Frame Summary</h3>
+<h4 class="anchored">db_proc</h4>
+<strong>Dimensions</strong>: 1156 x 23
+  <br><strong>Duplicates</strong>: 0
+<br><table class="table table-striped table-bordered st-table st-table-striped st-table-bordered st-multiline caption-top table-sm small" data-quarto-postprocess="true">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead><tr class="header">
+<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>No</strong></th>
+<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>Variable</strong></th>
+<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>Label</strong></th>
+<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>Stats / Values</strong></th>
+<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>Freqs (% of Valid)</strong></th>
+<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>Graph</strong></th>
+<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>Valid</strong></th>
+<th class="st-protect-top-border" style="text-align: center;" data-quarto-table-cell-role="th"><strong>Missing</strong></th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: left;">id_student [numeric]</td>
+<td style="text-align: left;">Unique student identifier</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 196759229 (4077897)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">191617388 ≤ 194639337 ≤ 201684618</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 7616541 (0)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle;">578 distinct values</td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAJgAAABuBAMAAAApJ8cWAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCgkNNxibAAAAe0lEQVRo3u3WwQmAMAxA0aygGxg3sPvvJpqCEaSFGBDq/4dAS3mHHkpFKNIUTc8WWzxg8+1Ap7UcNbDiD4BdmN2y5mA2NzAwMDAwMDAwMLDvsPrDzcHqCgwMDGxEzL+XrzG/BQYGNhBmD0US5iYYGBgYGBjYzzFNSSjSDmOEOv73yHisAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">2</td>
+<td style="text-align: left;">wave [factor]</td>
+<td style="text-align: left;">Wave</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. 1</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. 2</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">578</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">50.0%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">578</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">50.0%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFcAAAA3BAMAAACLEssFAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCgqUPkkhAAAAN0lEQVRIx2NgGJpAiRigAFWsbEwEGFU8qnhUMc0Uk5RhBYkBAjRXPFrIjCoeVTyEFJOUYYcaAADDMkUfIsUAkAAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">3</td>
+<td style="text-align: left;">curse_level [factor]</td>
+<td style="text-align: left;">Student level</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. 6to</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. 7mo</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">3. 1ro</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">4. 2do</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">185</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">16.0%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">357</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">30.9%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">126</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">10.9%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">488</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">42.2%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEwAAABmBAMAAACTjmpIAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCgqUPkkhAAAAaElEQVRIx+3VsQ3AIAxEUVbwCJANyP670SQEEQuuScDW/fo1IB2EsHepKcq7ix3nExmZSwZuQSZ9wpJe7Fh7Uu3QZGTmGbiFJTsF2eiZUS6EjMwtA7cgk/78dmvjh+suk5GZZ+AWdq0A3NyOJfXR3z4AAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: left;">perc_effort [numeric]</td>
+<td style="text-align: left;">In Chile, people are rewarded for their efforts</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.7 (0.8)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.3)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">80</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">6.9%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">328</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">28.4%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">573</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">49.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">175</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">15.1%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFcAAABmBAMAAABMwBBXAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCgqUPkkhAAAAaUlEQVRYw+3USwqAMAxF0S7B7MDEJbj/vfnBgZRaE6zQwr3jMwq8pDRmdqRSb7rwsu6BweCWOLRB8fQ/tlL6gM9r5IHB4C84tEHx1Bk2T3PtdHlgMDiCQxvs72/oK75dAwwGt8GhDY7WBjvIsfZ7WzW3AAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: left;">perc_talent [numeric]</td>
+<td style="text-align: left;">In Chile, people are rewarded for their intelligence and ability</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.8 (0.8)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.3)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">59</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">5.1%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">267</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">23.1%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">626</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">54.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">204</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">17.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAF4AAABmBAMAAACw1TudAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCgvjOXm3AAAAZUlEQVRYw+3UsQ3AIAwFUVZgBJwNYP/dQkFDJIRdEGzprn6Vpe+U4ie9rGn4p7WKx+N9eOt+VfZHL9/K9j5zeDz+mrfuN2tz6kXb6p6LKh6PP+6t+3X9f8reT/fB4/FXvXW/kXsBzWnE8K1+UOsAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">6</td>
+<td style="text-align: left;">perc_rich_parents [numeric]</td>
+<td style="text-align: left;">In Chile, those with wealthy parents fare much better in life</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 3 (1)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 2 (0.3)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">94</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">8.1%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">237</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">20.5%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">356</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">30.8%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">469</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">40.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEkAAABmBAMAAAB1p6EMAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCgvjOXm3AAAAZklEQVRIx+3TwQnAMAiF4YxQN6hmhOy/W2kjgYRUvBS0vP/8XRQtJW7yxLTvUFXbHRTUX5Tv7snsCyVzvFd9xhEUVHLlu3syC/O1yxQvm1g2AgWVTfnuPsw/aqc9owYFlU357j5iF5aShkQuAz2OAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">7</td>
+<td style="text-align: left;">perc_contact [numeric]</td>
+<td style="text-align: left;">In Chile, those with good contacts do better in life</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 3.1 (0.8)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.3)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">46</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">4.0%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">208</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">18.0%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">460</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">39.8%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">442</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">38.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEgAAABmBAMAAACaZcoyAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCgvjOXm3AAAAXklEQVRIx+3TsQkAIBBDUVe4ETw3OPffzUYQRSWFRYT8+jUnMSXO3D3bsY5KrUJCvyJo43btOfKp83WjEBL6CkEbt2sMn3Nt9wRrISREjaCNM/07A64LISFuBG2crQbA7YGLNzrrwAAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">8</td>
+<td style="text-align: left;">pref_effort [numeric]</td>
+<td style="text-align: left;">Those who put in more effort should receive greater rewards than those who put in less effort</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 3.4 (0.8)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 4 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.2)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">46</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">4.0%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">89</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">7.7%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">389</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">33.7%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">632</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">54.7%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAF4AAABmBAMAAACw1TudAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCgx9XewUAAAAaElEQVRYw+3UywnAMAwEUbfgErzpwOq/t0DIyeQjHeLIMHN+J8GqlPWT1Kqn029meDw+iY/u12Uneh2F7mPW8Xh8Bh/dr0Om9rqrPdzzKjweP91H91u9/f1/xt7uM9TxePznPrrfldsBHIPE8MAhBsAAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">9</td>
+<td style="text-align: left;">pref_talent [numeric]</td>
+<td style="text-align: left;">Those who have more talent should receive greater rewards than those who have less talent</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.6 (0.8)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.3)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">72</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">6.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">483</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">41.8%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">428</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">37.0%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">173</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">15.0%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEsAAABmBAMAAABxUnExAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCgx9XewUAAAAYklEQVRIx+3UuwkAIAxFUUfQDfxskOy/mwgWIhhSKGp4tz5Nihfn3i63wjLfWWFmAgOzzJRbCHJnWJaLw6VCYGD/M+UWrux0w5ynx7WIwMBMMOUWbu80CWy4FAzMJlNu4dUq1YyMZKX05CoAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">10</td>
+<td style="text-align: left;">pref_rich_parents [numeric]</td>
+<td style="text-align: left;">It’s fine that those whose parents are wealthy do well in life</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.5 (0.8)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.3)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">115</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">9.9%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">423</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">36.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">503</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">43.5%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">115</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">9.9%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAE4AAABmBAMAAACXe7p1AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCgx9XewUAAAAY0lEQVRIx+3WsQkAIAxEUVdwBOMGuv9ugqZUksJgiPfr10Q4MCX/EZdPsat91uDgfnLafWQpI0fnyubeXXBwYZ12H6/2e2HnK/ldZg0OLqDT7uP1fiXH97r9D8HBWTjtPjw3APXrlEVl2VvHAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">11</td>
+<td style="text-align: left;">pref_contact [numeric]</td>
+<td style="text-align: left;">It’s fine that those who have good connections do well in life</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.7 (0.8)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.3)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">92</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">8.0%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">364</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">31.5%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">533</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">46.1%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">167</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">14.4%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFIAAABmBAMAAACq6dsTAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCgx9XewUAAAAYklEQVRYw+3TwQnAIAxGYVdwhMYN7P67lYpgi2hyCSi+d/4uCfwh7JOUrjipynS/IZHIXtp3FPUcpQwa3d6VkUikfUceK/aQojf/0vdhSOSh0r6jZfauyHZ7RiKRP2nf0Q49m5qgwai3pQIAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">12</td>
+<td style="text-align: left;">school_effort [numeric]</td>
+<td style="text-align: left;">In this school, those who put in effort get good grades</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 3.2 (0.8)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.2)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">42</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">3.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">119</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">10.3%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">572</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">49.5%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">423</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">36.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFcAAABmBAMAAABMwBBXAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCg0KWtyCAAAAZUlEQVRYw+3UwQnAIBBEUUuIHSSTDkz/vQnBSwjorogo/H9+p4XZEPZMUmx2FHw/CQwGj8WuDbblFKyS8RpvCQwGD8OuDUZLi2FZOr+nqwcGgz3YtcH1/8b1w5VrgMHgPuza4G5lcWix2FvkMzcAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">13</td>
+<td style="text-align: left;">school_talent [numeric]</td>
+<td style="text-align: left;">In this school, those who are intelligent get good grades</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 3.2 (0.7)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 3 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.2)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">25</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">2.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">126</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">10.9%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">627</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">54.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">378</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">32.7%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAF4AAABmBAMAAACw1TudAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCg0KWtyCAAAAYklEQVRYw+3UuQ0AIQwFUVrYEvB2YPrvjQAiJIQdcFiaiV9k6Tul+Il8trr/FY/Hv+K9+zXqY1562Xqf0sLj8fe9d78r9roXa8M9Vykej9/uvfsN838mfnYfxePxx713v5Gr6+HGNduBUtUAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">14</td>
+<td style="text-align: left;">just_educ [numeric]</td>
+<td style="text-align: left;">It’s good that those who can pay more receive a better education</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.3 (0.9)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 2 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.4)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">230</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">19.9%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">475</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">41.1%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">328</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">28.4%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">123</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">10.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEoAAABmBAMAAACekBoPAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCg0KWtyCAAAAYUlEQVRIx+3TsQkAIAxEUVdwhOgGuv9uNjaJEgKiJnC/fo1ySclvhUeZN1XtLCio4Mq2+6x3QRW9/RtFDQoqmLLt/v09HlwtSbX9CSiosMq2+3/3SKqqy7OgoCIr2+49NgCYoYfngi1O9AAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">15</td>
+<td style="text-align: left;">just_health [numeric]</td>
+<td style="text-align: left;">It’s good that those who can pay more have better access to healthcare</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2 (1)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 2 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 2 (0.5)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">405</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">35.0%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">430</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">37.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">213</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">18.4%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">108</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">9.3%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEQAAABmBAMAAACAWSq8AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCg0KWtyCAAAAYElEQVRIx+3Tuw0AIAhFUVdgBHED3H83GxsTQUz8ULxbn4bkkVKsWC1TJ6VqgYB8JI7tktFRwkbLi6qAgHwjju0++6PtV5uS4WgBAQlCHNsloxt/lA3SLwIBiUUc241SA9E+c8o4Wac5AAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">16</td>
+<td style="text-align: left;">just_pension [numeric]</td>
+<td style="text-align: left;">It’s good that in Chile, people with higher incomes can have better pensions than those with lower incomes</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.1 (0.9)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 2 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 2 (0.4)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">319</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">27.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">499</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">43.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">263</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">22.8%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">75</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">6.5%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAE0AAABmBAMAAAB8TAF2AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCg6TU404AAAAZUlEQVRIx+3T0QnAIAyEYUcwG1TdwO6/WykUKijmKIQGvf/5e0ngQvBfHiVv8XHl7Kt0dIs7dB+iZOWy0jG5t42ObkWH7uOv/X7eeRq77i90dBs4dB+iZLpfwN33Vjq6zRy6D89dTYySon3yMfYAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">17</td>
+<td style="text-align: left;">gender [factor]</td>
+<td style="text-align: left;">Gender</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. Male</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. Female</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">3. Other</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">566</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">49.0%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">549</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">47.5%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">41</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">3.5%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFYAAABOBAMAAABI/fwyAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCg6TU404AAAAUklEQVRIx2NgGHpAiRgAVatsTBgYjaodVTuqFqdaUvKbIDFgEKklxmuCxIeZ0ajaUbUjTS0peWgw5HkSywei1SoDg2RU7ajaUbXkqyUlvw0lAACRbm1uETAVXAAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">18</td>
+<td style="text-align: left;">age [numeric]</td>
+<td style="text-align: left;">Age</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 14.4 (1.5)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">12 ≤ 15 ≤ 18</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 3 (0.1)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">12</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">126</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">10.9%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">13</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">384</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">33.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">14</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">26</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">2.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">15</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">204</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">17.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">16</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">390</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">33.7%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">17</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">20</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">1.7%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">18</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">6</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">0.5%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAD8AAACsBAMAAAA+g2kBAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCg6TU404AAAAhUlEQVRYw+3VywnAIBCEYUvIdhC1A9N/bznEgxGXAR9rAvOfv4swi859o5DzUnVkEK8nAgIjADcpWvNA0KpfUZcICNYAuEmTuwAgJgKCmQBOTmQ/eN2jbz2zPGkCgmEAJze+6nGg/lln65llBARdAE7OYvYegEhAYAvgJkWWg0BA8Dewuxue09lEmVkctAAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">19</td>
+<td style="text-align: left;">books [factor]</td>
+<td style="text-align: left;">Books at home</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. Less than 25</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. More than 25</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">678</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">58.7%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">478</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">41.3%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAGQAAAA3BAMAAAAI1vI+AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCg/kVL2uAAAAPklEQVRIx2NgGF5AiQQA1aJsTDQwGtUyqmVUy/DRQkZxIUgCoKsWAs5XxKKFQIiNahnVMqplmGoho7gYLgAA3aZZXqkfM4MAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">20</td>
+<td style="text-align: left;">cohort_level [factor]</td>
+<td style="text-align: left;">Student cohort</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. Primary</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. Secondary</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">542</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">46.9%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">614</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">53.1%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAFwAAAA3BAMAAABz8jDyAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCg/kVL2uAAAAQUlEQVRIx2NgGNpAiTBQFAQCqHJlY4JgVPmo8lHlg0A5iVlbkEhAF+VEuB0MiA8ZEDAaVT6qfFT5wConMWsPVQAAyX5M4gBiIo0AAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">21</td>
+<td style="text-align: left;">mjp [numeric]</td>
+<td style="text-align: left;">Market Justice Preferences</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 2.1 (0.8)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1 ≤ 2 ≤ 4</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 1 (0.4)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1.00  </td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">137</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">11.9%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1.33 !</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">126</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">10.9%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">1.67 !</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">134</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">11.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2.00  </td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">255</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">22.1%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2.33 !</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">157</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">13.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">2.67 !</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">134</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">11.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3.00  </td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">111</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">9.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3.33 !</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">38</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">3.3%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">3.67 !</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">35</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">3.0%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">4.00  </td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">29</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">2.5%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td colspan="5" style="text-align: right; padding: 0 0 0 7px; border: 0; margin: 0;">! rounded</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAC4AAADzBAMAAAALNzn1AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCg/kVL2uAAAAlklEQVRYw+3VwQ2AIBQDUFdgBGAD3H83D4LKDz1oPsQm7fFd/Ekb3Lb5SS2hpnrezxQ5haMeg42zt89GcKecw1GPq/aj94fbZ78/ycbc01LklI769d9PHO75ehHllI76dd+P8XbPX95h+Tdf9P+K1nM3Zjmro34d9zP0fC9ZTuCoR9S7lz+n2d8pZ3LUY7DRfuQvepyZA+ZtyV0kCofwAAAAAElFTkSuQmCC" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">22</td>
+<td style="text-align: left;">age2 [numeric]</td>
+<td style="text-align: left;">Age^2</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">Mean (sd) : 209 (44.4)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">min ≤ med ≤ max:</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">144 ≤ 225 ≤ 324</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">IQR (CV) : 87 (0.2)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">144</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">126</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">10.9%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">169</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">384</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">33.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">196</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">26</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">2.2%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">225</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">204</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">17.6%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">256</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">390</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">33.7%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">289</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">20</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">1.7%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 2px 0 7px; margin: 0; border: 0;">324</td>
+<td style="text-align: left; padding: 0 2px; border: 0;">:</td>
+<td style="text-align: right; padding: 0 4px 0 6px; margin: 0; border: 0;">6</td>
+<td style="text-align: left; padding: 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0 2px; margin: 0; border: 0;">0.5%</td>
+<td style="text-align: left; padding: 0 4px 0 0; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAD8AAACsBAMAAAA+g2kBAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFCg/kVL2uAAAAhUlEQVRYw+3VywnAIBCEYUvIdhC1A9N/bznEgxGXAR9rAvOfv4swi859o5DzUnVkEK8nAgIjADcpWvNA0KpfUZcICNYAuEmTuwAgJgKCmQBOTmQ/eN2jbz2zPGkCgmEAJze+6nGg/lln65llBARdAE7OYvYegEhAYAvgJkWWg0BA8Dewuxue09lEmVkctAAAAABJRU5ErkJggg==" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">23</td>
+<td style="text-align: left;">parental_educ [factor]</td>
+<td style="text-align: left;">Parental educational level</td>
+<td style="text-align: left; padding: 8; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">1. 8th grade or less</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">2. Secondary education</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">3. Technical higher educatio</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">4. Universitary or posgradua</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: left; padding: 0; margin: 0; border: 0;">5. Missing</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; padding: 0; vertical-align: middle;"><table class="caption-top table table-sm table-striped small" data-quarto-postprocess="true"><tbody>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">301</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">26.0%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">485</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">42.0%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">107</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">9.3%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="even" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">56</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">4.8%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+<tr class="odd" style="background-color:transparent">
+<td style="text-align: right; padding: 0 5px 0 7px; margin: 0; border: 0;">207</td>
+<td style="text-align: left; padding: 0 2px 0 0; border: 0;">(</td>
+<td style="text-align: right; padding: 0; border: 0;">17.9%</td>
+<td style="text-align: left; padding: 0 4px 0 2px; border: 0;">)</td>
+</tr>
+</tbody></table></td>
+<td style="text-align: left; vertical-align: middle; padding: 0; background-color: transparent;"><img src="data:image/png;base64,%20iVBORw0KGgoAAAANSUhEUgAAAEsAAAB9BAMAAAAYQ4NpAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAPUExURf////3+/aampvDw8P///7GHRIEAAAACdFJOUwAAdpPNOAAAAAFiS0dEAIgFHUgAAAAHdElNRQfpBhIFChBpXLBbAAAAdElEQVRYw+3WsQ3AIAxEUUaINyCwAdl/NxokEgHONVaIdb9+jYuTHMLepUnSOxrL11AhI3PFwC2Ing1LenF96T0ysv8zcAtf7vR8Ye1SMjK/DNyC6NntFGD5+SmQkflj4BZEz26n0298uLRXyMgcMnALu1YBODm+kvn9nQMAAAAASUVORK5CYII=" class="img-fluid" style="border:none;background-color:transparent;padding:0;max-width:max-content;"></td>
+<td style="text-align: center;">1156 (100.0%)</td>
+<td style="text-align: center;">0 (0.0%)</td>
+</tr>
+</tbody>
+</table>
+<p>Generated by <a href="https://github.com/dcomtois/summarytools">summarytools</a> 1.0.1 (<a href="https://www.r-project.org/">R</a> version 4.3.2)<br>2025-06-18</p>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">db_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">db_proc</span>, <span class="va">wave</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">db_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">db_proc</span>, <span class="va">wave</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">model_cfa</span> <span class="op">&lt;-</span> <span class="st">'</span></span>
+<span><span class="st">  perc_merit = ~ perc_effort + perc_talent</span></span>
+<span><span class="st">  perc_nmerit = ~ perc_rich_parents + perc_contact</span></span>
+<span><span class="st">  pref_merit = ~ pref_effort + pref_talent</span></span>
+<span><span class="st">  pref_nmerit = ~ pref_rich_parents + pref_contact</span></span>
+<span><span class="st">  '</span></span>
+<span></span>
+<span></span>
+<span><span class="va">m1_cfa</span> <span class="op">&lt;-</span> <span class="fu">cfa</span><span class="op">(</span>model <span class="op">=</span> <span class="va">model_cfa</span>, </span>
+<span>              data <span class="op">=</span> <span class="va">db_1</span>,</span>
+<span>              estimator <span class="op">=</span> <span class="st">"DWLS"</span>,</span>
+<span>              ordered <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>              std.lv <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">m2_cfa</span> <span class="op">&lt;-</span> <span class="fu">cfa</span><span class="op">(</span>model <span class="op">=</span> <span class="va">model_cfa</span>, </span>
+<span>              data <span class="op">=</span> <span class="va">db_2</span>, </span>
+<span>              estimator <span class="op">=</span> <span class="st">"DWLS"</span>,</span>
+<span>              ordered <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>              std.lv <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">scores_1</span> <span class="op">&lt;-</span> <span class="fu">lavPredict</span><span class="op">(</span><span class="va">m1_cfa</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">db_1</span><span class="op">$</span><span class="va">perc_merit_score</span>  <span class="op">&lt;-</span> <span class="va">scores_1</span><span class="op">[</span>, <span class="st">"perc_merit"</span><span class="op">]</span></span>
+<span><span class="va">db_1</span><span class="op">$</span><span class="va">perc_nmerit_score</span> <span class="op">&lt;-</span> <span class="va">scores_1</span><span class="op">[</span>, <span class="st">"perc_nmerit"</span><span class="op">]</span></span>
+<span><span class="va">db_1</span><span class="op">$</span><span class="va">pref_merit_score</span>  <span class="op">&lt;-</span> <span class="va">scores_1</span><span class="op">[</span>, <span class="st">"pref_merit"</span><span class="op">]</span></span>
+<span><span class="va">db_1</span><span class="op">$</span><span class="va">pref_nmerit_score</span> <span class="op">&lt;-</span> <span class="va">scores_1</span><span class="op">[</span>, <span class="st">"pref_nmerit"</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">scores_2</span> <span class="op">&lt;-</span> <span class="fu">lavPredict</span><span class="op">(</span><span class="va">m2_cfa</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">db_2</span><span class="op">$</span><span class="va">perc_merit_score</span>  <span class="op">&lt;-</span> <span class="va">scores_2</span><span class="op">[</span>, <span class="st">"perc_merit"</span><span class="op">]</span></span>
+<span><span class="va">db_2</span><span class="op">$</span><span class="va">perc_nmerit_score</span> <span class="op">&lt;-</span> <span class="va">scores_2</span><span class="op">[</span>, <span class="st">"perc_nmerit"</span><span class="op">]</span></span>
+<span><span class="va">db_2</span><span class="op">$</span><span class="va">pref_merit_score</span>  <span class="op">&lt;-</span> <span class="va">scores_2</span><span class="op">[</span>, <span class="st">"pref_merit"</span><span class="op">]</span></span>
+<span><span class="va">db_2</span><span class="op">$</span><span class="va">pref_nmerit_score</span> <span class="op">&lt;-</span> <span class="va">scores_2</span><span class="op">[</span>, <span class="st">"pref_nmerit"</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">db_proc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">db_1</span>, <span class="va">db_2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section><section id="long-to-wide" class="level2" data-number="2.2"><h2 data-number="2.2" class="anchored" data-anchor-id="long-to-wide">
+<span class="header-section-number">2.2</span> Long to wide</h2>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">db_proc</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider</a></span><span class="op">(</span></span>
+<span>    id_cols <span class="op">=</span> <span class="va">id_student</span>,</span>
+<span>    names_from <span class="op">=</span> <span class="va">wave</span>,</span>
+<span>    values_from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">mjp</span>, <span class="va">perc_merit_score</span>, <span class="va">perc_nmerit_score</span>, <span class="va">pref_merit_score</span>, <span class="va">pref_nmerit_score</span><span class="op">)</span>,</span>
+<span>    names_glue <span class="op">=</span> <span class="st">"{.value}_wave{wave}"</span></span>
+<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section></section><section id="descriptivos" class="level1" data-number="3"><h1 data-number="3">
+<span class="header-section-number">3</span> Descriptivos</h1>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">summarytools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/summarytools/man/descr.html">descr</a></span><span class="op">(</span><span class="va">data</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, order <span class="op">=</span> <span class="st">"p"</span>, stats<span class="op">=</span><span class="st">"common"</span>,</span>
+<span>                    transpose <span class="op">=</span> <span class="cn">T</span>, style <span class="op">=</span> <span class="st">"rmarkdown"</span>, headings<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>
+|                      &amp;nbsp; |  Mean | Std.Dev |   Min | Median |  Max | N.Valid | Pct.Valid |
+|----------------------------:|------:|--------:|------:|-------:|-----:|--------:|----------:|
+|               **mjp_wave1** |  2.12 |    0.75 |  1.00 |   2.00 | 4.00 |  578.00 |    100.00 |
+|               **mjp_wave2** |  2.15 |    0.76 |  1.00 |   2.00 | 4.00 |  578.00 |    100.00 |
+|  **perc_merit_score_wave1** | -0.01 |    0.72 | -1.93 |   0.15 | 1.44 |  578.00 |    100.00 |
+|  **perc_merit_score_wave2** |  0.00 |    0.70 | -1.86 |   0.11 | 1.48 |  578.00 |    100.00 |
+| **perc_nmerit_score_wave1** | -0.03 |    0.54 | -1.44 |  -0.04 | 1.01 |  578.00 |    100.00 |
+| **perc_nmerit_score_wave2** | -0.03 |    0.69 | -1.92 |  -0.07 | 1.27 |  578.00 |    100.00 |
+|  **pref_merit_score_wave1** | -0.02 |    0.43 | -1.42 |   0.00 | 0.86 |  578.00 |    100.00 |
+|  **pref_merit_score_wave2** | -0.03 |    0.55 | -1.87 |   0.06 | 1.19 |  578.00 |    100.00 |
+| **pref_nmerit_score_wave1** | -0.01 |    0.63 | -1.58 |  -0.03 | 1.35 |  578.00 |    100.00 |
+| **pref_nmerit_score_wave2** |  0.00 |    0.58 | -1.31 |   0.02 | 1.23 |  578.00 |    100.00 |</code></pre>
+</div>
+</div>
+</section><section id="mjp-y-percepción-de-meritocracia" class="level1" data-number="4"><h1 data-number="4">
+<span class="header-section-number">4</span> MJP y Percepción de meritocracia</h1>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">clpm_model</span> <span class="op">&lt;-</span> <span class="st">'</span></span>
+<span><span class="st">  # Variables latentes</span></span>
+<span><span class="st">  x1 =~ 1*perc_merit_score_wave1</span></span>
+<span><span class="st">  x2 =~ 1*perc_merit_score_wave2</span></span>
+<span><span class="st">  y1 =~ 1*mjp_wave1</span></span>
+<span><span class="st">  y2 =~ 1*mjp_wave2</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  # Fijar las varianzas residuales de los indicadores en 0 (necesario si se usan variables latentes con una sola variable)</span></span>
+<span><span class="st">  perc_merit_score_wave1 ~~ 0*perc_merit_score_wave1</span></span>
+<span><span class="st">  perc_merit_score_wave2 ~~ 0*perc_merit_score_wave2</span></span>
+<span><span class="st">  mjp_wave1 ~~ 0*mjp_wave1</span></span>
+<span><span class="st">  mjp_wave2 ~~ 0*mjp_wave2</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  # Efectos autorregresivos</span></span>
+<span><span class="st">  x2 ~ x1</span></span>
+<span><span class="st">  y2 ~ y1</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  # Efectos cross-lagged</span></span>
+<span><span class="st">  x2 ~ y1</span></span>
+<span><span class="st">  y2 ~ x1</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  # Covarianzas entre variables exógenas en t1</span></span>
+<span><span class="st">  x1 ~~ y1</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  # Covarianzas entre residuos en t2</span></span>
+<span><span class="st">  x2 ~~ y2</span></span>
+<span><span class="st">'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section><section id="estimación" class="level1" data-number="5"><h1 data-number="5">
+<span class="header-section-number">5</span> Estimación</h1>
+<ul>
+<li><p>Estimator = “MLR” es: estimación de maximum likelihood con errores estándar robustos (Huber-White) y estadísticos de prueba escalados (equivalentes a los estadísticos de prueba de Yuan-Betler) –&gt; En el fondo replica lo que hace Mplus</p></li>
+<li><p>Missing = “FIML” es: Si los datos son MCAR (missing completely at random) o MAR (missing at random), podemos estimar caso a caso usando <strong>full information maximum likelihood</strong> para lidiar con los casos perdidos</p></li>
+</ul>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fit_clpm</span> <span class="op">&lt;-</span> <span class="fu">lavaan</span><span class="op">(</span><span class="va">clpm_model</span>,</span>
+<span>                   data <span class="op">=</span> <span class="va">data</span>,</span>
+<span>                   estimator <span class="op">=</span> <span class="st">"MLR"</span>, missing <span class="op">=</span> <span class="st">"FIML"</span>,</span>
+<span>                   meanstructure <span class="op">=</span> <span class="cn">TRUE</span>, int.ov.free <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                   std.lv <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit_clpm</span>, fit.measures <span class="op">=</span> <span class="cn">TRUE</span>, ci <span class="op">=</span> <span class="cn">TRUE</span>, standardized <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>lavaan 0.6.16 ended normally after 16 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        10
+
+  Number of observations                           578
+  Number of missing patterns                         1
+
+Model Test User Model:
+                                              Standard      Scaled
+  Test Statistic                               436.789     256.884
+  Degrees of freedom                                 4           4
+  P-value (Chi-square)                           0.000       0.000
+  Scaling correction factor                                  1.700
+    Yuan-Bentler correction (Mplus variant)                       
+
+Model Test Baseline Model:
+
+  Test statistic                               195.507     154.631
+  Degrees of freedom                                 6           6
+  P-value                                        0.000       0.000
+  Scaling correction factor                                  1.264
+
+User Model versus Baseline Model:
+
+  Comparative Fit Index (CFI)                    0.000       0.000
+  Tucker-Lewis Index (TLI)                      -2.426      -1.552
+                                                                  
+  Robust Comparative Fit Index (CFI)                         0.000
+  Robust Tucker-Lewis Index (TLI)                           -2.437
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)              -2679.629   -2679.629
+  Scaling correction factor                                  0.810
+      for the MLR correction                                      
+  Loglikelihood unrestricted model (H1)      -2461.235   -2461.235
+  Scaling correction factor                                  1.065
+      for the MLR correction                                      
+                                                                  
+  Akaike (AIC)                                5379.258    5379.258
+  Bayesian (BIC)                              5422.854    5422.854
+  Sample-size adjusted Bayesian (SABIC)       5391.108    5391.108
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.433       0.331
+  90 Percent confidence interval - lower         0.399       0.305
+  90 Percent confidence interval - upper         0.467       0.357
+  P-value H_0: RMSEA &lt;= 0.050                    0.000       0.000
+  P-value H_0: RMSEA &gt;= 0.080                    1.000       1.000
+                                                                  
+  Robust RMSEA                                               0.433
+  90 Percent confidence interval - lower                     0.399
+  90 Percent confidence interval - upper                     0.467
+  P-value H_0: Robust RMSEA &lt;= 0.050                         0.000
+  P-value H_0: Robust RMSEA &gt;= 0.080                         1.000
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.626       0.626
+
+Parameter Estimates:
+
+  Standard errors                             Sandwich
+  Information bread                           Observed
+  Observed information based on                Hessian
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+  x1 =~                                                                 
+    prc_mrt_scr_w1    1.000                               1.000    1.000
+  x2 =~                                                                 
+    prc_mrt_scr_w2    1.000                               1.000    1.000
+  y1 =~                                                                 
+    mjp_wave1         1.000                               1.000    1.000
+  y2 =~                                                                 
+    mjp_wave2         1.000                               1.000    1.000
+   Std.lv  Std.all
+                  
+    1.000    1.000
+                  
+    1.045    1.000
+                  
+    1.000    1.000
+                  
+    1.098    1.000
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+  x2 ~                                                                  
+    x1                0.224    0.041    5.437    0.000    0.143    0.304
+  y2 ~                                                                  
+    y1                0.437    0.043   10.048    0.000    0.352    0.522
+  x2 ~                                                                  
+    y1                0.129    0.037    3.483    0.000    0.056    0.201
+  y2 ~                                                                  
+    x1                0.036    0.044    0.818    0.413   -0.051    0.123
+   Std.lv  Std.all
+                  
+    0.214    0.214
+                  
+    0.398    0.398
+                  
+    0.123    0.123
+                  
+    0.033    0.033
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+  x1 ~~                                                                 
+    y1                0.434    0.051    8.467    0.000    0.333    0.534
+ .x2 ~~                                                                 
+   .y2                0.344    0.106    3.250    0.001    0.136    0.551
+   Std.lv  Std.all
+                  
+    0.434    0.434
+                  
+    0.344    0.344
+
+Intercepts:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+   .prc_mrt_scr_w1   -0.008    0.030   -0.254    0.799   -0.067    0.051
+   .prc_mrt_scr_w2   -0.004    0.029   -0.147    0.883   -0.061    0.053
+   .mjp_wave1         2.118    0.031   67.930    0.000    2.057    2.179
+   .mjp_wave2         2.149    0.031   68.245    0.000    2.087    2.211
+    x1                0.000                               0.000    0.000
+   .x2                0.000                               0.000    0.000
+    y1                0.000                               0.000    0.000
+   .y2                0.000                               0.000    0.000
+   Std.lv  Std.all
+   -0.008   -0.008
+   -0.004   -0.004
+    2.118    2.118
+    2.149    1.957
+    0.000    0.000
+    0.000    0.000
+    0.000    0.000
+    0.000    0.000
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+   .prc_mrt_scr_w1    0.000                               0.000    0.000
+   .prc_mrt_scr_w2    0.000                               0.000    0.000
+   .mjp_wave1         0.000                               0.000    0.000
+   .mjp_wave2         0.000                               0.000    0.000
+    x1                1.000                               1.000    1.000
+   .x2                1.000                               1.000    1.000
+    y1                1.000                               1.000    1.000
+   .y2                1.000                               1.000    1.000
+   Std.lv  Std.all
+    0.000    0.000
+    0.000    0.000
+    0.000    0.000
+    0.000    0.000
+    1.000    1.000
+    0.916    0.916
+    1.000    1.000
+    0.829    0.829</code></pre>
+</div>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 20%">
+<col style="width: 61%">
+</colgroup>
+<thead><tr class="header">
+<th>Medida</th>
+<th>Valor</th>
+<th>Interpretación</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><strong>CFI / TLI</strong></td>
+<td>0.000 / -2.437</td>
+<td>Valores pésimos (deberían ser &gt; .90 o .95).</td>
+</tr>
+<tr class="even">
+<td><strong>RMSEA (robusto)</strong></td>
+<td>0.433 [0.399–0.467]</td>
+<td>Extremadamente alto. Valores aceptables son &lt; .08 (ideal &lt; .05).</td>
+</tr>
+<tr class="odd">
+<td><strong>SRMR</strong></td>
+<td>0.626</td>
+<td>Muy alto. Debería ser &lt; .08.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>x2 ~ x1 (predicción de meritocracia futura)</p></li>
+<li><p>y2 ~ y1 (predicción de mjp futura):</p></li>
+</ul>
+<p>x1 → x2: β = 0.224, p &lt; .001 ✅</p>
+<p>↪ Efecto significativo y positivo: mayor percepción meritocrática en t1 se asocia a mayor percepción en t2.</p>
+<p>y1 → y2: β = 0.437, p &lt; .001 ✅</p>
+<p>↪ Efecto autoregresivo fuerte: quienes apoyaban mjp en t1 tienden a mantener esa posición en t2.</p>
+<p>y1 → x2: β = 0.129, p &lt; .001 ✅ ↪ mjp en t1 influye en percepción meritocracia en t2.</p>
+<p>x1 → y2: β = 0.036, ns ❌</p>
+<p>↪ No hay efecto cruzado desde meritocracia a mjp</p>
+<p>Conclusión: Efecto significativo autoregresivo dentro de cada dimensión. Efecto significativo de mjp sobre meritocracia, pero no al revés.</p>
+</section><section id="mjp-y-percepción-de-no-meritocracia" class="level1" data-number="6"><h1 data-number="6">
+<span class="header-section-number">6</span> MJP y Percepción de no meritocracia</h1>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">clpm_model</span> <span class="op">&lt;-</span> <span class="st">'</span></span>
+<span><span class="st">  # Variables latentes</span></span>
+<span><span class="st">  x1 =~ 1*perc_nmerit_score_wave1</span></span>
+<span><span class="st">  x2 =~ 1*perc_nmerit_score_wave2</span></span>
+<span><span class="st">  y1 =~ 1*mjp_wave1</span></span>
+<span><span class="st">  y2 =~ 1*mjp_wave2</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  # Fijar las varianzas residuales de los indicadores en 0 (necesario si se usan variables latentes con una sola variable)</span></span>
+<span><span class="st">  perc_nmerit_score_wave1 ~~ 0*perc_nmerit_score_wave1</span></span>
+<span><span class="st">  perc_nmerit_score_wave2 ~~ 0*perc_nmerit_score_wave2</span></span>
+<span><span class="st">  mjp_wave1 ~~ 0*mjp_wave1</span></span>
+<span><span class="st">  mjp_wave2 ~~ 0*mjp_wave2</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  # Efectos autorregresivos</span></span>
+<span><span class="st">  x2 ~ x1</span></span>
+<span><span class="st">  y2 ~ y1</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  # Efectos cross-lagged</span></span>
+<span><span class="st">  x2 ~ y1</span></span>
+<span><span class="st">  y2 ~ x1</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  # Covarianzas entre variables exógenas en t1</span></span>
+<span><span class="st">  x1 ~~ y1</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  # Covarianzas entre residuos en t2</span></span>
+<span><span class="st">  x2 ~~ y2</span></span>
+<span><span class="st">'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section><section id="estimación-1" class="level1" data-number="7"><h1 data-number="7">
+<span class="header-section-number">7</span> Estimación</h1>
+<ul>
+<li><p>Estimator = “MLR” es: estimación de maximum likelihood con errores estándar robustos (Huber-White) y estadísticos de prueba escalados (equivalentes a los estadísticos de prueba de Yuan-Betler) –&gt; En el fondo replica lo que hace Mplus</p></li>
+<li><p>Missing = “FIML” es: Si los datos son MCAR (missing completely at random) o MAR (missing at random), podemos estimar caso a caso usando <strong>full information maximum likelihood</strong> para lidiar con los casos perdidos</p></li>
+</ul>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fit_clpm</span> <span class="op">&lt;-</span> <span class="fu">lavaan</span><span class="op">(</span><span class="va">clpm_model</span>,</span>
+<span>                   data <span class="op">=</span> <span class="va">data</span>,</span>
+<span>                   estimator <span class="op">=</span> <span class="st">"MLR"</span>, missing <span class="op">=</span> <span class="st">"FIML"</span>,</span>
+<span>                   meanstructure <span class="op">=</span> <span class="cn">TRUE</span>, int.ov.free <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                   std.lv <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit_clpm</span>, fit.measures <span class="op">=</span> <span class="cn">TRUE</span>, ci <span class="op">=</span> <span class="cn">TRUE</span>, standardized <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>lavaan 0.6.16 ended normally after 17 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        10
+
+  Number of observations                           578
+  Number of missing patterns                         1
+
+Model Test User Model:
+                                              Standard      Scaled
+  Test Statistic                               708.859     393.598
+  Degrees of freedom                                 4           4
+  P-value (Chi-square)                           0.000       0.000
+  Scaling correction factor                                  1.801
+    Yuan-Bentler correction (Mplus variant)                       
+
+Model Test Baseline Model:
+
+  Test statistic                               264.072     207.595
+  Degrees of freedom                                 6           6
+  P-value                                        0.000       0.000
+  Scaling correction factor                                  1.272
+
+User Model versus Baseline Model:
+
+  Comparative Fit Index (CFI)                    0.000       0.000
+  Tucker-Lewis Index (TLI)                      -3.097      -1.899
+                                                                  
+  Robust Comparative Fit Index (CFI)                         0.000
+  Robust Tucker-Lewis Index (TLI)                           -3.104
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)              -2602.767   -2602.767
+  Scaling correction factor                                  0.751
+      for the MLR correction                                      
+  Loglikelihood unrestricted model (H1)      -2248.337   -2248.337
+  Scaling correction factor                                  1.051
+      for the MLR correction                                      
+                                                                  
+  Akaike (AIC)                                5225.534    5225.534
+  Bayesian (BIC)                              5269.130    5269.130
+  Sample-size adjusted Bayesian (SABIC)       5237.384    5237.384
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.552       0.411
+  90 Percent confidence interval - lower         0.518       0.385
+  90 Percent confidence interval - upper         0.587       0.436
+  P-value H_0: RMSEA &lt;= 0.050                    0.000       0.000
+  P-value H_0: RMSEA &gt;= 0.080                    1.000       1.000
+                                                                  
+  Robust RMSEA                                               0.552
+  90 Percent confidence interval - lower                     0.519
+  90 Percent confidence interval - upper                     0.586
+  P-value H_0: Robust RMSEA &lt;= 0.050                         0.000
+  P-value H_0: Robust RMSEA &gt;= 0.080                         1.000
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.968       0.968
+
+Parameter Estimates:
+
+  Standard errors                             Sandwich
+  Information bread                           Observed
+  Observed information based on                Hessian
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+  x1 =~                                                                 
+    prc_nmrt_scr_1    1.000                               1.000    1.000
+  x2 =~                                                                 
+    prc_nmrt_scr_2    1.000                               1.000    1.000
+  y1 =~                                                                 
+    mjp_wave1         1.000                               1.000    1.000
+  y2 =~                                                                 
+    mjp_wave2         1.000                               1.000    1.000
+   Std.lv  Std.all
+                  
+    1.000    1.000
+                  
+    1.131    1.000
+                  
+    1.000    1.000
+                  
+    1.081    1.000
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+  x2 ~                                                                  
+    x1                0.563    0.051   11.047    0.000    0.463    0.663
+  y2 ~                                                                  
+    y1                0.445    0.043   10.460    0.000    0.362    0.529
+  x2 ~                                                                  
+    y1               -0.108    0.035   -3.107    0.002   -0.177   -0.040
+  y2 ~                                                                  
+    x1               -0.115    0.055   -2.073    0.038   -0.224   -0.006
+   Std.lv  Std.all
+                  
+    0.498    0.498
+                  
+    0.412    0.412
+                  
+   -0.096   -0.096
+                  
+   -0.106   -0.106
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+  x1 ~~                                                                 
+    y1                0.411    0.058    7.036    0.000    0.296    0.525
+ .x2 ~~                                                                 
+   .y2               -0.396    0.093   -4.264    0.000   -0.578   -0.214
+   Std.lv  Std.all
+                  
+    0.411    0.411
+                  
+   -0.396   -0.396
+
+Intercepts:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+   .prc_nmrt_scr_1   -0.031    0.022   -1.363    0.173   -0.075    0.013
+   .prc_nmrt_scr_2   -0.034    0.029   -1.190    0.234   -0.090    0.022
+   .mjp_wave1         2.118    0.031   67.930    0.000    2.057    2.179
+   .mjp_wave2         2.149    0.031   68.245    0.000    2.087    2.211
+    x1                0.000                               0.000    0.000
+   .x2                0.000                               0.000    0.000
+    y1                0.000                               0.000    0.000
+   .y2                0.000                               0.000    0.000
+   Std.lv  Std.all
+   -0.031   -0.031
+   -0.034   -0.030
+    2.118    2.118
+    2.149    1.987
+    0.000    0.000
+    0.000    0.000
+    0.000    0.000
+    0.000    0.000
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+   .prc_nmrt_scr_1    0.000                               0.000    0.000
+   .prc_nmrt_scr_2    0.000                               0.000    0.000
+   .mjp_wave1         0.000                               0.000    0.000
+   .mjp_wave2         0.000                               0.000    0.000
+    x1                1.000                               1.000    1.000
+   .x2                1.000                               1.000    1.000
+    y1                1.000                               1.000    1.000
+   .y2                1.000                               1.000    1.000
+   Std.lv  Std.all
+    0.000    0.000
+    0.000    0.000
+    0.000    0.000
+    0.000    0.000
+    1.000    1.000
+    0.782    0.782
+    1.000    1.000
+    0.855    0.855</code></pre>
+</div>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 20%">
+<col style="width: 61%">
+</colgroup>
+<thead><tr class="header">
+<th>Medida</th>
+<th>Valor</th>
+<th>Interpretación</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><strong>CFI / TLI</strong></td>
+<td>0.000 / -3.104</td>
+<td>Valores pésimos (deberían ser &gt; .90 o .95).</td>
+</tr>
+<tr class="even">
+<td><strong>RMSEA (robusto)</strong></td>
+<td>0.552 [0.518–0.587]</td>
+<td>Extremadamente alto. Valores aceptables son &lt; .08 (ideal &lt; .05).</td>
+</tr>
+<tr class="odd">
+<td><strong>SRMR</strong></td>
+<td>0.968</td>
+<td>Muy alto. Debería ser &lt; .08.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>x2 ~ x1 (predicción de meritocracia futura)</p></li>
+<li><p>y2 ~ y1 (predicción de mjp futura):</p></li>
+</ul>
+<p>x1 → x2: β = 0.563, p &lt; .001 ✅</p>
+<p>↪ Efecto significativo y positivo: mayor percepción no meritocrática en t1 se asocia a mayor percepción en t2.</p>
+<p>y1 → y2: β = 0.445, p &lt; .001 ✅</p>
+<p>↪ Efecto autoregresivo fuerte: quienes apoyaban mjp en t1 tienden a mantener esa posición en t2.</p>
+<p>y1 → x2: β = -0.108, p &lt; .001 ✅ ↪ mjp en t1 influye negativamente en percepción no meritocracia en t2.</p>
+<p>x1 → y2: β = -0.115, p &lt; .001 ✅</p>
+<p>↪ Percepción no meritocrática en T1 influye negativamente en mjp en t2</p>
+<p>Conclusión: Efecto significativo autoregresivo dentro de cada dimensión. Efecto significativo cruzado.</p>
+</section><section id="mjp-y-percepción-de-meritocracia-1" class="level1" data-number="8"><h1 data-number="8">
+<span class="header-section-number">8</span> MJP y Percepción de meritocracia</h1>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">clpm_model</span> <span class="op">&lt;-</span> <span class="st">'</span></span>
+<span><span class="st">  # Variables latentes</span></span>
+<span><span class="st">  x1 =~ 1*pref_merit_score_wave1</span></span>
+<span><span class="st">  x2 =~ 1*pref_merit_score_wave2</span></span>
+<span><span class="st">  y1 =~ 1*mjp_wave1</span></span>
+<span><span class="st">  y2 =~ 1*mjp_wave2</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  # Fijar las varianzas residuales de los indicadores en 0 (necesario si se usan variables latentes con una sola variable)</span></span>
+<span><span class="st">  pref_merit_score_wave1 ~~ 0*pref_merit_score_wave1</span></span>
+<span><span class="st">  pref_merit_score_wave2 ~~ 0*pref_merit_score_wave2</span></span>
+<span><span class="st">  mjp_wave1 ~~ 0*mjp_wave1</span></span>
+<span><span class="st">  mjp_wave2 ~~ 0*mjp_wave2</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  # Efectos autorregresivos</span></span>
+<span><span class="st">  x2 ~ x1</span></span>
+<span><span class="st">  y2 ~ y1</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  # Efectos cross-lagged</span></span>
+<span><span class="st">  x2 ~ y1</span></span>
+<span><span class="st">  y2 ~ x1</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  # Covarianzas entre variables exógenas en t1</span></span>
+<span><span class="st">  x1 ~~ y1</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  # Covarianzas entre residuos en t2</span></span>
+<span><span class="st">  x2 ~~ y2</span></span>
+<span><span class="st">'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section><section id="estimación-2" class="level1" data-number="9"><h1 data-number="9">
+<span class="header-section-number">9</span> Estimación</h1>
+<ul>
+<li><p>Estimator = “MLR” es: estimación de maximum likelihood con errores estándar robustos (Huber-White) y estadísticos de prueba escalados (equivalentes a los estadísticos de prueba de Yuan-Betler) –&gt; En el fondo replica lo que hace Mplus</p></li>
+<li><p>Missing = “FIML” es: Si los datos son MCAR (missing completely at random) o MAR (missing at random), podemos estimar caso a caso usando <strong>full information maximum likelihood</strong> para lidiar con los casos perdidos</p></li>
+</ul>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fit_clpm</span> <span class="op">&lt;-</span> <span class="fu">lavaan</span><span class="op">(</span><span class="va">clpm_model</span>,</span>
+<span>                   data <span class="op">=</span> <span class="va">data</span>,</span>
+<span>                   estimator <span class="op">=</span> <span class="st">"MLR"</span>, missing <span class="op">=</span> <span class="st">"FIML"</span>,</span>
+<span>                   meanstructure <span class="op">=</span> <span class="cn">TRUE</span>, int.ov.free <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                   std.lv <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit_clpm</span>, fit.measures <span class="op">=</span> <span class="cn">TRUE</span>, ci <span class="op">=</span> <span class="cn">TRUE</span>, standardized <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>lavaan 0.6.16 ended normally after 17 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        10
+
+  Number of observations                           578
+  Number of missing patterns                         1
+
+Model Test User Model:
+                                              Standard      Scaled
+  Test Statistic                               977.001     492.200
+  Degrees of freedom                                 4           4
+  P-value (Chi-square)                           0.000       0.000
+  Scaling correction factor                                  1.985
+    Yuan-Bentler correction (Mplus variant)                       
+
+Model Test Baseline Model:
+
+  Test statistic                               198.867     168.411
+  Degrees of freedom                                 6           6
+  P-value                                        0.000       0.000
+  Scaling correction factor                                  1.181
+
+User Model versus Baseline Model:
+
+  Comparative Fit Index (CFI)                    0.000       0.000
+  Tucker-Lewis Index (TLI)                      -6.567      -3.509
+                                                                  
+  Robust Comparative Fit Index (CFI)                         0.000
+  Robust Tucker-Lewis Index (TLI)                           -6.573
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)              -2499.346   -2499.346
+  Scaling correction factor                                  0.670
+      for the MLR correction                                      
+  Loglikelihood unrestricted model (H1)      -2010.845   -2010.845
+  Scaling correction factor                                  1.046
+      for the MLR correction                                      
+                                                                  
+  Akaike (AIC)                                5018.691    5018.691
+  Bayesian (BIC)                              5062.287    5062.287
+  Sample-size adjusted Bayesian (SABIC)       5030.541    5030.541
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.649       0.460
+  90 Percent confidence interval - lower         0.615       0.435
+  90 Percent confidence interval - upper         0.683       0.484
+  P-value H_0: RMSEA &lt;= 0.050                    0.000       0.000
+  P-value H_0: RMSEA &gt;= 0.080                    1.000       1.000
+                                                                  
+  Robust RMSEA                                               0.649
+  90 Percent confidence interval - lower                     0.614
+  90 Percent confidence interval - upper                     0.684
+  P-value H_0: Robust RMSEA &lt;= 0.050                         0.000
+  P-value H_0: Robust RMSEA &gt;= 0.080                         1.000
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           1.628       1.628
+
+Parameter Estimates:
+
+  Standard errors                             Sandwich
+  Information bread                           Observed
+  Observed information based on                Hessian
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+  x1 =~                                                                 
+    prf_mrt_scr_w1    1.000                               1.000    1.000
+  x2 =~                                                                 
+    prf_mrt_scr_w2    1.000                               1.000    1.000
+  y1 =~                                                                 
+    mjp_wave1         1.000                               1.000    1.000
+  y2 =~                                                                 
+    mjp_wave2         1.000                               1.000    1.000
+   Std.lv  Std.all
+                  
+    1.000    1.000
+                  
+    1.077    1.000
+                  
+    1.000    1.000
+                  
+    1.075    1.000
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+  x2 ~                                                                  
+    x1                0.413    0.054    7.678    0.000    0.307    0.518
+  y2 ~                                                                  
+    y1                0.451    0.043   10.572    0.000    0.367    0.534
+  x2 ~                                                                  
+    y1               -0.020    0.028   -0.740    0.459   -0.074    0.034
+  y2 ~                                                                  
+    x1               -0.118    0.067   -1.774    0.076   -0.249    0.012
+   Std.lv  Std.all
+                  
+    0.383    0.383
+                  
+    0.419    0.419
+                  
+   -0.019   -0.019
+                  
+   -0.110   -0.110
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+  x1 ~~                                                                 
+    y1                0.580    0.029   19.730    0.000    0.522    0.638
+ .x2 ~~                                                                 
+   .y2               -0.569    0.043  -13.350    0.000   -0.653   -0.486
+   Std.lv  Std.all
+                  
+    0.580    0.580
+                  
+   -0.569   -0.569
+
+Intercepts:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+   .prf_mrt_scr_w1   -0.016    0.018   -0.893    0.372   -0.051    0.019
+   .prf_mrt_scr_w2   -0.032    0.023   -1.421    0.155   -0.077    0.012
+   .mjp_wave1         2.118    0.031   67.930    0.000    2.057    2.179
+   .mjp_wave2         2.149    0.031   68.245    0.000    2.087    2.211
+    x1                0.000                               0.000    0.000
+   .x2                0.000                               0.000    0.000
+    y1                0.000                               0.000    0.000
+   .y2                0.000                               0.000    0.000
+   Std.lv  Std.all
+   -0.016   -0.016
+   -0.032   -0.030
+    2.118    2.118
+    2.149    1.999
+    0.000    0.000
+    0.000    0.000
+    0.000    0.000
+    0.000    0.000
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+   .prf_mrt_scr_w1    0.000                               0.000    0.000
+   .prf_mrt_scr_w2    0.000                               0.000    0.000
+   .mjp_wave1         0.000                               0.000    0.000
+   .mjp_wave2         0.000                               0.000    0.000
+    x1                1.000                               1.000    1.000
+   .x2                1.000                               1.000    1.000
+    y1                1.000                               1.000    1.000
+   .y2                1.000                               1.000    1.000
+   Std.lv  Std.all
+    0.000    0.000
+    0.000    0.000
+    0.000    0.000
+    0.000    0.000
+    1.000    1.000
+    0.861    0.861
+    1.000    1.000
+    0.865    0.865</code></pre>
+</div>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 20%">
+<col style="width: 61%">
+</colgroup>
+<thead><tr class="header">
+<th>Medida</th>
+<th>Valor</th>
+<th>Interpretación</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><strong>CFI / TLI</strong></td>
+<td>0.000 / -6.573</td>
+<td>Valores pésimos (deberían ser &gt; .90 o .95).</td>
+</tr>
+<tr class="even">
+<td><strong>RMSEA (robusto)</strong></td>
+<td>0.649 [0.615–0.683]</td>
+<td>Extremadamente alto. Valores aceptables son &lt; .08 (ideal &lt; .05).</td>
+</tr>
+<tr class="odd">
+<td><strong>SRMR</strong></td>
+<td>1.628</td>
+<td>Muy alto. Debería ser &lt; .08.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>x2 ~ x1 (predicción de preferencia meritocracia futura)</p></li>
+<li><p>y2 ~ y1 (predicción de mjp futura):</p></li>
+</ul>
+<p>x1 → x2: β = 0.413, p &lt; .001 ✅</p>
+<p>↪ Efecto significativo y positivo: mayor preferencia meritocrática en t1 se asocia a mayor preferencia en t2.</p>
+<p>y1 → y2: β = 0.451, p &lt; .001 ✅</p>
+<p>↪ Efecto autoregresivo fuerte: quienes apoyaban mjp en t1 tienden a mantener esa posición en t2.</p>
+<p>y1 → x2: β = -0.020, ns ❌ ↪ mjp en t1 no influye en preferencia meritocracia en t2.</p>
+<p>x1 → y2: β = -0.118, ns ❌ (si significativo como p&lt;0.1 (0.076))</p>
+<p>↪ No hay efecto cruzado desde meritocracia a mjp</p>
+<p>Conclusión: Efecto significativo autoregresivo dentro de cada dimensión. No hay efecto significativo cruzado.</p>
+</section><section id="mjp-y-percepción-de-no-meritocracia-1" class="level1" data-number="10"><h1 data-number="10">
+<span class="header-section-number">10</span> MJP y Percepción de no meritocracia</h1>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">clpm_model</span> <span class="op">&lt;-</span> <span class="st">'</span></span>
+<span><span class="st">  # Variables latentes</span></span>
+<span><span class="st">  x1 =~ 1*pref_nmerit_score_wave1</span></span>
+<span><span class="st">  x2 =~ 1*pref_nmerit_score_wave2</span></span>
+<span><span class="st">  y1 =~ 1*mjp_wave1</span></span>
+<span><span class="st">  y2 =~ 1*mjp_wave2</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  # Fijar las varianzas residuales de los indicadores en 0 (necesario si se usan variables latentes con una sola variable)</span></span>
+<span><span class="st">  pref_nmerit_score_wave1 ~~ 0*pref_nmerit_score_wave1</span></span>
+<span><span class="st">  pref_nmerit_score_wave2 ~~ 0*pref_nmerit_score_wave2</span></span>
+<span><span class="st">  mjp_wave1 ~~ 0*mjp_wave1</span></span>
+<span><span class="st">  mjp_wave2 ~~ 0*mjp_wave2</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  # Efectos autorregresivos</span></span>
+<span><span class="st">  x2 ~ x1</span></span>
+<span><span class="st">  y2 ~ y1</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  # Efectos cross-lagged</span></span>
+<span><span class="st">  x2 ~ y1</span></span>
+<span><span class="st">  y2 ~ x1</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  # Covarianzas entre variables exógenas en t1</span></span>
+<span><span class="st">  x1 ~~ y1</span></span>
+<span><span class="st"></span></span>
+<span><span class="st">  # Covarianzas entre residuos en t2</span></span>
+<span><span class="st">  x2 ~~ y2</span></span>
+<span><span class="st">'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section><section id="estimación-3" class="level1" data-number="11"><h1 data-number="11">
+<span class="header-section-number">11</span> Estimación</h1>
+<ul>
+<li><p>Estimator = “MLR” es: estimación de maximum likelihood con errores estándar robustos (Huber-White) y estadísticos de prueba escalados (equivalentes a los estadísticos de prueba de Yuan-Betler) –&gt; En el fondo replica lo que hace Mplus</p></li>
+<li><p>Missing = “FIML” es: Si los datos son MCAR (missing completely at random) o MAR (missing at random), podemos estimar caso a caso usando <strong>full information maximum likelihood</strong> para lidiar con los casos perdidos</p></li>
+</ul>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fit_clpm</span> <span class="op">&lt;-</span> <span class="fu">lavaan</span><span class="op">(</span><span class="va">clpm_model</span>,</span>
+<span>                   data <span class="op">=</span> <span class="va">data</span>,</span>
+<span>                   estimator <span class="op">=</span> <span class="st">"MLR"</span>, missing <span class="op">=</span> <span class="st">"FIML"</span>,</span>
+<span>                   meanstructure <span class="op">=</span> <span class="cn">TRUE</span>, int.ov.free <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                   std.lv <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit_clpm</span>, fit.measures <span class="op">=</span> <span class="cn">TRUE</span>, ci <span class="op">=</span> <span class="cn">TRUE</span>, standardized <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details><div class="cell-output cell-output-stdout">
+<pre><code>lavaan 0.6.16 ended normally after 15 iterations
+
+  Estimator                                         ML
+  Optimization method                           NLMINB
+  Number of model parameters                        10
+
+  Number of observations                           578
+  Number of missing patterns                         1
+
+Model Test User Model:
+                                              Standard      Scaled
+  Test Statistic                               579.613     288.198
+  Degrees of freedom                                 4           4
+  P-value (Chi-square)                           0.000       0.000
+  Scaling correction factor                                  2.011
+    Yuan-Bentler correction (Mplus variant)                       
+
+Model Test Baseline Model:
+
+  Test statistic                               312.485     224.589
+  Degrees of freedom                                 6           6
+  P-value                                        0.000       0.000
+  Scaling correction factor                                  1.391
+
+User Model versus Baseline Model:
+
+  Comparative Fit Index (CFI)                    0.000       0.000
+  Tucker-Lewis Index (TLI)                      -1.817      -0.950
+                                                                  
+  Robust Comparative Fit Index (CFI)                         0.000
+  Robust Tucker-Lewis Index (TLI)                           -1.829
+
+Loglikelihood and Information Criteria:
+
+  Loglikelihood user model (H0)              -2502.546   -2502.546
+  Scaling correction factor                                  0.776
+      for the MLR correction                                      
+  Loglikelihood unrestricted model (H1)      -2212.739   -2212.739
+  Scaling correction factor                                  1.129
+      for the MLR correction                                      
+                                                                  
+  Akaike (AIC)                                5025.092    5025.092
+  Bayesian (BIC)                              5068.688    5068.688
+  Sample-size adjusted Bayesian (SABIC)       5036.942    5036.942
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.499       0.351
+  90 Percent confidence interval - lower         0.465       0.327
+  90 Percent confidence interval - upper         0.534       0.375
+  P-value H_0: RMSEA &lt;= 0.050                    0.000       0.000
+  P-value H_0: RMSEA &gt;= 0.080                    1.000       1.000
+                                                                  
+  Robust RMSEA                                               0.499
+  90 Percent confidence interval - lower                     0.465
+  90 Percent confidence interval - upper                     0.534
+  P-value H_0: Robust RMSEA &lt;= 0.050                         0.000
+  P-value H_0: Robust RMSEA &gt;= 0.080                         1.000
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.996       0.996
+
+Parameter Estimates:
+
+  Standard errors                             Sandwich
+  Information bread                           Observed
+  Observed information based on                Hessian
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+  x1 =~                                                                 
+    prf_nmrt_scr_1    1.000                               1.000    1.000
+  x2 =~                                                                 
+    prf_nmrt_scr_2    1.000                               1.000    1.000
+  y1 =~                                                                 
+    mjp_wave1         1.000                               1.000    1.000
+  y2 =~                                                                 
+    mjp_wave2         1.000                               1.000    1.000
+   Std.lv  Std.all
+                  
+    1.000    1.000
+                  
+    1.062    1.000
+                  
+    1.000    1.000
+                  
+    1.095    1.000
+
+Regressions:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+  x2 ~                                                                  
+    x1                0.286    0.047    6.120    0.000    0.194    0.377
+  y2 ~                                                                  
+    y1                0.442    0.044   10.000    0.000    0.356    0.529
+  x2 ~                                                                  
+    y1                0.101    0.036    2.797    0.005    0.030    0.173
+  y2 ~                                                                  
+    x1                0.005    0.050    0.098    0.922   -0.093    0.103
+   Std.lv  Std.all
+                  
+    0.269    0.269
+                  
+    0.404    0.404
+                  
+    0.096    0.096
+                  
+    0.004    0.004
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+  x1 ~~                                                                 
+    y1                0.612    0.029   21.199    0.000    0.556    0.669
+ .x2 ~~                                                                 
+   .y2                0.674    0.027   24.624    0.000    0.620    0.728
+   Std.lv  Std.all
+                  
+    0.612    0.612
+                  
+    0.674    0.674
+
+Intercepts:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+   .prf_nmrt_scr_1   -0.007    0.026   -0.272    0.786   -0.059    0.044
+   .prf_nmrt_scr_2   -0.003    0.024   -0.143    0.886   -0.050    0.044
+   .mjp_wave1         2.118    0.031   67.930    0.000    2.057    2.179
+   .mjp_wave2         2.149    0.031   68.245    0.000    2.087    2.211
+    x1                0.000                               0.000    0.000
+   .x2                0.000                               0.000    0.000
+    y1                0.000                               0.000    0.000
+   .y2                0.000                               0.000    0.000
+   Std.lv  Std.all
+   -0.007   -0.007
+   -0.003   -0.003
+    2.118    2.118
+    2.149    1.963
+    0.000    0.000
+    0.000    0.000
+    0.000    0.000
+    0.000    0.000
+
+Variances:
+                   Estimate  Std.Err  z-value  P(&gt;|z|) ci.lower ci.upper
+   .prf_nmrt_scr_1    0.000                               0.000    0.000
+   .prf_nmrt_scr_2    0.000                               0.000    0.000
+   .mjp_wave1         0.000                               0.000    0.000
+   .mjp_wave2         0.000                               0.000    0.000
+    x1                1.000                               1.000    1.000
+   .x2                1.000                               1.000    1.000
+    y1                1.000                               1.000    1.000
+   .y2                1.000                               1.000    1.000
+   Std.lv  Std.all
+    0.000    0.000
+    0.000    0.000
+    0.000    0.000
+    0.000    0.000
+    1.000    1.000
+    0.887    0.887
+    1.000    1.000
+    0.835    0.835</code></pre>
+</div>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 20%">
+<col style="width: 61%">
+</colgroup>
+<thead><tr class="header">
+<th>Medida</th>
+<th>Valor</th>
+<th>Interpretación</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><strong>CFI / TLI</strong></td>
+<td>0.000 / -1.829</td>
+<td>Valores pésimos (deberían ser &gt; .90 o .95).</td>
+</tr>
+<tr class="even">
+<td><strong>RMSEA (robusto)</strong></td>
+<td>0.499 [0.465–0.534]</td>
+<td>Extremadamente alto. Valores aceptables son &lt; .08 (ideal &lt; .05).</td>
+</tr>
+<tr class="odd">
+<td><strong>SRMR</strong></td>
+<td>0.996</td>
+<td>Muy alto. Debería ser &lt; .08.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>x2 ~ x1 (predicción de preferencia meritocracia futura)</p></li>
+<li><p>y2 ~ y1 (predicción de mjp futura):</p></li>
+</ul>
+<p>x1 → x2: β = 0.286, p &lt; .001 ✅</p>
+<p>↪ Efecto significativo y positivo: mayor preferencia no meritocrática en t1 se asocia a mayor preferencia en t2.</p>
+<p>y1 → y2: β = 0.442, p &lt; .001 ✅</p>
+<p>↪ Efecto autoregresivo fuerte: quienes apoyaban mjp en t1 tienden a mantener esa posición en t2.</p>
+<p>y1 → x2: β = 0.101, p &lt; .001 ✅ ↪ mjp en t1 influye en preferencia no meritocracia en t2.</p>
+<p>x1 → y2: β = 0.005, ns ❌</p>
+<p>↪ Preferencia no meritocrática en T1 no influye negativamente en mjp en t2</p>
+<p>Conclusión: Efecto significativo autoregresivo dentro de cada dimensión. Efecto significativo cruzado.</p>
+</section></main><!-- /main column --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
