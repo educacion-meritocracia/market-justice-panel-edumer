@@ -70,3 +70,11 @@ In the web page it is possible to see/download the paper in html and pdf formats
 
 - [Abstract COES](https://educacion-meritocracia.github.io/market-justice-panel-edumer/conferencias/coes-conf-2024/abstract.html)
 
+## Presentación Meritocracia y Justicia de Mercado
+
+https://educacion-meritocracia.github.io/market-justice-panel-edumer/conferencias/coes-conf-2024/template/edumer_template.html 
+
+
+https://educacion-meritocracia.github.io/market-justice-panel-edumer/conferencias/demosal-2025/changes-meritocracy.html 
+
+![https://educacion-meritocracia.github.io/market-justice-panel-edumer/conferencias/isa-2025/isa-2025.html](https://educacion-meritocracia.github.io/market-justice-panel-edumer/conferencias/isa-2025/isa-2025.html )
