@@ -1,0 +1,587 @@
+---
+pagetitle: "EDUMER Template"
+Author: Equipo EDUMER
+bibliography: "input/bib/merit-redis-school.bib"
+csl: "input/bib/apa6.csl"
+lang: es
+
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: "#>"
+    R.options:
+      knitr.graphics.auto_pdf: true
+      
+format:
+  revealjs:
+    #logo: images/edumer.png
+    slide-number: true
+    theme: "libs/edumer.scss"
+    auto-stretch: false
+    title-slide-attributes:
+      visibility: false
+    transition: fade
+    transition-speed: slow
+# data-background-image: images/cover.jpg
+# data-background-size: cover
+    auto-play-media: true
+  pdf:
+    format: beamer 
+    keep-tex: true  # Debug LaTeX output if needed
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(knitr)
+knitr::opts_chunk$set(echo = F,
+                      warning = F,
+                      error = F, 
+                      message = F) 
+```
+
+```{r}
+#| label: packages
+#| include: false
+
+if (! require("pacman")) install.packages("pacman")
+
+pacman::p_load(tidyverse,
+               sjmisc, 
+               sjPlot,
+               here,
+               lavaan,
+               psych,
+               corrplot,
+               ggdist,
+               patchwork,
+               sjlabelled,
+               semTools,
+               gtools,
+               RColorBrewer,
+               skimr,
+               readxl,
+               ggpubr,
+               lme4)
+
+
+options(scipen=999)
+rm(list = ls())
+
+load("../../output/data/db_proc.RData")
+
+
+
+```
+
+::: columns
+::: {.column width="15%"}
+
+![](images/coes.png)
+
+
+
+![](images/edumer.png)
+
+![](images/qr.png)
+
+:::
+
+::: {.column .column-right width="85%"}
+<br>
+
+## **Meritocracy and Redistributive Preferences at School Level in Chile**
+
+------------------------------------------------------------------------
+
+Juan Carlos Castillo, Kevin Carrasco & Andreas Laffert 
+
+
+::: {.red2 .medium}
+
+**FONDECYT No. 1210847 "Meritocracy at school: Moral foundations of educative market and their implications for civic education in Chile"**
+
+:::
+
+5th ISA Forum of Sociology
+
+Friday, 11 July 2025
+
+:::
+:::
+
+
+## **Meritocracy, inequality beliefs and school** 
+
+::: {.incremental .highlight-last style="font-size: 100%;"}
+
+- ¿Quién merece qué y por qué?
+
+- La justificación de la desigualdad social basada en criterios de mercado ha sido conceptualizada como la adhesión de los individuos a la asignación de bienes y servicios sociales (tales como salud, educación y pensiones) basados en la capacidad de los individuos para pagar [@lane_market_1986]
+
+- A pesar de alta desigualdad de ingresos y limitada movilidad social en Chile, existe una creencia de que los individuos son los únicos responsables de sus resultados económicos [@torche_intergenerational_2014; @salgado_inequality_2023]
+
+:::
+
+## **Meritocracia** 
+
+::: {.incremental .highlight-last style="font-size: 100%;"}
+
+- La meritocracia se concibe como un sistema donde las recompensas se distribuyen según el esfuerzo y el talento individual [@young_rise_1958]
+
+- **Mérito** = esfuerzo + talento [@young_rise_1958]
+
+- Asociado a justificación de desigualdad al legitimar diferencias muchas veces asociadas a oportunidades [@mijs_unfulfillable_2016]
+
+- Hasta ahora la mayor parte de las investigaciones sobre meritocracia se han efectuado en población adulta, dejando de lado el estudio de los factores asociados a estas creencias en edades más tempranas, así como también su formación.
+
+
+:::
+
+## **Meritocracia**
+
+- Propuesta escala de meritocracia de @castillo_multidimensional_2023 
+
+![](images/modelo_con.png)
+
+## Antecedentes: **Meritocracia**
+
+::: {.incremental .highlight-last style="font-size: 100%;"}
+
+- Medición de **meritocracia en la sociedad**: 
+ 1) La *percepción de meritocracia*: en qué medida se percibe que los esfuerzos y habilidades son recompensados en el país [@andersen_we_2021; @castillo_meritocracia_2019; @mijs_paradox_2019].
+ 2) Las *preferencias por la meritocracia*: en qué medida la meritocracia es deseada en la sociedad [@castillo_multidimensional_2023].
+
+- La **percepción de meritocracia escolar**, asociada a que la inteligencia y el esfuerzo son relevantes para obtener buenas calificaciones en la escuela [@resh_sense_2010].
+
+:::
+
+# Datos, variables y métodos {.xlarge}
+
+## Datos
+
+::: {.incremental .highlight-last style="font-size: 100%;"}
+-   La base de datos a utilizar corresponde a la encuesta panel “Educación y Meritocracia” (EDUMER), realizada en Chile durante el 2023 y 2024. 
+- En este estudio se evaluaron estudiantes de sexto básico y primero medio provenientes de 9 escuelas de la región metropolitana. El N total de respuestas completas es de 902 estudiantes en la ola 1 y 632 en la ola 2. 
+- Las variables sobre meritocracia fueron medidas a partir de escalas likert de 4 categorías desde “Muy en desacuerdo” a “Muy de acuerdo”.
+:::
+
+# Variables
+
+## Meritocracy
+
+```{r}
+#| label: fig-likert0
+
+theme_set(theme_ggdist())
+colors <- RColorBrewer::brewer.pal(n = 4, name = "RdBu")
+
+a <- db_proc %>% 
+  filter(wave == 1) %>%
+  select(starts_with("perc")) %>% 
+  sjPlot::plot_likert(geom.colors = colors,
+                      title = c("a. Perceptions"),
+                      geom.size = 0.8,
+                      axis.labels = c("Effort", "Talent", "Rich parents", "Contacts"),
+                      catcount = 4,
+                      values  =  "sum.outside",
+                      reverse.colors = F,
+                      reverse.scale = T,
+                      show.n = FALSE,
+                      show.prc.sign = T
+                      ) +
+  ggplot2::theme(legend.position = "bottom")
+
+b <- db_proc %>% 
+  filter(wave == 1) %>% 
+  select(starts_with("pref")) %>% 
+  sjPlot::plot_likert(geom.colors = colors,
+                      title = c("b. Preferences"),
+                      geom.size = 0.8,
+                     axis.labels = c("Effort", "Talent", "Rich parents", "Contacts"),
+                      catcount = 4,
+                      values  =  "sum.outside",
+                      reverse.colors = F,
+                      reverse.scale = T,
+                      show.n = FALSE,
+                      show.prc.sign = T
+  ) +
+  ggplot2::theme(legend.position = "bottom")
+
+c <- db_proc %>% 
+  filter(wave == 1) %>% 
+  select(school_effort, school_talent) %>% 
+  sjPlot::plot_likert(geom.colors = colors,
+                      title = c("C. School"),
+                      geom.size = 0.8,
+                     axis.labels = c("Effort", "Talent"),
+                      catcount = 4,
+                      values  =  "sum.outside",
+                      reverse.colors = F,
+                      reverse.scale = T,
+                      show.n = FALSE,
+                      show.prc.sign = T
+  ) +
+  ggplot2::theme(legend.position = "bottom")
+
+likerplot <- ggarrange(a,b, common.legend=TRUE)
+
+likerplot
+
+
+```
+
+## Meritocracy
+
+```{r}
+#| label: fig-likert
+
+theme_set(theme_ggdist())
+colors <- RColorBrewer::brewer.pal(n = 4, name = "RdBu")
+
+a <- db_proc %>% 
+  filter(wave == 1) %>%
+  select(starts_with("perc")) %>% 
+  sjPlot::plot_likert(geom.colors = colors,
+                      title = c("a. Perceptions"),
+                      geom.size = 0.8,
+                      axis.labels = c("Effort", "Talent", "Rich parents", "Contacts"),
+                      catcount = 4,
+                      values  =  "sum.outside",
+                      reverse.colors = F,
+                      reverse.scale = T,
+                      show.n = FALSE,
+                      show.prc.sign = T
+                      ) +
+  ggplot2::theme(legend.position = "bottom")
+
+b <- db_proc %>% 
+  filter(wave == 1) %>% 
+  select(starts_with("pref")) %>% 
+  sjPlot::plot_likert(geom.colors = colors,
+                      title = c("b. Preferences"),
+                      geom.size = 0.8,
+                     axis.labels = c("Effort", "Talent", "Rich parents", "Contacts"),
+                      catcount = 4,
+                      values  =  "sum.outside",
+                      reverse.colors = F,
+                      reverse.scale = T,
+                      show.n = FALSE,
+                      show.prc.sign = T
+  ) +
+  ggplot2::theme(legend.position = "bottom")
+
+c <- db_proc %>% 
+  filter(wave == 1) %>% 
+  select(school_effort, school_talent) %>% 
+  sjPlot::plot_likert(geom.colors = colors,
+                      title = c("C. School"),
+                      geom.size = 0.8,
+                     axis.labels = c("Effort", "Talent"),
+                      catcount = 4,
+                      values  =  "sum.outside",
+                      reverse.colors = F,
+                      reverse.scale = T,
+                      show.n = FALSE,
+                      show.prc.sign = T
+  ) +
+  ggplot2::theme(legend.position = "bottom")
+
+likerplot <- ggarrange(a,b,c, common.legend=TRUE, ncol=3)
+
+likerplot
+
+
+```
+
+## Market justices preferences and redistribution
+
+```{r}
+#| label: fig-likert2
+
+theme_set(theme_ggdist())
+colors <- RColorBrewer::brewer.pal(n = 4, name = "RdBu")
+
+a <- db_proc %>% 
+  filter(wave == 1) %>%
+  select(just_educ, just_health, just_pension) %>% 
+  sjPlot::plot_likert(geom.colors = colors,
+                      title = c("a. Market justice"),
+                      geom.size = 0.8,
+                      axis.labels = c("Education", "Health", "Pensions"),
+                      catcount = 4,
+                      values  =  "sum.outside",
+                      reverse.colors = F,
+                      reverse.scale = T,
+                      show.n = FALSE,
+                      show.prc.sign = T
+                      ) +
+  ggplot2::theme(legend.position = "bottom")
+
+b <- db_proc %>% 
+  filter(wave == 1) %>% 
+  select(starts_with("redistribucion")) %>% 
+  sjPlot::plot_likert(geom.colors = colors,
+                      title = c("b. Redistribution"),
+                      geom.size = 0.8,
+                     axis.labels = c(""),
+                      catcount = 4,
+                      values  =  "sum.outside",
+                      reverse.colors = F,
+                      reverse.scale = T,
+                      show.n = FALSE,
+                      show.prc.sign = T
+  ) +
+  ggplot2::theme(legend.position = "bottom")
+
+
+
+likerplot <- ggarrange(a,b, common.legend=TRUE, ncol=2)
+
+likerplot
+
+
+```
+
+
+## Métodos
+
+- Estimación de promedio simple para la variable dependiente preferencias por la justicia de mercado
+
+- Análisis factorial confirmatorio y estimación de puntajes factoriales para la escala de meritocracia
+
+- Modelo multinivel longitudinal anidado en estudiantes (627 estudiantes)
+
+- ICC: 0.439
+
+- Diferencias Between (entre estudiantes) y Within (intra estudiantes)
+
+- Controles: edad, género y cohorte
+
+# Resultados {.xlarge }
+
+```{r}
+db_1 <- subset(db_proc, wave == 1)
+db_2 <- subset(db_proc, wave == 2)
+# model
+model_cfa <- '
+  perc_merit = ~ perc_effort + perc_talent
+  perc_nmerit = ~ perc_rich_parents + perc_contact
+  pref_merit = ~ pref_effort + pref_talent
+  pref_nmerit = ~ pref_rich_parents + pref_contact
+  '
+
+# estimation for each order set
+
+m1_cfa <- cfa(model = model_cfa, 
+              data = subset(db_proc, wave == 1),
+              estimator = "DWLS",
+              ordered = T,
+              std.lv = F) 
+
+m2_cfa <- cfa(model = model_cfa, 
+              data = subset(db_proc, wave == 2), 
+              estimator = "DWLS",
+              ordered = T,
+              std.lv = F)
+
+scores_1 <- lavPredict(m1_cfa)
+
+db_1$perc_merit_score  <- scores_1[, "perc_merit"]
+db_1$perc_nmerit_score <- scores_1[, "perc_nmerit"]
+db_1$pref_merit_score  <- scores_1[, "pref_merit"]
+db_1$pref_nmerit_score <- scores_1[, "pref_nmerit"]
+
+scores_2 <- lavPredict(m2_cfa)
+
+db_2$perc_merit_score  <- scores_2[, "perc_merit"]
+db_2$perc_nmerit_score <- scores_2[, "perc_nmerit"]
+db_2$pref_merit_score  <- scores_2[, "pref_merit"]
+db_2$pref_nmerit_score <- scores_2[, "pref_nmerit"]
+
+db_proc <- rbind(db_1, db_2)
+
+
+db_proc <- db_proc %>% 
+  group_by(id_student) %>% 
+  mutate(perc_merit_score_mean = mean(perc_merit_score, na.rm = T),
+         perc_merit_score_cwc = perc_merit_score - perc_merit_score_mean,
+         perc_nmerit_score_mean = mean(perc_nmerit_score, na.rm = T),
+         perc_nmerit_score_cwc = perc_nmerit_score - perc_nmerit_score_mean,
+         pref_merit_score_mean = mean(pref_merit_score, na.rm = T),
+         pref_merit_score_cwc = pref_merit_score - pref_merit_score_mean,
+         pref_nmerit_score_mean = mean(pref_nmerit_score, na.rm = T),
+         pref_nmerit_score_cwc = pref_nmerit_score - pref_nmerit_score_mean,
+         school_talent_mean = mean(school_talent, na.rm = T),
+         school_talent_cwc = school_talent - school_talent_mean,
+         school_effort_mean = mean(school_effort, na.rm = T),
+         school_effort_cwc = school_effort - school_effort_mean
+         ) %>% 
+  ungroup()
+```
+
+## Meritocracy measurement model
+
+![](https://educacion-meritocracia.github.io/merit-factorial/presentations/images/diag1_cfa_w1.png)
+
+
+## Efectos Between 
+
+#### Efectos entre estudiantes
+
+```{r}
+m5 <- lmer(mjp ~ 1 + wave + cohort_level + gender + 
+             perc_merit_score + perc_nmerit_score + 
+             pref_merit_score + pref_nmerit_score + school_effort +
+             school_talent + perc_merit_score_mean + perc_nmerit_score_mean +
+             pref_merit_score_mean + pref_nmerit_score_mean +
+             school_effort_mean + school_talent_mean +
+             (1 | id_student), 
+                data = db_proc)
+```
+
+
+```{r}
+plot_model(m5,
+           terms = c("perc_merit_score_mean", "perc_nmerit_score_mean",
+                     "pref_merit_score_mean", "pref_nmerit_score_mean",
+                     "school_effort_mean", "school_talent_mean"),
+           show.values = TRUE,
+           dot.size = 1.3,
+           line.size = 1,
+           value.size = 3.5,
+           spacing = .7,
+           vline.color = "red",
+           value.offset = 0.35,
+           axis.labels = rev(c("Percepción: meritocracia", 
+                               "Percepción: no meritocracia", 
+                               "Preferencia: meritocracia",
+                               "Preferencia: no meritocracia",
+                               "Percepción: esfuerzo escuela",
+                               "Percepción: talento escuela"))
+) + theme_bw(base_size=14)
+```
+
+## Efectos Within 
+
+#### Efectos Intra-estudiantes o  efecto del cambio en el tiempo
+
+```{r}
+plot_model(m5,
+           terms = c("perc_merit_score", "perc_nmerit_score",
+                     "pref_merit_score", "pref_nmerit_score",
+                     "school_effort", "school_talent"),
+           show.values = TRUE,
+           dot.size = 1.3,
+           line.size = 1,
+           value.size = 3.5,
+           spacing = .7,
+           vline.color = "red",
+           value.offset = 0.35,
+           axis.labels = rev(c("Percepción: meritocracia", 
+                               "Percepción: no meritocracia", 
+                               "Preferencia: meritocracia",
+                               "Preferencia: no meritocracia",
+                               "Percepción: esfuerzo escuela",
+                               "Percepción: talento escuela"))
+) + theme_bw(base_size=14)
+```
+
+## Efectos Between 
+
+#### Efectos entre estudiantes
+
+```{r}
+m5 <- lmer(redistribucion ~ 1 + wave + cohort_level + gender + 
+             perc_merit_score + perc_nmerit_score + 
+             pref_merit_score + pref_nmerit_score + school_effort +
+             school_talent + perc_merit_score_mean + perc_nmerit_score_mean +
+             pref_merit_score_mean + pref_nmerit_score_mean +
+             school_effort_mean + school_talent_mean +
+             (1 | id_student), 
+                data = db_proc)
+```
+
+
+```{r}
+plot_model(m5,
+           terms = c("perc_merit_score_mean", "perc_nmerit_score_mean",
+                     "pref_merit_score_mean", "pref_nmerit_score_mean",
+                     "school_effort_mean", "school_talent_mean"),
+           show.values = TRUE,
+           dot.size = 1.3,
+           line.size = 1,
+           value.size = 3.5,
+           spacing = .7,
+           vline.color = "red",
+           value.offset = 0.35,
+           axis.labels = rev(c("Percepción: meritocracia", 
+                               "Percepción: no meritocracia", 
+                               "Preferencia: meritocracia",
+                               "Preferencia: no meritocracia",
+                               "Percepción: esfuerzo escuela",
+                               "Percepción: talento escuela"))
+) + theme_bw(base_size=14)
+```
+
+## Efectos Within 
+
+#### Efectos Intra-estudiantes o  efecto del cambio en el tiempo
+
+```{r}
+plot_model(m5,
+           terms = c("perc_merit_score", "perc_nmerit_score",
+                     "pref_merit_score", "pref_nmerit_score",
+                     "school_effort", "school_talent"),
+           show.values = TRUE,
+           dot.size = 1.3,
+           line.size = 1,
+           value.size = 3.5,
+           spacing = .7,
+           vline.color = "red",
+           value.offset = 0.35,
+           axis.labels = rev(c("Percepción: meritocracia", 
+                               "Percepción: no meritocracia", 
+                               "Preferencia: meritocracia",
+                               "Preferencia: no meritocracia",
+                               "Percepción: esfuerzo escuela",
+                               "Percepción: talento escuela"))
+) + theme_bw(base_size=14)
+```
+
+
+# Discusión y conclusiones {data-background-color="#5f5758"}
+
+
+## Discusión y conclusiones {data-background-color="#5f5758"}
+
+::: { .incremental .highlight-last2 style="font-size: 100%;"}
+
+- La percepción de no meritocracia influye negativamente en las preferencias por justicia de mercado
+
+- La preferencia por los factores no meritocráticos influye positivamente en las preferencias por justicia de mercado
+
+- La percepción de talento en la escuela influye positivamente en las preferencias por justicia de mercado
+
+- Pocas diferencias por cambio en el tiempo. Solo un aumento en la preferencia por factores no meritocráticos influye positivamente en las preferencias por justicia de mercado.
+
+:::
+
+## Discusión y conclusiones {data-background-color="#5f5758"}
+
+::: { .incremental .highlight-last2 style="font-size: 100%;"}
+
+- Efecto negativo de la percepción no meritocrática y positivo en la preferencia de no meritocracia
+
+- Importancia del talento en la escuela
+
+- próximamente: explorar otros factores de la escuela como el promedio de notas de los estudiantes o características socioeconómicas de las familias de origen
+
+:::
+
+
+# Gracias por su atención! 
+
+-   **Github del proyecto:** <https://github.com/educacion-meritocracia>
+
+## Referencias

@@ -113,6 +113,7 @@ db_long <- db_long %>%
          school_effort = p2_1,
          school_talent = p2_2,
          inequality = p9_1,
+         redistribucion = p9_2,
          just_educ = p9_3,
          just_health = p9_4,
          just_pension = p9_5,
@@ -197,12 +198,12 @@ frq(db_long$just_health)
 frq(db_long$just_pension)
 
 db_long <- db_long %>% 
-  mutate_at(.vars = (15:17),.funs = ~ sjlabelled::set_labels(., labels = labels1))
+  mutate_at(.vars = (16:18),.funs = ~ sjlabelled::set_labels(., labels = labels1))
 
 db_long <- db_long %>% 
-  mutate_at(.vars = (15:17),.funs = ~ set_na(., na = c(88,99)))
+  mutate_at(.vars = (16:18),.funs = ~ set_na(., na = c(88,99)))
 
-db_long$mjp <- rowMeans(x = db_long[15:17], na.rm = T)
+db_long$mjp <- rowMeans(x = db_long[16:18], na.rm = T)
 db_long$mjp <- if_else(is.nan(db_long$mjp), NA, db_long$mjp)
 
 summary(db_long$mjp)
@@ -309,6 +310,7 @@ db_long$mjp <- set_label(db_long$mjp,label = "Market Justice Preferences")
 db_long$parental_educ <- set_label(db_long$parental_educ,label = "Parental educational level")
 db_long$id_estudiante <- set_label(db_long$id_estudiante,label = "Unique student identifier")
 db_long$ola <- set_label(db_long$ola,label = "Wave")
+
 db_long$perc_effort <- set_label(db_long$perc_effort,label = "In Chile, people are rewarded for their efforts")
 db_long$perc_talent <- set_label(db_long$perc_talent,label = "In Chile, people are rewarded for their intelligence and ability")
 db_long$perc_rich_parents <- set_label(db_long$perc_rich_parents,label = "In Chile, those with wealthy parents fare much better in life")
@@ -321,14 +323,19 @@ db_long$pref_contact <- set_label(db_long$pref_contact,label = "It’s fine that
 
 db_long$school_effort <- set_label(db_long$school_effort,label = "In this school, those who put in effort get good grades")
 db_long$school_talent <- set_label(db_long$school_talent,label = "In this school, those who are intelligent get good grades")
+db_long$school_merit <- set_label(db_long$school_merit,label = "In this school, students get the grades that they deserve")
 
 db_long$just_educ <- set_label(db_long$just_educ,label = "It’s good that those who can pay more receive a better education")
 db_long$just_health <- set_label(db_long$just_health,label = "It’s good that those who can pay more have better access to healthcare")
 db_long$just_pension <- set_label(db_long$just_pension,label = "It’s good that in Chile, people with higher incomes can have better pensions than those with lower incomes")
+
+db_long$inequality <- set_label(db_long$inequality,label = "Income diferences between rich and poor in Chile is too large")
+db_long$redistribucion <- set_label(db_long$redistribucion,label = "It is the government's responsibility to reduce the economic gap between high-income people and low-income people")
+
   
 
 db_proc <- db_long %>% 
-  select(-c(educ_m, educ_p, aux1, p12_1_apoderado, id_apoderado, inequality)) %>% 
+  select(-c(educ_m, educ_p, aux1, p12_1_apoderado, id_apoderado)) %>% 
   rename(id_student = id_estudiante,
          wave = ola)
 
