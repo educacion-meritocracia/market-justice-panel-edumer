@@ -20,7 +20,7 @@ format:
     auto-stretch: false
     title-slide-attributes:
       visibility: false
-    transition: fade
+    transition: slide
     transition-speed: slow
 # data-background-image: images/cover.jpg
 # data-background-size: cover
@@ -37,7 +37,8 @@ library(knitr)
 knitr::opts_chunk$set(echo = F,
                       warning = F,
                       error = F, 
-                      message = F) 
+                      message = F,
+                      cache=T) 
 ```
 
 ```{r}
@@ -81,9 +82,9 @@ load("../../output/data/db_proc.RData")
 
 ![](images/coes.png)
 
-
-
 ![](images/edumer.png)
+
+![](images/isa.png)
 
 ![](images/qr.png)
 
@@ -101,7 +102,7 @@ Juan Carlos Castillo, Kevin Carrasco & Andreas Laffert
 
 ::: {.red2 .medium}
 
-**FONDECYT No. 1210847 "Meritocracy at school: Moral foundations of educative market and their implications for civic education in Chile"**
+**FONDECYT No. 1210847 "Meritocracy at school: Moral foundations of educational markets and their implications for civic education in Chile"**
 
 :::
 
@@ -112,29 +113,21 @@ Friday, 11 July 2025
 :::
 :::
 
-## **Deservingness lab**
 
-::: {.columns}
+# Some context
 
-::: {.column width="25%"}
+## Research projects
 
-<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; justify-items: center; width: 100%;">
-
-  <img src="https://jc-castillo.com/images/conconFoto.png" style="width:150px; border-radius: 50%;" />
-  
-  <img src="images/kevin.jpg" style="width:150px; border-radius: 50%;" />
-  
-  <img src="images/andreas.jpg" style="width:150px; border-radius: 50%;" />
-  
-  <img src="images/mafe.jpg" style="width:150px; border-radius: 50%;" />
-
-</div>
-
+::: {.incremental .highlight-last style="font-size: 110%;"}
+- 2016-2020: The moral economy of meritocracy and redistributive preferences. Castillo, JC., Atria, J. & Maldonado, L. 
+- 2021-2025: Meritocracy at school: Moral foundations of educational markets and its consequences for citizenship education in Chile. Castillo, JC., Moyano, C., Angelcos, N. & Salgado, M. 
+- 2025-2028: Market Justice and social welfare deservingness. Castillo, JC.
 :::
 
-::: {.column width="75%"}
+## Meritocracy at school 
+
 ::: {.incremental .highlight-last style="font-size: 110%;"}
-- ANID/FONDECYT N°1210847 2021-2024 - Meritocracy at school.
+- ANID/FONDECYT Grant N°1210847 2021-2025 
 
 - First stage:
   * [Qualitative study](https://link.springer.com/article/10.1007/s11211-025-00456-2)
@@ -147,24 +140,72 @@ Friday, 11 July 2025
 - More information: [jc-castillo.com/project/fondecyt-edumer/](jc-castillo.com/project/fondecyt-edumer/)
 
 :::
+
+
+## Our (current) team
+
+:::{=html}
+
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; justify-items: center; align-items: center;">
+
+<div style="text-align: center;">
+  <img src="images/jc.png" style="width:200px; border-radius: 50%;" />
+  <div>JC</div>
+</div>
+
+<div style="text-align: center;">
+  <img src="images/kevin.png" style="width:200px; border-radius: 50%;" />
+  <div>Kevin</div>
+</div>
+
+<div style="text-align: center;">
+  <img src="images/andreas.jpg" style="width:200px; border-radius: 50%;" />
+  <div>Andreas</div>
+</div>
+</div>
 :::
+
+:::{=html}
+
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; justify-items: center; align-items: center;">
+
+<div style="text-align: center;">
+  <img src="images/mafe.jpg" style="width:200px; border-radius: 50%;" />
+  <div>Mafe</div>
+</div>
+
+<div style="text-align: center;">
+  <img src="images/tomas.png" style="width:200px; border-radius: 50%;" />
+  <div>Tomás</div>
+</div>
+
+<div style="text-align: center;">
+  <img src="images/rene.png" style="width:200px; border-radius: 50%;" />
+  <div>René</div>
+</div>
+
+</div>
+
 :::
 
-## Redistribution and Market Justice Preferences
-
-::: {.incremental .highlight-last style="font-size: 100%;"}
-
-- Who deserves what and why?
-
-- The justification of social inequality based on market criteria has been conceptualized as individuals’ adherence to the allocation of goods and social services (such as health, education, and pensions) according to individuals’ ability to pay [@lane_market_1986]
 
 
-- Despite high income inequality and limited social mobility in Chile, there is a belief that individuals are responsible for their economic outcomes [@torche_intergenerational_2014; @salgado_inequality_2023]
+## Last works
 
+::: {.small}
+
+- Castillo, J. C., Iturra, J., & Carrasco, K. (2025). Changes in the Justification of Educational Inequalities: The Role of Perceptions of Inequality and Meritocracy During the COVID Pandemic. Social Justice Research. https://doi.org/10.1007/s11211-025-00458-0
+- Moyano Dávila, C., Alarcón-Arcos, S., Angelcos, N., Castillo, J. C., & Salgado, M. (2025). Merit as an Attitude: Chilean School Communities’ Repertoires in Chile and the Perception of the “Good Student” in a Post-pandemic Scenario. Social Justice Research. https://doi.org/10.1007/s11211-025-00456-2
+- Castillo, J. C., Salgado, M., Carrasco, K., & Laffert, A. (2024). The Socialization of Meritocracy and Market Justice Preferences at School. Societies, 14(11), Article 11. https://doi.org/10.3390/soc14110214
+- Carrasco, K., García-Castro, J. D., & Castillo, J.-C. (2024). La socialización de las actitudes hacia la desigualdad y meritocracia en la etapa escolar en chile. In G. Assusa & G. Benza (Eds.), America Latina desigual: Preguntas, enfoques y tendencias actuales. Siglo XXI Editores.
+- Castillo, J.-C., Iturra, J., Maldonado, L., Atria, J., & Meneses, F. (2023). A multidimensional approach for measuring meritocratic beliefs: Advantages, limitations and alternatives to the ISSP social inequality survey. International Journal of Sociology, Online first. https://doi.org/10.1080/00207659.2023.2274712
+- Iturra, J., Castillo, J.-C., Rufs, C., & Maldonado, L. (2023). Percepción de desigualdad económica y su influencia sobre la justificación de las diferencias de ingreso legítimas. Estudios Sociológicos, 4(122). https://doi.org/10.24201/es.2023v41n122.2260
 
 :::
 
-## **Meritocracy, inequality beliefs and school** 
+# Meritocracy
+
+## **Meritocracy & inequality beliefs** 
 
 ::: {.incremental .highlight-last style="font-size: 100%;"}
 
@@ -174,41 +215,89 @@ Friday, 11 July 2025
 
 - Associated with the justification of inequality by legitimizing differences often linked to opportunities [@mijs_unfulfillable_2016]
 
-- So far, most research on meritocracy has focused on the adult population, neglecting the study of factors associated with these beliefs at earlier ages, as well as their formation.
+- Two research strands:
+  - stratification and mobility (objective meritocracy)
+  - beliefs about meritocracy (subjective meritocracy)
 
 
 :::
 
-## **Meritocracy, inequality beliefs and school** 
-
-- Proposed meritocracy scale by @castillo_multidimensional_2023
-
-
-![](images/modelo_con.png)
-
-## **Meritocracy**
+## **Conceptualizing & measuring meritocratic beliefs (1)** 
 
 ::: {.incremental .highlight-last style="font-size: 100%;"}
 
 - Measurement of **meritocracy in society**:  
-  1) The *perception of meritocracy*: the extent to which efforts and abilities are perceived to be rewarded in the country [@andersen_we_2021; @castillo_meritocracia_2019; @mijs_paradox_2019].  
-  2) *Preferences for meritocracy*: the extent to which meritocracy is desired in society [@castillo_multidimensional_2023].
+  1) The **perception of meritocracy**: the extent to which efforts and abilities are perceived to be rewarded in the country [@andersen_we_2021; @castillo_meritocracia_2019; @mijs_paradox_2019].  
+  2) **Preferences for meritocracy**: the extent to which meritocracy is desired in society [@castillo_multidimensional_2023].
 
 :::
+
+
+## **Conceptualizing & measuring meritocratic beliefs (2)** 
+
+- Proposed meritocracy conceptual framework and scale by @castillo_multidimensional_2023
+
+
+![](images/modelo_con.png)
+
+
+
+## Meritocracy at school
+
+::: {.incremental .highlight-last style="font-size: 100%;"}
+
+- School and socialization of meritocratic values
+
+- Particularly in societies with a high degree of commodification of educational institutions (as Chile)
+
+- So far, most research on meritocracy has focused on the adult population, neglecting the study of factors associated with these beliefs at earlier ages, as well as their **socialization**.
+:::
+
+
+# Redistribution and Market Justice Preferences
+
+## Market justice
+
+::: {.incremental .highlight-last style="font-size: 100%;"}
+
+- Who deserves what and why?
+
+- Despite high income inequality and limited social mobility in Chile, there is a belief that individuals are responsible for their economic outcomes [@torche_intergenerational_2014; @salgado_inequality_2023]
+
+- Market justice:  individuals’ adherence to the allocation of goods and social services (such as health, education, and pensions) according to individuals’ ability to pay [@lane_market_1986]
+
+- Main argument: those who perceive and prefer meritocracy show larger market justice preferences
+:::
+
+# Research question {data-background-color="#5f5758"}
+
+<br>
+
+
+:::{.slarge}
+_**To what extent the meritocratic perceptions and beliefs of school-age children are related to market justice preferences?**_
+:::
+
 
 # Data, variables & methods {.xlarge}
 
 ## Data
 
 ::: {.incremental .highlight-last style="font-size: 100%;"}
-- The database used corresponds to the panel survey “Education and Meritocracy” (EDUMER), conducted in Chile during 2023 and 2024.
-- In this study, students from sixth grade and first year of high school from 9 schools in the Metropolitan Region were evaluated. The total number of complete responses is 902 students in wave 1 and 632 in wave 2.
-- The meritocracy variables were measured using 4-point Likert scales ranging from “Strongly disagree” to “Strongly agree”.
+- Panel survey “Education and Meritocracy” (EDUMER), conducted in Chile during 2023 and 2024.
+- Students from sixth grade and first year of high school from 9 schools in the Metropolitan Region in CHile. 
+- The total number of complete responses is 902 students in wave 1 and 632 in wave 2.
 
 :::
 
-# Variables
 
+## Dependent variable: Market justice
+
+- Market justice: _"It is just that in Chile people with higher incomes can have..."_ 
+  - better education
+  - better pensions
+  - better health access
+  
 ## Market justice preferences
 
 ```{r}
@@ -254,7 +343,7 @@ likert_mjp <- ggarrange(a,b, ncol=2, common.legend=TRUE)
 likert_mjp
 ```
 
-## Meritocracy
+## (Main) Independent variable: Meritocracy
 
 ```{r}
 df <- data.frame(
@@ -574,28 +663,28 @@ plot_model(m5,
 
 # Discussion and Conclusions {data-background-color="#5f5758"}
 
+## Main findings: non-meritocracy
 
-## Discussion and Conclusions {data-background-color="#5f5758"}
-
-::: { .incremental .highlight-last2 style="font-size: 100%;"}
+::: { .incremental .highlight-last style="font-size: 100%;"}
 
 - The perception of non-meritocracy negatively influences preferences for market justice
 
 - The preference for non-meritocratic factors positively influences preferences for market justice
 
-- Few differences over time. Only an increase in the preference for non-meritocratic factors positively influences preferences for market justice.
-
+- Few differences over time, only an increase in the preference for non-meritocratic factors positively influences preferences for market justice
 
 :::
 
-## Discussion and Conclusions {data-background-color="#5f5758"}
+## Future research
+::: { .incremental .highlight-last style="font-size: 100%;"}
 
-::: { .incremental .highlight-last2 style="font-size: 100%;"}
+- focus on non-meritocracy
 
-- Negative effect of non-meritocratic perception and positive effect of preference for non-meritocracy
+- typologies / latent class
 
-- Coming soon: explore other school factors such as students’ grade point average or the socioeconomic characteristics of their families of origin
+- Include students’ grade point average (justice of rewards)
 
+- Socioeconomic characteristics of their families of origin
 
 :::
 
