@@ -154,6 +154,8 @@ Friday, 11 July 2025
 
 ::: {.incremental .highlight-last style="font-size: 100%;"}
 
+- Alongside the State, the market also distributes valued resources and rewards, such as income and well-being
+
 - Who deserves what and why?
 
 - The justification of social inequality based on market criteria has been conceptualized as individuals’ adherence to the allocation of goods and social services (such as health, education, and pensions) according to individuals’ ability to pay [@lane_market_1986]
@@ -172,9 +174,9 @@ Friday, 11 July 2025
 
 - **Merit** = effort + talent [@young_rise_1958]
 
-- Associated with the justification of inequality by legitimizing differences often linked to opportunities [@mijs_unfulfillable_2016]
+- Associated with the justification of inequality by legitimizing differences often linked to opportunities, rather than differences in origins/conditions [@mijs_unfulfillable_2016]
 
-- So far, most research on meritocracy has focused on the adult population, neglecting the study of factors associated with these beliefs at earlier ages, as well as their formation.
+- So far, most research on meritocracy has focused on the adult population, neglecting the study of factors associated with these beliefs at earlier ages, as well as their formation [@batruch_belief_2022; @darnon_where_2018].
 
 
 :::
@@ -202,8 +204,14 @@ Friday, 11 July 2025
 
 ::: {.incremental .highlight-last style="font-size: 100%;"}
 - The database used corresponds to the panel survey “Education and Meritocracy” (EDUMER), conducted in Chile during 2023 and 2024.
-- In this study, students from sixth grade and first year of high school from 9 schools in the Metropolitan Region were evaluated. The total number of complete responses is 902 students in wave 1 and 632 in wave 2.
-- The meritocracy variables were measured using 4-point Likert scales ranging from “Strongly disagree” to “Strongly agree”.
+
+- CAWI interviews applied to primary and secondary students from 9 schools in the Metropolitan Region and Valparaíso, Chile.
+
+- Non-probabilistic sample.
+
+- Composed of 411 women, 446 men, 45 other; $\bar{X}_{age}$ = 13.1, $SD_{age}$ = 1.6
+
+- Modules on meritocracy, preferences and inequality, and citizenship.
 
 :::
 
