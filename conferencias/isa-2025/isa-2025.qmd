@@ -113,6 +113,16 @@ Friday, 11 July 2025
 :::
 :::
 
+# Final conclusions {data-background-color="#5f5758"}
+
+- The **perception** of non-meritocracy negatively influences preferences for market justice
+
+- The **preference** for non-meritocratic factors positively influences preferences for market justice
+
+- **talent** as the threatening component of meritocracy
+
+
+
 
 # Some context
 
@@ -680,17 +690,21 @@ plot_model(m5,
 
 - focus on non-meritocracy
 
-- typologies / latent class
+- focus on talent
+
+- typologies / latent class of meritocratic beliefs
 
 - Include students’ grade point average (justice of rewards)
 
-- Socioeconomic characteristics of their families of origin
+- Socioeconomic characteristics of families 
 
 :::
 
 
-# Thanks for your attention!
+# Thanks for your attention, and looking forward to your comments!
 
 -   **Github project:** <https://github.com/educacion-meritocracia>
+
+- personal web: [jc-castillo.com](https://jc-castillo.com/)
 
 ## References
