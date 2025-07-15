@@ -107,7 +107,7 @@ Barcelona, Tuesday 15th 2025
 :::
 
 
-# Some context
+# Some context {data-background-color="#5f5758"}
 
 ## Research projects
 
@@ -196,7 +196,7 @@ Barcelona, Tuesday 15th 2025
 
 :::
 
-# This presentation:
+# This presentation: {data-background-color="#5f5758"}
 
 a. General conceptual framework: meritocracy & market justice
 
@@ -204,7 +204,7 @@ b. Study 1: Market justice & meritocracy at student & school level
 
 c. Study 2: Changes in the association between market justice & meritocracy
 
-# a. General conceptual framework
+# a. General conceptual framework {data-background-color="#5f5758"}
 
 ## **Meritocracy & inequality beliefs** 
 
@@ -283,7 +283,9 @@ c. Study 2: Changes in the association between market justice & meritocracy
 _**To what extent the meritocratic perceptions and beliefs of school-age children are related to market justice preferences?**_
 :::
 
-# b. Study 1
+# b. Study 1 {data-background-color="#5f5758"}
+
+##
 
 ![](images/general-scheme.png)
 
@@ -367,7 +369,7 @@ _**To what extent the meritocratic perceptions and beliefs of school-age childre
 
 ##
 
-::: {.columns}
+::: {.columnsP}
 
 ::: {.column width="50%"}
 ![](images/societies.png)
@@ -379,7 +381,7 @@ Castillo, J. C., Salgado, M., Carrasco, K., & Laffert, A. (2024). The Socializat
 
 :::
 
-# c. Study 2: Changes in the association between market justice & meritocracy
+# c. Study 2: Changes in the association between market justice & meritocracy {data-background-color="#5f5758"}
 
 # Data, variables & methods {.xlarge}
 
