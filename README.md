@@ -78,3 +78,5 @@ https://educacion-meritocracia.github.io/market-justice-panel-edumer/conferencia
 https://educacion-meritocracia.github.io/market-justice-panel-edumer/conferencias/demosal-2025/changes-meritocracy.html 
 
 [https://educacion-meritocracia.github.io/market-justice-panel-edumer/conferencias/isa-2025/isa-2025.html](https://educacion-meritocracia.github.io/market-justice-panel-edumer/conferencias/isa-2025/isa-2025.html )
+
+[https://educacion-meritocracia.github.io/market-justice-panel-edumer/conferencias/upf2025/upf2025.html](https://educacion-meritocracia.github.io/market-justice-panel-edumer/conferencias/upf2025/upf2025.html )

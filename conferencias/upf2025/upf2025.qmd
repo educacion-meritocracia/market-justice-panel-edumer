@@ -1,0 +1,802 @@
+---
+pagetitle: "EDUMER Template"
+Author: Equipo EDUMER
+bibliography: "input/bib/merit-redis-school.bib"
+csl: "input/bib/apa6.csl"
+lang: en
+
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: "#>"
+    R.options:
+      knitr.graphics.auto_pdf: true
+      
+format:
+  revealjs:
+    #logo: images/edumer.png
+    slide-number: true
+    theme: "libs/edumer.scss"
+    auto-stretch: false
+    title-slide-attributes:
+      visibility: false
+    transition: slide
+    transition-speed: slow
+# data-background-image: images/cover.jpg
+# data-background-size: cover
+    auto-play-media: true
+  pdf:
+    format: beamer 
+    keep-tex: true  # Debug LaTeX output if needed
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(knitr)
+knitr::opts_chunk$set(echo = F,
+                      warning = F,
+                      error = F, 
+                      message = F,
+                      cache=T) 
+```
+
+```{r}
+#| label: packages
+#| include: false
+
+if (! require("pacman")) install.packages("pacman")
+
+pacman::p_load(tidyverse,
+               sjmisc, 
+               sjPlot,
+               here,
+               lavaan,
+               psych,
+               corrplot,
+               ggdist,
+               patchwork,
+               sjlabelled,
+               semTools,
+               gtools,
+               RColorBrewer,
+               skimr,
+               readxl,
+               ggpubr,
+               lme4,
+               kableExtra,
+               knitr)
+
+
+options(scipen=999)
+rm(list = ls())
+
+load("../../output/data/db_proc.RData")
+
+
+
+```
+
+::: columns
+::: {.column width="15%"}
+
+![](images/coes.png)
+
+![](images/edumer.png)
+
+![](images/upf.png)
+
+:::
+
+::: {.column .column-right width="85%"}
+<br>
+
+## **Market justice and meritocracy: Concepts, measurement, and empirical associations**
+
+------------------------------------------------------------------------
+
+Juan Carlos Castillo, Department of Sociology
+
+Universidad de Chile
+
+[jc-castillo.com](https://jc-castillo.com/)
+
+Barcelona, Tuesday 15th 2025
+
+:::
+:::
+
+
+# Some context
+
+## Research projects
+
+::: {.incremental .highlight-last style="font-size: 110%;"}
+- 2016-2020: The moral economy of meritocracy and redistributive preferences. Castillo, JC., Atria, J. & Maldonado, L. 
+- 2021-2025: Meritocracy at school: Moral foundations of educational markets and its consequences for citizenship education in Chile. Castillo, JC., Moyano, C., Angelcos, N. & Salgado, M. 
+- 2025-2028: Market Justice and social welfare deservingness. Castillo, JC.
+:::
+
+## Meritocracy at school 
+
+::: {.incremental .highlight-last style="font-size: 110%;"}
+- ANID/FONDECYT Grant N°1210847 2021-2025 
+
+- First stage:
+  * [Qualitative study](https://link.springer.com/article/10.1007/s11211-025-00456-2)
+  * [Secondary data analysis](https://www.mdpi.com/2075-4698/14/11/214)
+ 
+- Second stage:
+  * Panel Survey: Two waves (students and parents)
+  * Survey experiment
+  
+- More information: [jc-castillo.com/project/fondecyt-edumer/](jc-castillo.com/project/fondecyt-edumer/)
+
+:::
+
+
+## Our (current) team
+
+:::{=html}
+
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; justify-items: center; align-items: center;">
+
+<div style="text-align: center;">
+  <img src="images/jc.png" style="width:200px; border-radius: 50%;" />
+  <div>JC</div>
+</div>
+
+<div style="text-align: center;">
+  <img src="images/kevin.png" style="width:200px; border-radius: 50%;" />
+  <div>Kevin</div>
+</div>
+
+<div style="text-align: center;">
+  <img src="images/andreas.jpg" style="width:200px; border-radius: 50%;" />
+  <div>Andreas</div>
+</div>
+</div>
+:::
+
+:::{=html}
+
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; justify-items: center; align-items: center;">
+
+<div style="text-align: center;">
+  <img src="images/mafe.jpg" style="width:200px; border-radius: 50%;" />
+  <div>Mafe</div>
+</div>
+
+<div style="text-align: center;">
+  <img src="images/tomas.png" style="width:200px; border-radius: 50%;" />
+  <div>Tomás</div>
+</div>
+
+<div style="text-align: center;">
+  <img src="images/rene.png" style="width:200px; border-radius: 50%;" />
+  <div>René</div>
+</div>
+
+</div>
+
+:::
+
+
+
+## Last works
+
+::: {.small}
+
+- Castillo, J. C., Iturra, J., & Carrasco, K. (2025). Changes in the Justification of Educational Inequalities: The Role of Perceptions of Inequality and Meritocracy During the COVID Pandemic. Social Justice Research. https://doi.org/10.1007/s11211-025-00458-0
+- Moyano Dávila, C., Alarcón-Arcos, S., Angelcos, N., Castillo, J. C., & Salgado, M. (2025). Merit as an Attitude: Chilean School Communities’ Repertoires in Chile and the Perception of the “Good Student” in a Post-pandemic Scenario. Social Justice Research. https://doi.org/10.1007/s11211-025-00456-2
+- Castillo, J. C., Salgado, M., Carrasco, K., & Laffert, A. (2024). The Socialization of Meritocracy and Market Justice Preferences at School. Societies, 14(11), Article 11. https://doi.org/10.3390/soc14110214
+- Carrasco, K., García-Castro, J. D., & Castillo, J.-C. (2024). La socialización de las actitudes hacia la desigualdad y meritocracia en la etapa escolar en chile. In G. Assusa & G. Benza (Eds.), America Latina desigual: Preguntas, enfoques y tendencias actuales. Siglo XXI Editores.
+- Castillo, J.-C., Iturra, J., Maldonado, L., Atria, J., & Meneses, F. (2023). A multidimensional approach for measuring meritocratic beliefs: Advantages, limitations and alternatives to the ISSP social inequality survey. International Journal of Sociology, Online first. https://doi.org/10.1080/00207659.2023.2274712
+- Iturra, J., Castillo, J.-C., Rufs, C., & Maldonado, L. (2023). Percepción de desigualdad económica y su influencia sobre la justificación de las diferencias de ingreso legítimas. Estudios Sociológicos, 4(122). https://doi.org/10.24201/es.2023v41n122.2260
+
+:::
+
+# This presentation:
+
+a. General conceptual framework: meritocracy & market justice
+
+b. Study 1: Market justice & meritocracy at student & school level
+
+c. Study 2: Changes in the association between market justice & meritocracy
+
+# a. General conceptual framework
+
+## **Meritocracy & inequality beliefs** 
+
+::: {.incremental .highlight-last style="font-size: 100%;"}
+
+- Meritocracy is conceived as a system where rewards are distributed according to individual effort and talent [@young_rise_1958]
+
+- **Merit** = effort + talent [@young_rise_1958]
+
+- Associated with the justification of inequality by legitimizing differences often linked to opportunities [@mijs_unfulfillable_2016]
+
+- Two research strands:
+  - stratification and mobility (objective meritocracy)
+  - beliefs about meritocracy (subjective meritocracy)
+
+
+:::
+
+## **Conceptualizing & measuring meritocratic beliefs (1)** 
+
+::: {.incremental .highlight-last style="font-size: 100%;"}
+
+- Measurement of **meritocracy in society**:  
+  1) The **perception of meritocracy**: the extent to which efforts and abilities are perceived to be rewarded in the country [@andersen_we_2021; @castillo_meritocracia_2019; @mijs_paradox_2019].  
+  2) **Preferences for meritocracy**: the extent to which meritocracy is desired in society [@castillo_multidimensional_2023].
+
+:::
+
+
+## **Conceptualizing & measuring meritocratic beliefs (2)** 
+
+- Proposed meritocracy conceptual framework and scale by @castillo_multidimensional_2023
+
+
+![](images/modelo_con.png)
+
+
+
+## Meritocracy at school
+
+::: {.incremental .highlight-last style="font-size: 100%;"}
+
+- School and socialization of meritocratic values
+
+- Particularly in societies with a high degree of commodification of educational institutions (as Chile)
+
+- So far, most research on meritocracy has focused on the adult population, neglecting the study of factors associated with these beliefs at earlier ages, as well as their **socialization**.
+:::
+
+
+# Redistribution and Market Justice Preferences
+
+## Market justice
+
+::: {.incremental .highlight-last style="font-size: 100%;"}
+
+- Who deserves what and why?
+
+- Despite high income inequality and limited social mobility in Chile, there is a belief that individuals are responsible for their economic outcomes [@torche_intergenerational_2014; @salgado_inequality_2023]
+
+- Market justice:  individuals’ adherence to the allocation of goods and social services (such as health, education, and pensions) according to individuals’ ability to pay [@lane_market_1986; @lindh_public_2015]
+
+- Main argument: those who perceive and prefer meritocracy show larger market justice preferences
+:::
+
+# 
+
+![](images/issp.png)
+
+# Research question {data-background-color="#5f5758"}
+
+<br>
+
+
+:::{.slarge}
+_**To what extent the meritocratic perceptions and beliefs of school-age children are related to market justice preferences?**_
+:::
+
+# b. Study 1
+
+![](images/general-scheme.png)
+
+
+##
+
+![](images/hyp-a.png)
+
+##
+
+![](images/hyp-b.png)
+
+##
+
+![](images/hyp-c.png)
+
+
+## Methods
+
+
+* First National Study of Citizenship Education 2017
+
+* National Agency for Educational Quality, Chile
+
+* 8,701 8th grade students, 242 schools
+
+## Dependent Variables: Justification of inequality
+
+![](images/depvar.png)
+
+
+## Independent variables: meritocracy
+
+![](images/merit-vars.png)
+
+## Independent variables: family socialization
+
+* Parents' educational level
+
+* Books at home
+
+* Technology access
+
+## Independent variables: School socialization
+
+* Rate of parents with university education
+
+* School administration
+
+* Socio economic level
+
+* Average school achievement SIMCE test
+]
+
+# Results
+
+##
+::: {.scroll-box style="height:800px; overflow-y:scroll;"}
+![:scale 85%](https://raw.githubusercontent.com/educacion-meritocracia/meritocracia-escuela-agencia/main/output/graphs/plot_merit_justice.png)]
+:::
+
+##
+![:scale 80%](https://raw.githubusercontent.com/educacion-meritocracia/meritocracia-escuela-agencia/main/output/graphs/plots2.png)
+
+##
+
+::: {.scroll-box style="height:800px; overflow-y:scroll;"}
+
+![](graphs/int2.2_esp.png)
+
+:::
+
+## Discussion 
+
+- Perception of meritocracy **in society**: positively related with inequality justification
+
+- perception of meritocracy **at school**: mixed links with inequality justification
+
+- socialization and role of school achievement: education enlightenment effect (?)
+
+
+##
+
+::: {.columns}
+
+::: {.column width="50%"}
+![](images/societies.png)
+:::
+
+::: {.column width="50%"}
+Castillo, J. C., Salgado, M., Carrasco, K., & Laffert, A. (2024). The Socialization of Meritocracy and Market Justice Preferences at School. _Societies_, 14(11), Article 11. https://doi.org/10.3390/soc14110214
+:::
+
+:::
+
+# c. Study 2: Changes in the association between market justice & meritocracy
+
+# Data, variables & methods {.xlarge}
+
+## Data
+
+::: {.incremental .highlight-last style="font-size: 100%;"}
+- Panel survey “Education and Meritocracy” (EDUMER), conducted in Chile during 2023 and 2024.
+- Students from sixth grade and first year of high school from 9 schools in the Metropolitan Region in CHile. 
+- The total number of complete responses is 902 students in wave 1 and 632 in wave 2.
+
+:::
+
+
+## Dependent variable: Market justice
+
+- Market justice: _"It is just that in Chile people with higher incomes can have..."_ 
+  - better education
+  - better pensions
+  - better health access
+  
+## Market justice preferences
+
+```{r}
+#| label: fig-likert2
+
+theme_set(theme_ggdist())
+colors <- RColorBrewer::brewer.pal(n = 4, name = "RdBu")
+
+a <- db_proc %>% 
+  filter(wave == 1) %>%
+  select(just_educ, just_health, just_pension) %>% 
+  sjPlot::plot_likert(geom.colors = colors,
+                      title = c("a. Wave 01"),
+                      geom.size = 0.8,
+                      axis.labels = c("Education", "Health", "Pensions"),
+                      catcount = 4,
+                      values  =  "sum.outside",
+                      reverse.colors = F,
+                      reverse.scale = T,
+                      show.n = FALSE,
+                      show.prc.sign = T
+                      ) +
+  ggplot2::theme(legend.position = "bottom")
+
+b <- db_proc %>% 
+  filter(wave == 2) %>%
+  select(just_educ, just_health, just_pension) %>% 
+  sjPlot::plot_likert(geom.colors = colors,
+                      title = c("b. Wave 02"),
+                      geom.size = 0.8,
+                      axis.labels = c("Education", "Health", "Pensions"),
+                      catcount = 4,
+                      values  =  "sum.outside",
+                      reverse.colors = F,
+                      reverse.scale = T,
+                      show.n = FALSE,
+                      show.prc.sign = T
+                      ) +
+  ggplot2::theme(legend.position = "bottom")
+
+likert_mjp <- ggarrange(a,b, ncol=2, common.legend=TRUE)
+
+likert_mjp
+```
+
+## (Main) Independent variable: Meritocracy
+
+```{r}
+df <- data.frame(
+  Component = c("Perceptions", "Perceptions", "Perceptions", "Perceptions", 
+                "Preferences", "Preferences", "Preferences", "Preferences"),
+  Dimension = c("Meritocratic", "Meritocratic", "Non-meritocratic", "Non-meritocratic",
+                "Meritocratic", "Meritocratic", "Non-meritocratic", "Non-meritocratic"),
+  Item = c(
+    "In Chile, people are rewarded for their efforts",
+    "In Chile, people are rewarded for their intelligence and ability",
+    "In Chile, those with wealthy parents do much better in life",
+    "In Chile, those with good connections do better in life",
+    "Those who work harder should get greater rewards than those who work less",
+    "Those with more talent should get greater rewards than those with less talent",
+    "It is acceptable that those with wealthy parents do better in life",
+    "It is acceptable that those with good connections do better in life"
+  )
+)
+
+df %>%
+  kbl(booktabs = TRUE, align = "ccl") %>%
+  column_spec(
+    3,
+    width = if (knitr::is_latex_output()) "12cm" else "80%"
+  ) %>%
+  kable_styling(
+    full_width = if (knitr::is_latex_output()) FALSE else TRUE,
+    position = "left",
+    latex_options = if (knitr::is_latex_output()) "scale_down" else NULL,
+    font_size = if (knitr::is_latex_output()) 10 else 24
+  ) %>%
+  collapse_rows(columns = c(1,2), valign = "middle")
+
+
+```
+
+## Meritocracy (Wave 01)
+
+```{r}
+#| label: fig-likert0
+
+theme_set(theme_ggdist())
+colors <- RColorBrewer::brewer.pal(n = 4, name = "RdBu")
+
+a <- db_proc %>% 
+  filter(wave == 1) %>%
+  select(starts_with("perc")) %>% 
+  sjPlot::plot_likert(geom.colors = colors,
+                      title = c("a. Perceptions"),
+                      geom.size = 0.8,
+                      axis.labels = c("Effort", "Talent", "Rich parents", "Contacts"),
+                      catcount = 4,
+                      values  =  "sum.outside",
+                      reverse.colors = F,
+                      reverse.scale = T,
+                      show.n = FALSE,
+                      show.prc.sign = T
+                      ) +
+  ggplot2::theme(legend.position = "bottom")
+
+b <- db_proc %>% 
+  filter(wave == 1) %>% 
+  select(starts_with("pref")) %>% 
+  sjPlot::plot_likert(geom.colors = colors,
+                      title = c("b. Preferences"),
+                      geom.size = 0.8,
+                     axis.labels = c("Effort", "Talent", "Rich parents", "Contacts"),
+                      catcount = 4,
+                      values  =  "sum.outside",
+                      reverse.colors = F,
+                      reverse.scale = T,
+                      show.n = FALSE,
+                      show.prc.sign = T
+  ) +
+  ggplot2::theme(legend.position = "bottom")
+
+likerplot <- ggarrange(a,b, common.legend=TRUE)
+
+likerplot
+
+
+```
+
+## Method
+
+- First, each variable separately (education, health, and pensions)
+
+- Estimation of simple mean for the dependent variable preferences for market justice
+
+- Confirmatory factor analysis and estimation of factor scores for the meritocracy scale
+
+- Longitudinal multilevel model nested within students (627 students)
+
+- ICC: 0.439
+
+- Between and Within differences (between students and within students)
+
+- Controls: age, gender, and cohort
+
+
+# Results {.xlarge }
+
+```{r cache=TRUE}
+db_1 <- subset(db_proc, wave == 1)
+db_2 <- subset(db_proc, wave == 2)
+# model
+model_cfa <- '
+  perc_merit = ~ perc_effort + perc_talent
+  perc_nmerit = ~ perc_rich_parents + perc_contact
+  pref_merit = ~ pref_effort + pref_talent
+  pref_nmerit = ~ pref_rich_parents + pref_contact
+  '
+
+# estimation for each order set
+
+m1_cfa <- cfa(model = model_cfa, 
+              data = subset(db_proc, wave == 1),
+              estimator = "DWLS",
+              ordered = T,
+              std.lv = F) 
+
+m2_cfa <- cfa(model = model_cfa, 
+              data = subset(db_proc, wave == 2), 
+              estimator = "DWLS",
+              ordered = T,
+              std.lv = F)
+
+scores_1 <- lavPredict(m1_cfa)
+
+db_1$perc_merit_score  <- scores_1[, "perc_merit"]
+db_1$perc_nmerit_score <- scores_1[, "perc_nmerit"]
+db_1$pref_merit_score  <- scores_1[, "pref_merit"]
+db_1$pref_nmerit_score <- scores_1[, "pref_nmerit"]
+
+scores_2 <- lavPredict(m2_cfa)
+
+db_2$perc_merit_score  <- scores_2[, "perc_merit"]
+db_2$perc_nmerit_score <- scores_2[, "perc_nmerit"]
+db_2$pref_merit_score  <- scores_2[, "pref_merit"]
+db_2$pref_nmerit_score <- scores_2[, "pref_nmerit"]
+
+db_proc <- rbind(db_1, db_2)
+
+
+db_proc <- db_proc %>% 
+  group_by(id_student) %>% 
+  mutate(perc_merit_score_mean = mean(perc_merit_score, na.rm = T),
+         perc_merit_score_cwc = perc_merit_score - perc_merit_score_mean,
+         perc_nmerit_score_mean = mean(perc_nmerit_score, na.rm = T),
+         perc_nmerit_score_cwc = perc_nmerit_score - perc_nmerit_score_mean,
+         pref_merit_score_mean = mean(pref_merit_score, na.rm = T),
+         pref_merit_score_cwc = pref_merit_score - pref_merit_score_mean,
+         pref_nmerit_score_mean = mean(pref_nmerit_score, na.rm = T),
+         pref_nmerit_score_cwc = pref_nmerit_score - pref_nmerit_score_mean,
+         school_talent_mean = mean(school_talent, na.rm = T),
+         school_talent_cwc = school_talent - school_talent_mean,
+         school_effort_mean = mean(school_effort, na.rm = T),
+         school_effort_cwc = school_effort - school_effort_mean
+         ) %>% 
+  ungroup()
+```
+
+## Meritocracy measurement model
+
+![](https://educacion-meritocracia.github.io/merit-factorial/presentations/images/diag1_cfa_w1.png)
+
+# Multilevel regresion models {.xlarge }
+
+```{r}
+m2 <- lmer(just_educ ~ 1 + wave + cohort_level + gender + 
+             perc_merit_score + perc_nmerit_score + 
+             pref_merit_score + pref_nmerit_score + school_effort +
+             school_talent + perc_merit_score_mean + perc_nmerit_score_mean +
+             pref_merit_score_mean + pref_nmerit_score_mean +
+             (1 | id_student), 
+                data = db_proc)
+
+m3 <- lmer(just_health ~ 1 + wave + cohort_level + gender + 
+             perc_merit_score + perc_nmerit_score + 
+             pref_merit_score + pref_nmerit_score + school_effort +
+             school_talent + perc_merit_score_mean + perc_nmerit_score_mean +
+             pref_merit_score_mean + pref_nmerit_score_mean +
+             (1 | id_student), 
+                data = db_proc)
+
+m4 <- lmer(just_pension ~ 1 + wave + cohort_level + gender + 
+             perc_merit_score + perc_nmerit_score + 
+             pref_merit_score + pref_nmerit_score + school_effort +
+             school_talent + perc_merit_score_mean + perc_nmerit_score_mean +
+             pref_merit_score_mean + pref_nmerit_score_mean +
+             (1 | id_student), 
+                data = db_proc)
+
+m5 <- lmer(mjp ~ 1 + wave + cohort_level + gender + 
+             perc_merit_score + perc_nmerit_score + 
+             pref_merit_score + pref_nmerit_score + school_effort +
+             school_talent + perc_merit_score_mean + perc_nmerit_score_mean +
+             pref_merit_score_mean + pref_nmerit_score_mean +
+             (1 | id_student), 
+                data = db_proc)
+```
+
+## Between Effects
+
+#### Effects between students
+
+```{r}
+plot_models(m2, m3, m4,
+  rm.terms = c(
+    "genderOther", "wave2",
+    "school_effort", "school_talent",
+    "perc_merit_score", "perc_nmerit_score",
+    "pref_merit_score", "pref_nmerit_score"
+  ),
+  m.labels = rev(c("Pension", "Health", "Education")),
+            show.values = TRUE, #mostrar valor de efectos
+            dot.size = 1.3, #tamaño circulos
+            line.size = 1, #tamaño CI
+            value.size = 3.5, #tamaño valor efectoss
+            spacing = .7, #espacio entre efectos
+            grid = TRUE, # separa en un plot por modelo
+  vline.color = "red",
+  show.legend = FALSE,
+#  value.offset = 0.35,
+  axis.labels = rev(c(
+    "Secondary (ref: Primary)",
+    "Female (ref: Male)",
+    "Perception: meritocracy",
+    "Perception: no meritocracy",
+    "Preference: meritocracy",
+    "Preference: no meritocracy"
+  ))) + theme_bw(base_size = 14)
+```
+
+## Within Effects
+
+#### Within-student effects or the effect of change over time
+
+```{r}
+plot_models(m2, m3, m4,
+  rm.terms = c(
+    "genderOther", "genderFemale", "cohort_levelSecondary",
+    "school_effort", "school_talent",
+    "perc_merit_score_mean", "perc_nmerit_score_mean",
+    "pref_merit_score_mean", "pref_nmerit_score_mean"
+  ),
+  m.labels = rev(c("Pension", "Health", "Education")),
+            show.values = TRUE, #mostrar valor de efectos
+            dot.size = 1.3, #tamaño circulos
+            line.size = 1, #tamaño CI
+            value.size = 3.5, #tamaño valor efectoss
+            spacing = .7, #espacio entre efectos
+            grid = TRUE, # separa en un plot por modelo
+  show.legend = FALSE,
+  vline.color = "red",
+#  value.offset = 0.35,
+  axis.labels = rev(c(
+    "Wave",
+    "Perception: meritocracy",
+    "Perception: no meritocracy",
+    "Preference: meritocracy",
+    "Preference: no meritocracy"
+  ))
+) + theme_bw(base_size = 14)
+```
+
+## Between Effects
+
+#### Effects between students
+
+```{r}
+plot_model(m5,
+           terms = c("cohort_levelSecondary", "genderFemale",
+                     "perc_merit_score_mean", "perc_nmerit_score_mean",
+                     "pref_merit_score_mean", "pref_nmerit_score_mean"),
+           title = "Market justice preferences",
+           show.values = TRUE,
+           dot.size = 1.3,
+           line.size = 1,
+           value.size = 3.5,
+           spacing = .7,
+           vline.color = "red",
+           value.offset = 0.35,
+           axis.labels = rev(c("Secondary (ref: Primary)",
+                               "Female (ref: Male)",
+                               "Perception: meritocracy", 
+                               "Perception: no meritocracy", 
+                               "Preference: meritocracy",
+                               "Preference: no meritocracy"))
+) + theme_bw(base_size=14)
+```
+
+## Within Effects
+
+#### Within-student effects or the effect of change over time
+
+```{r}
+plot_model(m5,
+           terms = c("wave2",
+                     "perc_merit_score", "perc_nmerit_score",
+                     "pref_merit_score", "pref_nmerit_score"),
+           title = "Market justice preferences",
+           show.values = TRUE,
+           dot.size = 1.3,
+           line.size = 1,
+           value.size = 3.5,
+           spacing = .7,
+           vline.color = "red",
+           value.offset = 0.35,
+           axis.labels = rev(c("Wave",
+                               "Perception: meritocracy", 
+                               "Perception: no meritocracy", 
+                               "Preference: meritocracy",
+                               "Preference: no meritocracy"))
+) + theme_bw(base_size=14)
+```
+
+# Discussion and Conclusions {data-background-color="#5f5758"}
+
+## Main findings: non-meritocracy
+
+::: { .incremental .highlight-last style="font-size: 100%;"}
+
+- The perception of non-meritocracy negatively influences preferences for market justice
+
+- The preference for non-meritocratic factors positively influences preferences for market justice
+
+- Few differences over time, only an increase in the preference for non-meritocratic factors positively influences preferences for market justice
+
+:::
+
+## Future research
+::: { .incremental .highlight-last style="font-size: 100%;"}
+
+- focus on non-meritocracy
+
+- focus on talent
+
+- typologies / latent class of meritocratic beliefs
+
+- Include students’ grade point average (justice of rewards)
+
+- Socioeconomic characteristics of families 
+
+:::
+
+
+# Thanks for your attention, and looking forward to your comments!
+
+-   **Github project:** <https://github.com/educacion-meritocracia>
+
+- personal web: [jc-castillo.com](https://jc-castillo.com/)
+
+## References
